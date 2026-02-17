@@ -1,9 +1,3 @@
-Below is a cleaner, recruiter-oriented version of your README. It focuses on business impact, technical rigor, and analytical depth rather than procedural details.
-
-You can copy this directly into `README.md`.
-
----
-
 # Olist E-Commerce Analysis
 
 Advanced SQL-Based Marketplace Performance & Customer Intelligence Framework
