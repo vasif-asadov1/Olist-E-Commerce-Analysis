@@ -264,31 +264,3 @@ Advanced SQL techniques:
 * Performance indexing
 * Duplicate-safe financial aggregation
 
----
-
-# Why This Project Stands Out
-
-This is not a collection of isolated SQL queries.
-
-It is a structured marketplace intelligence framework.
-
-It demonstrates:
-
-* Data engineering discipline
-* Analytical architecture design
-* Business-first thinking
-* Statistical reasoning inside SQL
-* Financial metric integrity awareness
-* Operational diagnostics capability
-
----
-
-If you want, I can now:
-
-* Make this even sharper and more minimal (Big Tech portfolio style)
-* Add architecture diagram explanation section
-* Add “How to Run the Project” section
-* Add BI integration instructions (Tableau / Power BI)
-* Convert this into a visually enhanced GitHub version with badges
-
-Tell me the direction.
