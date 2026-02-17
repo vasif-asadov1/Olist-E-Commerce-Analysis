@@ -4,6 +4,7 @@
 End-to-End SQL Analytics | Revenue Growth | Customer Retention | Operational Diagnostics
 
 Dataset: Brazilian E-Commerce Public Dataset (Olist): https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce
+
 Database: Microsoft SQL Server
 
 ---
