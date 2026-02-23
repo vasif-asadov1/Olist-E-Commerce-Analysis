@@ -7,6 +7,8 @@ Dataset: Brazilian E-Commerce Public Dataset (Olist): https://www.kaggle.com/dat
 
 Database: Microsoft SQL Server
 
+Tableau Dashboard Link: https://public.tableau.com/app/profile/vasif.asadov2730/viz/Olist_E_Commerce_Dashboard_17718506423160/Dashboard1?publish=yes
+
 ---
 
 ## Project Overview
