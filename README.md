@@ -9,6 +9,8 @@ Database: Microsoft SQL Server
 
 Tableau Dashboard Link: https://public.tableau.com/app/profile/vasif.asadov2730/viz/Olist_E_Commerce_Dashboard_17718506423160/Dashboard1?publish=yes
 
+Documentation Link: [Documents](https://vasif-asadov1.github.io/Olist-E-Commerce-Analysis/)
+
 ---
 
 ## Project Overview
