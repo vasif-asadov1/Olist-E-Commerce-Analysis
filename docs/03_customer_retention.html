@@ -1,0 +1,1977 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Customer Behavior and Retention Analysis – Vasif | Olist E-Commerce Analysis</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-acf12a64177840b8d86f2d4f01b2e9fb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-948e61940ef19b6a40d753e4856fbf86.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Vasif | Olist E-Commerce Analysis</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Olist Data Analysis</a></li><li class="breadcrumb-item"><a href="./03_customer_retention.html">Customer Behavior and Retention Analysis</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Olist Data Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Olist E-Commerce Sales Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_data_normalization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Ingestion and Cleaning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_business_questions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Business Questions for Olist E-Commerce Sales Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_customer_retention.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Customer Behavior and Retention Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_orders_sales_performance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Orders and Sales Performance Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_delivery_logistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Delivery and Logistics Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_seller_performance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Seller Performance Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_payments_and_risk.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Payments and Risk Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08_customer_reviews.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Customer Review and Satisfaction Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09_time_series.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Time Series Analysis</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#customer-segmentation-using-rfm-analysis" id="toc-customer-segmentation-using-rfm-analysis" class="nav-link" data-scroll-target="#customer-segmentation-using-rfm-analysis">Customer Segmentation using RFM Analysis</a></li>
+  <li><a href="#customer-retention-trends-and-analysis" id="toc-customer-retention-trends-and-analysis" class="nav-link" data-scroll-target="#customer-retention-trends-and-analysis">Customer Retention Trends and Analysis</a></li>
+  <li><a href="#pareto-principle-analysis-for-customer-base" id="toc-pareto-principle-analysis-for-customer-base" class="nav-link" data-scroll-target="#pareto-principle-analysis-for-customer-base">Pareto Principle Analysis for Customer Base</a></li>
+  <li><a href="#purchase-frequency-and-inactivity-analysis" id="toc-purchase-frequency-and-inactivity-analysis" class="nav-link" data-scroll-target="#purchase-frequency-and-inactivity-analysis">Purchase Frequency and Inactivity Analysis</a></li>
+  <li><a href="#high-risk-of-churn-detection" id="toc-high-risk-of-churn-detection" class="nav-link" data-scroll-target="#high-risk-of-churn-detection">High Risk of Churn Detection</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Olist Data Analysis</a></li><li class="breadcrumb-item"><a href="./03_customer_retention.html">Customer Behavior and Retention Analysis</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Customer Behavior and Retention Analysis</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>In this section we will analyze customer behavior and retention patterns using the Olist e-commerce dataset. The goal is to segment the customer base into distinct clusters based on their purchasing behavior, identify trends in customer retention, and understand the factors that influence customer loyalty. We will do the following analysis:</p>
+<ul>
+<li>Segment customers into clusters such as Champions, Loyalists, Hibernating, and At Risk based on their recency, frequency, and monetary value (RFM analysis).</li>
+<li>Understand how the customer base has evolved over time, including trends in new customer acquisition and retention rates.</li>
+<li>Analyze whether pareto principle holds true for the customer base, i.e., if a small percentage of customers contribute to a large percentage of revenue.</li>
+<li>Explore the average time between repeat customers’ purchase timestamps to understand the frequency of repeat purchases.</li>
+<li>Identify the customers that exceeded the average purchase cycle time more than 2 standard deviations, and analyze their behavior to understand potential reasons for their inactivity.</li>
+</ul>
+<p>Each question will be solved by SQL queries toghether with supportive explanations, tabular results and obtained insights. The insights obtained from the analysis will guide our market strategies and help Olist company to improve customer retention and loyalty, ultimately driving business growth.</p>
+</section>
+<section id="customer-segmentation-using-rfm-analysis" class="level1">
+<h1>Customer Segmentation using RFM Analysis</h1>
+<blockquote class="blockquote">
+<ol type="1">
+<li>Can we segment the customer base into distinct clusters, specifically, <em>Champions</em>, <em>Loyalists</em>, <em>Hibernating</em> and <em>At Risk</em> by scoring each unique user based on the recency of their last order, the frequency of their purchases and their total monetary contribution?</li>
+</ol>
+</blockquote>
+<p><strong>Solution</strong>: Before solving the problem, let’s briefly explain the RFM analysis and how we will use it to segment customers. RFM stands for Recency, Frequency, and Monetary value. Recency means how recently a customer made a purchase. It is calculated as the number of days since the last purchase. Frequency refers to how often a customer makes a purchase, which can be measured by counting the number of orders. Monetary value represents how much money a customer has spent, which can be calculated by summing the total payment value for each customer.</p>
+<p>To segment customers, we will assign scores from 1 to 5 for each RFM metric, where 5 is the best score and 1 is the worst. For recency, customers with lower days since their last purchase will receive higher scores. For frequency and monetary value, customers with higher counts and values will receive higher scores. After assigning scores, we will group customers into segments based on their RFM scores.</p>
+<p>To correctly divide the customers into segments, we will use <code>ntile</code> window function to assign scores based on the distribution of RFM values. This method allows us to create segments that are relative to the overall customer base, ensuring that we capture the nuances in customer behavior effectively.</p>
+<p>I have structured my SQL query in the folllowing sequence:</p>
+<ol type="1">
+<li>First, I will find the last order date in the dataset to use as a reference point for calculating recency.</li>
+<li>Then, I will calculate the RFM values for each unique customer by joining the relevant tables and aggregating the necessary metrics.</li>
+<li>Next, I will assign RFM scores using the <code>ntile</code> function to create relative scores for each metric. This function firstly, will order the customers based on their RFM values and then divide them into 5 equal groups and then for corresponding customer, it will assign a score from 1 to 5 based on the group they belong to. For example, customer with id = 1 has recency value of 10 days, frequency count of 5 and monetary value of 100. If the customer falls into the top 20% of customers with the lowest recency values, they will receive an R score of 5. If they fall into the top 20% of customers with the highest frequency counts, they will receive an F score of 5. If they fall into the bottom 20% of customers with the lowest monetary values, they will receive an M score of 1. This way, we can effectively segment customers based on their relative standing in each RFM metric.</li>
+<li>Finally, I will group the customers into segments based on their RFM scores and calculate the average scores and other relevant metrics for each segment.</li>
+</ol>
+<details>
+<summary>
+Show SQL Code
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> dataset_max_date <span class="kw">as</span> (</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- find the last order date in the dataset - reference date</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">max</span>(order_purchase_timestamp) <span class="kw">as</span> max_date</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        orders</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>customer_rfm_base <span class="kw">as</span> (</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- calculate rfm values for each unique customer</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        customers.customer_unique_id,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">max</span>(orders.order_purchase_timestamp) <span class="kw">as</span> last_order_date,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="fu">count</span>(<span class="kw">distinct</span> orders.order_id) <span class="kw">as</span> frequency_count,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(payments.payment_value) <span class="kw">as</span> monetary_value,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        dmd.max_date</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        orders </span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        customers <span class="kw">on</span> customers.customer_id <span class="op">=</span> orders.customer_id</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        payments <span class="kw">on</span> orders.order_id <span class="op">=</span> payments.order_id</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">cross</span> <span class="kw">join</span> </span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>        dataset_max_date dmd</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        orders.order_status <span class="op">=</span> <span class="st">'delivered'</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        customers.customer_unique_id, </span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>        dmd.max_date</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>rfm_scores <span class="kw">as</span> (</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- assigning scores from 1 to 5 using ntile window function</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- 5 is the best score, 1 is the worst</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>        customer_unique_id,</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        frequency_count, </span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>        monetary_value,</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>        DATEDIFF(<span class="dt">day</span>, last_order_date, max_date) <span class="kw">as</span> recency_days, </span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- recency score: lower_days = better score (5)</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- descending order -&gt; larger days will get lower ntile</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>        <span class="fu">ntile</span>(<span class="dv">5</span>) <span class="kw">over</span> (<span class="kw">order</span> <span class="kw">by</span> DATEDIFF(<span class="dt">day</span>, last_order_date, max_date) <span class="kw">desc</span>) <span class="kw">as</span> r_score,</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- frequency score: higher count = better score</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>        <span class="fu">ntile</span>(<span class="dv">5</span>) <span class="kw">over</span> (<span class="kw">order</span> <span class="kw">by</span> frequency_count <span class="kw">asc</span>)  <span class="kw">as</span> f_score,</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- monetary score: higher value = better score</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>        <span class="fu">ntile</span>(<span class="dv">5</span>) <span class="kw">over</span> (<span class="kw">order</span> <span class="kw">by</span> monetary_value <span class="kw">asc</span>) <span class="kw">as</span> m_score</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>        customer_rfm_base</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>rfm_segments <span class="kw">as</span> (</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- group the scores into segments</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>        customer_unique_id,</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>        recency_days,</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>        frequency_count,</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>        monetary_value,</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>        r_score, </span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>        f_score,</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>        m_score, </span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>        <span class="cf">case</span></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>            <span class="cf">when</span> r_score <span class="op">&gt;=</span> <span class="dv">4</span> <span class="kw">and</span> (f_score <span class="op">+</span> m_score) <span class="op">/</span> <span class="dv">2</span> <span class="op">&gt;=</span> <span class="dv">4</span> <span class="cf">then</span> <span class="st">'Champions'</span></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>            <span class="cf">when</span> r_score <span class="op">&gt;=</span> <span class="dv">3</span> <span class="kw">and</span> (f_score <span class="op">+</span> m_score) <span class="op">/</span> <span class="dv">2</span> <span class="op">&gt;=</span> <span class="dv">3</span> <span class="cf">then</span> <span class="st">'Loyal Customers'</span></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>            <span class="cf">when</span> r_score <span class="op">&lt;=</span> <span class="dv">2</span> <span class="kw">and</span> (f_score <span class="op">+</span> m_score) <span class="op">/</span> <span class="dv">2</span> <span class="op">&gt;=</span> <span class="dv">4</span> <span class="cf">then</span> <span class="st">'At Risk'</span></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>            <span class="cf">when</span> r_score <span class="op">&lt;=</span> <span class="dv">2</span> <span class="kw">and</span> (f_score <span class="op">+</span> m_score) <span class="op">/</span> <span class="dv">2</span> <span class="op">&lt;=</span> <span class="dv">2</span> <span class="cf">then</span> <span class="st">'Hibernating'</span></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span> <span class="st">'Potential Loyalist'</span></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span> <span class="kw">as</span> customer_segment</span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>        rfm_scores</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>    customer_segment, </span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>    <span class="fu">count</span>(customer_unique_id) <span class="kw">as</span> customer_count,</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(<span class="fu">avg</span>(r_score <span class="op">*</span> <span class="fl">1.0</span>) <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">5</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_recency_score,</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(<span class="fu">avg</span>(f_score <span class="op">*</span> <span class="fl">1.0</span>) <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">5</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_frequency_score, </span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(<span class="fu">avg</span>(m_score <span class="op">*</span> <span class="fl">1.0</span>) <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">5</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_monetary_score, </span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(<span class="fu">avg</span>(recency_days <span class="op">*</span> <span class="fl">1.0</span>) <span class="kw">as</span> <span class="dt">int</span>) <span class="kw">as</span> avg_days_since_last_order,</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(<span class="fu">avg</span>(frequency_count <span class="op">*</span> <span class="fl">1.0</span>) <span class="kw">as</span> <span class="dt">int</span>) <span class="kw">as</span> avg_frequency_count,</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(<span class="fu">avg</span>(monetary_value) <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_lifetime_spend</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> </span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>    rfm_segments</span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a><span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>    customer_segment</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="kw">order</span> <span class="kw">by</span> </span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>    customer_count <span class="kw">desc</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p><strong>Results:</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 11%">
+<col style="width: 13%">
+<col style="width: 12%">
+<col style="width: 17%">
+<col style="width: 13%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>customer_segment</th>
+<th>customer_count</th>
+<th>avg_recency_score</th>
+<th>avg_frequency_score</th>
+<th>avg_monetary_score</th>
+<th>avg_days_since_last_order</th>
+<th>avg_frequency_count</th>
+<th>avg_lifetime_spend</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Hibernating</td>
+<td>25937</td>
+<td>1.43</td>
+<td>1.42</td>
+<td>2.25</td>
+<td>453</td>
+<td>1</td>
+<td>84.59</td>
+</tr>
+<tr class="even">
+<td>Loyal Customers</td>
+<td>25509</td>
+<td>3.86</td>
+<td>3.83</td>
+<td>2.92</td>
+<td>193</td>
+<td>1</td>
+<td>141.31</td>
+</tr>
+<tr class="odd">
+<td>Potential Loyalist</td>
+<td>22558</td>
+<td>2.59</td>
+<td>2.52</td>
+<td>2.89</td>
+<td>321</td>
+<td>1</td>
+<td>190.69</td>
+</tr>
+<tr class="even">
+<td>Champions</td>
+<td>18417</td>
+<td>4.60</td>
+<td>4.56</td>
+<td>4.23</td>
+<td>129</td>
+<td>1</td>
+<td>272.96</td>
+</tr>
+<tr class="odd">
+<td>At Risk</td>
+<td>936</td>
+<td>1.58</td>
+<td>4.95</td>
+<td>4.40</td>
+<td>424</td>
+<td>2</td>
+<td>315.29</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Insights:</strong></p>
+<ul>
+<li>The largest segment of customers falls into the ‘Hibernating’ category, which indicates that a significant portion of the customer base has not made recent purchases and has low frequency and monetary value. This suggests that there may be an opportunity to re-engage these customers through targeted marketing campaigns or promotions.</li>
+<li>The ‘Loyal Customers’ segment has a relatively high average recency score, indicating that these customers have made recent purchases. However, their average frequency and monetary scores are moderate, suggesting that while they are loyal, they may not be the most valuable customers in terms of revenue. Strategies to increase their purchase frequency or average order value could be beneficial.</li>
+<li>The ‘Champions’ segment, while smaller in size compared to the ‘Hibernating’ and ‘Loyal Customers’ segments, has the highest average scores across all RFM metrics, indicating that these customers are highly engaged and valuable. They have made recent purchases, have a high frequency of orders, and contribute significantly to revenue. This segment should be prioritized for retention efforts and could also be targeted for upselling or cross-selling opportunities.</li>
+<li>The ‘At Risk’ segment, although small in size, has a high average frequency and monetary score, indicating that these customers have been valuable in the past but have not made recent purchases. This suggests that they may be at risk of churning, and targeted retention strategies should be implemented to re-engage these customers and prevent them from becoming inactive.</li>
+</ul>
+</section>
+<section id="customer-retention-trends-and-analysis" class="level1">
+<h1>Customer Retention Trends and Analysis</h1>
+<blockquote class="blockquote">
+<ol start="2" type="1">
+<li>How has the customer base evolved over time in terms of new customer acquisition and retention rates? Specifically, can we identify trends in the number of new customers acquired each month and the percentage of customers retained month-over-month?</li>
+</ol>
+</blockquote>
+<p><strong>Solution</strong>: This type of questions is called cohort analysis, where we analyze the behavior of groups of customers (cohorts) over time. In this case, we will create monthly cohorts based on the month of the customer’s first purchase. We will then track the retention of these cohorts over subsequent months to understand how many customers from each cohort continue to make purchases in the following months.</p>
+<details>
+<summary>
+Show SQL Code
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> customer_first_purchase <span class="kw">as</span> (</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 1: identify the acquisition month (birth month) for every unique customer</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        c.customer_unique_id,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">min</span>(datefromparts(<span class="dt">year</span>(o.order_purchase_timestamp), <span class="dt">month</span>(o.order_purchase_timestamp), <span class="dv">1</span>)) <span class="kw">as</span> cohort_month</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        orders o</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        customers c <span class="kw">on</span> o.customer_id <span class="op">=</span> c.customer_id</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        o.order_status <span class="kw">not</span> <span class="kw">in</span> (<span class="st">'canceled'</span>, <span class="st">'unavailable'</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        c.customer_unique_id</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>cohort_activities <span class="kw">as</span> (</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 2: join all orders back to the birth month to see when they returned</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        fp.customer_unique_id,</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        fp.cohort_month,</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        datediff(<span class="dt">month</span>, fp.cohort_month, datefromparts(<span class="dt">year</span>(o.order_purchase_timestamp), <span class="dt">month</span>(o.order_purchase_timestamp), <span class="dv">1</span>)) <span class="kw">as</span> month_index</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        orders o</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>        customers c <span class="kw">on</span> o.customer_id <span class="op">=</span> c.customer_id</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>        customer_first_purchase fp <span class="kw">on</span> c.customer_unique_id <span class="op">=</span> fp.customer_unique_id</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>        o.order_status <span class="kw">not</span> <span class="kw">in</span> (<span class="st">'canceled'</span>, <span class="st">'unavailable'</span>)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>cohort_sizes <span class="kw">as</span> (</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 3: calculate the denominator (total customers acquired in each month)</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>        cohort_month,</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>        <span class="fu">count</span>(<span class="kw">distinct</span> customer_unique_id) <span class="kw">as</span> total_customers</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>        customer_first_purchase</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>        cohort_month</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>retention_counts <span class="kw">as</span> (</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 4: count how many unique customers shopped in month 1, 3, and 6</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>        cohort_month,</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>        <span class="fu">count</span>(<span class="kw">distinct</span> <span class="cf">case</span> <span class="cf">when</span> month_index <span class="op">=</span> <span class="dv">1</span> <span class="cf">then</span> customer_unique_id <span class="cf">end</span>) <span class="kw">as</span> month_1_returnees,</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>        <span class="fu">count</span>(<span class="kw">distinct</span> <span class="cf">case</span> <span class="cf">when</span> month_index <span class="op">=</span> <span class="dv">3</span> <span class="cf">then</span> customer_unique_id <span class="cf">end</span>) <span class="kw">as</span> month_3_returnees,</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>        <span class="fu">count</span>(<span class="kw">distinct</span> <span class="cf">case</span> <span class="cf">when</span> month_index <span class="op">=</span> <span class="dv">6</span> <span class="cf">then</span> customer_unique_id <span class="cf">end</span>) <span class="kw">as</span> month_6_returnees</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>        cohort_activities</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>        cohort_month</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="co">-- final output: calculate retention percentages</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="co">-- we filter for cohorts with &gt; 10 customers to remove statistically insignificant beta testing months (late 2016)</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> </span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>    r.cohort_month,</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>    s.total_customers <span class="kw">as</span> cohort_size,</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(<span class="fl">100.0</span> <span class="op">*</span> r.month_1_returnees <span class="op">/</span> s.total_customers <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">5</span>,<span class="dv">2</span>)) <span class="kw">as</span> month_1_retention_pct,</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(<span class="fl">100.0</span> <span class="op">*</span> r.month_3_returnees <span class="op">/</span> s.total_customers <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">5</span>,<span class="dv">2</span>)) <span class="kw">as</span> month_3_retention_pct,</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(<span class="fl">100.0</span> <span class="op">*</span> r.month_6_returnees <span class="op">/</span> s.total_customers <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">5</span>,<span class="dv">2</span>)) <span class="kw">as</span> month_6_retention_pct</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> </span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>    retention_counts r</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a><span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>    cohort_sizes s <span class="kw">on</span> r.cohort_month <span class="op">=</span> s.cohort_month</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>    s.total_customers <span class="op">&gt;</span> <span class="dv">10</span></span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="kw">order</span> <span class="kw">by</span> </span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>    r.cohort_month;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p><strong>Results:</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 12%">
+<col style="width: 24%">
+<col style="width: 24%">
+<col style="width: 24%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>cohort_month</th>
+<th>cohort_size</th>
+<th>month_1_retention_pct</th>
+<th>month_3_retention_pct</th>
+<th>month_6_retention_pct</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2016-10-01</td>
+<td>290</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0.34</td>
+</tr>
+<tr class="even">
+<td>2017-01-01</td>
+<td>752</td>
+<td>0.40</td>
+<td>0.13</td>
+<td>0.40</td>
+</tr>
+<tr class="odd">
+<td>2017-02-01</td>
+<td>1690</td>
+<td>0.24</td>
+<td>0.12</td>
+<td>0.24</td>
+</tr>
+<tr class="even">
+<td>2017-03-01</td>
+<td>2571</td>
+<td>0.51</td>
+<td>0.39</td>
+<td>0.16</td>
+</tr>
+<tr class="odd">
+<td>2017-04-01</td>
+<td>2325</td>
+<td>0.60</td>
+<td>0.17</td>
+<td>0.34</td>
+</tr>
+<tr class="even">
+<td>2017-05-01</td>
+<td>3541</td>
+<td>0.48</td>
+<td>0.40</td>
+<td>0.42</td>
+</tr>
+<tr class="odd">
+<td>2017-06-01</td>
+<td>3102</td>
+<td>0.45</td>
+<td>0.39</td>
+<td>0.35</td>
+</tr>
+<tr class="even">
+<td>2017-07-01</td>
+<td>3822</td>
+<td>0.52</td>
+<td>0.24</td>
+<td>0.31</td>
+</tr>
+<tr class="odd">
+<td>2017-08-01</td>
+<td>4130</td>
+<td>0.68</td>
+<td>0.27</td>
+<td>0.29</td>
+</tr>
+<tr class="even">
+<td>2017-09-01</td>
+<td>4075</td>
+<td>0.69</td>
+<td>0.29</td>
+<td>0.22</td>
+</tr>
+<tr class="odd">
+<td>2017-10-01</td>
+<td>4392</td>
+<td>0.71</td>
+<td>0.09</td>
+<td>0.20</td>
+</tr>
+<tr class="even">
+<td>2017-11-01</td>
+<td>7190</td>
+<td>0.56</td>
+<td>0.17</td>
+<td>0.11</td>
+</tr>
+<tr class="odd">
+<td>2017-12-01</td>
+<td>5439</td>
+<td>0.22</td>
+<td>0.35</td>
+<td>0.17</td>
+</tr>
+<tr class="even">
+<td>2018-01-01</td>
+<td>6951</td>
+<td>0.33</td>
+<td>0.29</td>
+<td>0.17</td>
+</tr>
+<tr class="odd">
+<td>2018-02-01</td>
+<td>6357</td>
+<td>0.36</td>
+<td>0.30</td>
+<td>0.20</td>
+</tr>
+<tr class="even">
+<td>2018-03-01</td>
+<td>6931</td>
+<td>0.40</td>
+<td>0.29</td>
+<td>0.00</td>
+</tr>
+<tr class="odd">
+<td>2018-04-01</td>
+<td>6698</td>
+<td>0.58</td>
+<td>0.24</td>
+<td>0.00</td>
+</tr>
+<tr class="even">
+<td>2018-05-01</td>
+<td>6586</td>
+<td>0.52</td>
+<td>0.20</td>
+<td>0.00</td>
+</tr>
+<tr class="odd">
+<td>2018-06-01</td>
+<td>5920</td>
+<td>0.42</td>
+<td>0.00</td>
+<td>0.00</td>
+</tr>
+<tr class="even">
+<td>2018-07-01</td>
+<td>6016</td>
+<td>0.52</td>
+<td>0.00</td>
+<td>0.00</td>
+</tr>
+<tr class="odd">
+<td>2018-08-01</td>
+<td>6209</td>
+<td>0.02</td>
+<td>0.00</td>
+<td>0.00</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Insights:</strong></p>
+<ul>
+<li>The customer acquisition trend shows a significant increase in the number of new customers acquired each month, particularly from mid-2017 to early 2018. This indicates that Olist experienced rapid growth during this period, likely due to successful marketing campaigns, expansion of product offerings, or increased brand awareness.</li>
+<li>The retention rates show a general decline over time, with the highest retention observed in the first month after acquisition (month 1 retention) and a significant drop in retention by month 3 and month 6. This suggests that while Olist was successful in acquiring new customers, retaining them over the long term has been a challenge. The sharp decline in retention rates after the first month indicates that many customers may not have had a positive experience or found enough value to continue shopping with Olist.</li>
+<li>The retention rates also show some variability across different cohorts, with certain months (e.g., 2017-08-01 and 2017-09-01) exhibiting higher retention rates compared to others. This could be due to various factors such as seasonal promotions, changes in product offerings, or improvements in customer service during those periods. Analyzing the specific actions taken during these months could provide insights into strategies that may have contributed to better retention.</li>
+</ul>
+</section>
+<section id="pareto-principle-analysis-for-customer-base" class="level1">
+<h1>Pareto Principle Analysis for Customer Base</h1>
+<blockquote class="blockquote">
+<ol start="3" type="1">
+<li>Does the customer base adhere to the ‘80/20 Rule’ (Pareto Principle), where the top 20% of unique customers contribute to 80% of the total revenue? If so, what defines the profile of these top-tier customers?</li>
+</ol>
+</blockquote>
+<p><strong>Solution</strong>: Pareto Principle, also known as the 80/20 rule, suggests that a small percentage of customers (20%) often contribute to a large percentage of revenue (80%). We can check whether this principle holds true for our case by applying the following steps:</p>
+<ol type="1">
+<li>First, we will calculate the total lifetime spend for each unique customer by summing up their payment values across all their orders.</li>
+<li>Next, we will rank the customers based on their total spend and calculate the cumulative revenue contribution for each customer.</li>
+<li>Then, we will use the <code>percent_rank</code> window function to determine which customers fall into the top 20% of spenders. This function will assign a percentile rank to each customer based on their total spend. This process is done by ordering the customers in descending order of their total spend and then dividing them into percentiles. Customers with a percentile rank of 0.20 or less will be classified as the top 20% of spenders.</li>
+<li>Besides the ranking, we will also calculate the cumulative revenue contribution for each customer to see how much of the total revenue is contributed by the top 20% of customers. This will allow us to determine if the top 20% of customers indeed contribute to around 80% of the total revenue, as suggested by the Pareto Principle.</li>
+<li>Finally, we will calculate the total revenue contributed by the top 20% of customers and compare it to the total revenue to see if it adheres to the 80/20 rule.</li>
+</ol>
+<p>If the pareto principle holds true, it means our revenue comes predominantly from a small group of high-value customers. Understanding the profile of these top-tier customers can help us tailor our marketing strategies, improve customer retention, and focus on providing exceptional service to this valuable segment of our customer base.</p>
+<details>
+<summary>
+Show SQL Code
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> customer_revenue <span class="kw">as</span> (</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 1: calculate total lifetime spend per unique customer</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        c.customer_unique_id,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(p.payment_value) <span class="kw">as</span> total_spend</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        orders o</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        customers c <span class="kw">on</span> o.customer_id <span class="op">=</span> c.customer_id</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        payments p <span class="kw">on</span> o.order_id <span class="op">=</span> p.order_id</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        o.order_status <span class="kw">not</span> <span class="kw">in</span> (<span class="st">'canceled'</span>, <span class="st">'unavailable'</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        c.customer_unique_id</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>revenue_ranking <span class="kw">as</span> (</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 2: rank customers by spend and calculate cumulative totals</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>        customer_unique_id,</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>        total_spend,</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- using percent_rank to determine the top 20% percentile</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>        <span class="fu">percent_rank</span>() <span class="kw">over</span> (<span class="kw">order</span> <span class="kw">by</span> total_spend <span class="kw">desc</span>) <span class="kw">as</span> percentile_rank,</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- running total of revenue</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(total_spend) <span class="kw">over</span> (<span class="kw">order</span> <span class="kw">by</span> total_spend <span class="kw">desc</span>) <span class="kw">as</span> cumulative_revenue,</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- total revenue across all customers for percentage calculation</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(total_spend) <span class="kw">over</span> () <span class="kw">as</span> grand_total_revenue</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>        customer_revenue</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>pareto_summary <span class="kw">as</span> (</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 3: identify the contribution of the top 20%</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">case</span> </span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>            <span class="cf">when</span> percentile_rank <span class="op">&lt;=</span> <span class="fl">0.20</span> <span class="cf">then</span> <span class="st">'Top 20% (VIPs)'</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span> <span class="st">'Bottom 80% (Long Tail)'</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span> <span class="kw">as</span> customer_tier,</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>        <span class="fu">count</span>(customer_unique_id) <span class="kw">as</span> customer_count,</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(total_spend) <span class="kw">as</span> tier_revenue,</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>        <span class="fu">max</span>(grand_total_revenue) <span class="kw">as</span> total_revenue</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>        revenue_ranking</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>        <span class="cf">case</span> </span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>            <span class="cf">when</span> percentile_rank <span class="op">&lt;=</span> <span class="fl">0.20</span> <span class="cf">then</span> <span class="st">'Top 20% (VIPs)'</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span> <span class="st">'Bottom 80% (Long Tail)'</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="co">-- final output: calculating the percentage contribution per tier</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> </span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>    customer_tier,</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>    customer_count,</span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(tier_revenue <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">15</span>,<span class="dv">2</span>)) <span class="kw">as</span> revenue_contribution,</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(<span class="fl">100.0</span> <span class="op">*</span> tier_revenue <span class="op">/</span> total_revenue <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">5</span>,<span class="dv">2</span>)) <span class="kw">as</span> revenue_pct</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> </span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>    pareto_summary</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a><span class="kw">order</span> <span class="kw">by</span> </span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>    revenue_pct <span class="kw">desc</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p><strong>Results:</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>customer_tier</th>
+<th>customer_count</th>
+<th>revenue_contribution</th>
+<th>revenue_pct</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Top 20% (VIPs)</td>
+<td>19000</td>
+<td>8432842.07</td>
+<td>53.58</td>
+</tr>
+<tr class="even">
+<td>Bottom 80% (Long Tail)</td>
+<td>75989</td>
+<td>7306294.94</td>
+<td>46.42</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Insights:</strong></p>
+<ul>
+<li>The analysis revealed that the top 20% of customers contribute to approximately 53.58% of the total revenue. In reality, there is not a perfect adherence to the 80/20 rule, as the top 20% of customers do not contribute to 80% of the revenue always. However, considering that more than half of the revenue of our company comes from only 20% of all customers, it is still a pareto principle type of distribution, where a small percentage of customers contribute to a large percentage of revenue.</li>
+<li>The top 20% of customers, often referred to as VIPs, are a critical segment for Olist. They contribute significantly to the company’s revenue and likely have higher engagement and loyalty. Understanding the characteristics of these VIP customers, such as their purchasing behavior, preferences, and demographics, can help Olist tailor its marketing strategies and customer service efforts to better meet their needs and enhance their experience.</li>
+</ul>
+</section>
+<section id="purchase-frequency-and-inactivity-analysis" class="level1">
+<h1>Purchase Frequency and Inactivity Analysis</h1>
+<blockquote class="blockquote">
+<ol start="4" type="1">
+<li>For the segment of customers with multiple purchases, what is the average time interval (in days) between consecutive orders? How does this ‘purchase latency’ vary across different product categories?”</li>
+</ol>
+</blockquote>
+<p>**Solution*: To analyze the purchase frequency and inactivity patterns among customers with multiple purchases, we will follow these steps:</p>
+<ol type="1">
+<li>First, we will identify customers who have made multiple purchases by counting the number of orders for each unique customer. We will focus on those customers who have made at least two purchases to analyze the time interval between their consecutive orders.</li>
+<li>Next, we will calculate the time interval (in days) between consecutive orders for each customer. This can be done using the <code>lag</code> window function to access the previous order’s purchase timestamp and then calculating the difference in days between the current order and the previous order.</li>
+<li>We will also join the relevant tables to include product category information for each order, allowing us to analyze how purchase latency varies across different product categories.</li>
+<li>Finally, we will calculate the average purchase latency for each product category and identify any significant variations in purchase frequency across categories. This analysis will help us understand customer behavior and identify potential opportunities for targeted marketing or promotions based on purchase patterns in different product categories.</li>
+</ol>
+<details>
+<summary>
+Show SQL Code
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> purchase_sequences <span class="kw">as</span> (</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 1: identify orders for repeat customers and find the previous order date</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- we use lag() to get the prior purchase timestamp for each unique user</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        c.customer_unique_id,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        o.order_purchase_timestamp,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        p.product_category_name,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">lag</span>(o.order_purchase_timestamp) <span class="kw">over</span> (</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>            <span class="kw">partition</span> <span class="kw">by</span> c.customer_unique_id </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>            <span class="kw">order</span> <span class="kw">by</span> o.order_purchase_timestamp</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        ) <span class="kw">as</span> previous_order_timestamp</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        orders o</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        customers c <span class="kw">on</span> o.customer_id <span class="op">=</span> c.customer_id</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        order_items oi <span class="kw">on</span> o.order_id <span class="op">=</span> oi.order_id</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        products p <span class="kw">on</span> oi.product_id <span class="op">=</span> p.product_id</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        o.order_status <span class="kw">not</span> <span class="kw">in</span> (<span class="st">'canceled'</span>, <span class="st">'unavailable'</span>)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>latency_calculations <span class="kw">as</span> (</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 2: calculate days between orders and filter only for the second+ purchases</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>        customer_unique_id,</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        product_category_name,</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>        datediff(<span class="dt">day</span>, previous_order_timestamp, order_purchase_timestamp) <span class="kw">as</span> days_to_next_order</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>        purchase_sequences</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>        previous_order_timestamp <span class="kw">is</span> <span class="kw">not</span> <span class="kw">null</span> <span class="co">-- ensures we only look at repeat purchase events</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="co">-- final output: average latency per category to identify replenishment cycles</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> </span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    lc.product_category_name,</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    pcnt.product_category_name_english,</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">count</span>(<span class="op">*</span>) <span class="kw">as</span> repeat_purchase_events,</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">avg</span>(days_to_next_order) <span class="kw">as</span> avg_days_between_orders,</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">min</span>(days_to_next_order) <span class="kw">as</span> min_days,</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">max</span>(days_to_next_order) <span class="kw">as</span> max_days</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> </span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>    latency_calculations lc</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a><span class="kw">left</span> <span class="kw">join</span> product_category_name_translation pcnt </span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>    <span class="kw">on</span> pcnt.product_category_name  <span class="op">=</span> lc.product_category_name</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a><span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>    lc.product_category_name,</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>    pcnt.product_category_name_english </span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a><span class="kw">having</span> </span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>    <span class="fu">count</span>(<span class="op">*</span>) <span class="op">&gt;=</span> <span class="dv">5</span> <span class="co">-- filtering for statistical significance in categories</span></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a><span class="kw">order</span> <span class="kw">by</span> </span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>    repeat_purchase_events <span class="kw">desc</span>,</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>    avg_days_between_orders <span class="kw">asc</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p><strong>Results:</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 26%">
+<col style="width: 19%">
+<col style="width: 20%">
+<col style="width: 7%">
+<col style="width: 7%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>product_category_name</th>
+<th>product_category_name_english</th>
+<th>repeat_purchase_events</th>
+<th>avg_days_between_orders</th>
+<th>min_days</th>
+<th>max_days</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>moveis_decoracao</td>
+<td>furniture_decor</td>
+<td>2266</td>
+<td>7</td>
+<td>0</td>
+<td>573</td>
+</tr>
+<tr class="even">
+<td>cama_mesa_banho</td>
+<td>bed_bath_table</td>
+<td>2261</td>
+<td>14</td>
+<td>0</td>
+<td>485</td>
+</tr>
+<tr class="odd">
+<td>informatica_acessorios</td>
+<td>computers_accessories</td>
+<td>1372</td>
+<td>12</td>
+<td>0</td>
+<td>455</td>
+</tr>
+<tr class="even">
+<td>utilidades_domesticas</td>
+<td>housewares</td>
+<td>1321</td>
+<td>11</td>
+<td>0</td>
+<td>469</td>
+</tr>
+<tr class="odd">
+<td>esporte_lazer</td>
+<td>sports_leisure</td>
+<td>1258</td>
+<td>18</td>
+<td>0</td>
+<td>467</td>
+</tr>
+<tr class="even">
+<td>beleza_saude</td>
+<td>health_beauty</td>
+<td>1140</td>
+<td>19</td>
+<td>0</td>
+<td>583</td>
+</tr>
+<tr class="odd">
+<td>ferramentas_jardim</td>
+<td>garden_tools</td>
+<td>939</td>
+<td>9</td>
+<td>0</td>
+<td>524</td>
+</tr>
+<tr class="even">
+<td>relogios_presentes</td>
+<td>watches_gifts</td>
+<td>543</td>
+<td>30</td>
+<td>0</td>
+<td>514</td>
+</tr>
+<tr class="odd">
+<td>telefonia</td>
+<td>telephony</td>
+<td>447</td>
+<td>14</td>
+<td>0</td>
+<td>491</td>
+</tr>
+<tr class="even">
+<td>moveis_escritorio</td>
+<td>office_furniture</td>
+<td>445</td>
+<td>3</td>
+<td>0</td>
+<td>347</td>
+</tr>
+<tr class="odd">
+<td>automotivo</td>
+<td>auto</td>
+<td>444</td>
+<td>19</td>
+<td>0</td>
+<td>449</td>
+</tr>
+<tr class="even">
+<td>brinquedos</td>
+<td>toys</td>
+<td>358</td>
+<td>19</td>
+<td>0</td>
+<td>581</td>
+</tr>
+<tr class="odd">
+<td>perfumaria</td>
+<td>perfumery</td>
+<td>358</td>
+<td>20</td>
+<td>0</td>
+<td>609</td>
+</tr>
+<tr class="even">
+<td>fashion_bolsas_e_acessorios</td>
+<td>fashion_bags_accessories</td>
+<td>300</td>
+<td>29</td>
+<td>0</td>
+<td>457</td>
+</tr>
+<tr class="odd">
+<td>pet_shop</td>
+<td>pet_shop</td>
+<td>298</td>
+<td>23</td>
+<td>0</td>
+<td>427</td>
+</tr>
+<tr class="even">
+<td>bebes</td>
+<td>baby</td>
+<td>294</td>
+<td>18</td>
+<td>0</td>
+<td>337</td>
+</tr>
+<tr class="odd">
+<td>papelaria</td>
+<td>stationery</td>
+<td>272</td>
+<td>23</td>
+<td>0</td>
+<td>522</td>
+</tr>
+<tr class="even">
+<td>eletronicos</td>
+<td>electronics</td>
+<td>266</td>
+<td>15</td>
+<td>0</td>
+<td>367</td>
+</tr>
+<tr class="odd">
+<td>cool_stuff</td>
+<td>cool_stuff</td>
+<td>252</td>
+<td>19</td>
+<td>0</td>
+<td>442</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td>230</td>
+<td>14</td>
+<td>0</td>
+<td>431</td>
+</tr>
+<tr class="odd">
+<td>construcao_ferramentas_construcao</td>
+<td>construction_tools_construction</td>
+<td>216</td>
+<td>14</td>
+<td>0</td>
+<td>348</td>
+</tr>
+<tr class="even">
+<td>casa_construcao</td>
+<td>home_construction</td>
+<td>148</td>
+<td>14</td>
+<td>0</td>
+<td>482</td>
+</tr>
+<tr class="odd">
+<td>moveis_sala</td>
+<td>furniture_living_room</td>
+<td>111</td>
+<td>10</td>
+<td>0</td>
+<td>489</td>
+</tr>
+<tr class="even">
+<td>bebidas</td>
+<td>drinks</td>
+<td>99</td>
+<td>20</td>
+<td>0</td>
+<td>489</td>
+</tr>
+<tr class="odd">
+<td>consoles_games</td>
+<td>consoles_games</td>
+<td>94</td>
+<td>23</td>
+<td>0</td>
+<td>524</td>
+</tr>
+<tr class="even">
+<td>malas_acessorios</td>
+<td>luggage_accessories</td>
+<td>91</td>
+<td>22</td>
+<td>0</td>
+<td>350</td>
+</tr>
+<tr class="odd">
+<td>eletrodomesticos</td>
+<td>home_appliances</td>
+<td>80</td>
+<td>25</td>
+<td>0</td>
+<td>338</td>
+</tr>
+<tr class="even">
+<td>construcao_ferramentas_iluminacao</td>
+<td>construction_tools_lights</td>
+<td>79</td>
+<td>14</td>
+<td>0</td>
+<td>509</td>
+</tr>
+<tr class="odd">
+<td>alimentos</td>
+<td>food</td>
+<td>76</td>
+<td>19</td>
+<td>0</td>
+<td>362</td>
+</tr>
+<tr class="even">
+<td>casa_conforto</td>
+<td>home_confort</td>
+<td>72</td>
+<td>18</td>
+<td>0</td>
+<td>306</td>
+</tr>
+<tr class="odd">
+<td>instrumentos_musicais</td>
+<td>musical_instruments</td>
+<td>67</td>
+<td>18</td>
+<td>0</td>
+<td>297</td>
+</tr>
+<tr class="even">
+<td>eletroportateis</td>
+<td>small_appliances</td>
+<td>65</td>
+<td>15</td>
+<td>0</td>
+<td>235</td>
+</tr>
+<tr class="odd">
+<td>sinalizacao_e_seguranca</td>
+<td>signaling_and_security</td>
+<td>62</td>
+<td>1</td>
+<td>0</td>
+<td>102</td>
+</tr>
+<tr class="even">
+<td>alimentos_bebidas</td>
+<td>food_drink</td>
+<td>61</td>
+<td>8</td>
+<td>0</td>
+<td>194</td>
+</tr>
+<tr class="odd">
+<td>construcao_ferramentas_jardim</td>
+<td>costruction_tools_garden</td>
+<td>58</td>
+<td>15</td>
+<td>0</td>
+<td>405</td>
+</tr>
+<tr class="even">
+<td>climatizacao</td>
+<td>air_conditioning</td>
+<td>55</td>
+<td>10</td>
+<td>0</td>
+<td>281</td>
+</tr>
+<tr class="odd">
+<td>telefonia_fixa</td>
+<td>fixed_telephony</td>
+<td>53</td>
+<td>9</td>
+<td>0</td>
+<td>267</td>
+</tr>
+<tr class="even">
+<td>livros_interesse_geral</td>
+<td>books_general_interest</td>
+<td>51</td>
+<td>9</td>
+<td>0</td>
+<td>331</td>
+</tr>
+<tr class="odd">
+<td>market_place</td>
+<td>market_place</td>
+<td>43</td>
+<td>6</td>
+<td>0</td>
+<td>270</td>
+</tr>
+<tr class="even">
+<td>moveis_cozinha_area_de_servico_jantar_e_jardim</td>
+<td>kitchen_dining_laundry_garden_furniture</td>
+<td>41</td>
+<td>24</td>
+<td>0</td>
+<td>340</td>
+</tr>
+<tr class="odd">
+<td>industria_comercio_e_negocios</td>
+<td>industry_commerce_and_business</td>
+<td>39</td>
+<td>6</td>
+<td>0</td>
+<td>180</td>
+</tr>
+<tr class="even">
+<td>agro_industria_e_comercio</td>
+<td>agro_industry_and_commerce</td>
+<td>34</td>
+<td>18</td>
+<td>0</td>
+<td>518</td>
+</tr>
+<tr class="odd">
+<td>construcao_ferramentas_seguranca</td>
+<td>construction_tools_safety</td>
+<td>34</td>
+<td>20</td>
+<td>0</td>
+<td>248</td>
+</tr>
+<tr class="even">
+<td>fashion_calcados</td>
+<td>fashion_shoes</td>
+<td>31</td>
+<td>9</td>
+<td>0</td>
+<td>93</td>
+</tr>
+<tr class="odd">
+<td>artigos_de_natal</td>
+<td>christmas_supplies</td>
+<td>29</td>
+<td>15</td>
+<td>0</td>
+<td>370</td>
+</tr>
+<tr class="even">
+<td>fashion_roupa_masculina</td>
+<td>fashion_male_clothing</td>
+<td>26</td>
+<td>1</td>
+<td>0</td>
+<td>23</td>
+</tr>
+<tr class="odd">
+<td>pcs</td>
+<td>computers</td>
+<td>26</td>
+<td>11</td>
+<td>0</td>
+<td>174</td>
+</tr>
+<tr class="even">
+<td>audio</td>
+<td>audio</td>
+<td>23</td>
+<td>33</td>
+<td>0</td>
+<td>404</td>
+</tr>
+<tr class="odd">
+<td>moveis_quarto</td>
+<td>furniture_bedroom</td>
+<td>21</td>
+<td>3</td>
+<td>0</td>
+<td>64</td>
+</tr>
+<tr class="even">
+<td>artes</td>
+<td>art</td>
+<td>14</td>
+<td>37</td>
+<td>0</td>
+<td>444</td>
+</tr>
+<tr class="odd">
+<td>eletrodomesticos_2</td>
+<td>home_appliances_2</td>
+<td>14</td>
+<td>41</td>
+<td>0</td>
+<td>434</td>
+</tr>
+<tr class="even">
+<td>livros_tecnicos</td>
+<td>books_technical</td>
+<td>13</td>
+<td>3</td>
+<td>0</td>
+<td>36</td>
+</tr>
+<tr class="odd">
+<td>fraldas_higiene</td>
+<td>diapers_and_hygiene</td>
+<td>13</td>
+<td>4</td>
+<td>0</td>
+<td>57</td>
+</tr>
+<tr class="even">
+<td>fashion_underwear_e_moda_praia</td>
+<td>fashion_underwear_beach</td>
+<td>13</td>
+<td>6</td>
+<td>0</td>
+<td>77</td>
+</tr>
+<tr class="odd">
+<td>fashion_roupa_feminina</td>
+<td>fashio_female_clothing</td>
+<td>10</td>
+<td>6</td>
+<td>0</td>
+<td>68</td>
+</tr>
+<tr class="even">
+<td>livros_importados</td>
+<td>books_imported</td>
+<td>10</td>
+<td>15</td>
+<td>0</td>
+<td>145</td>
+</tr>
+<tr class="odd">
+<td>cine_foto</td>
+<td>cine_photo</td>
+<td>9</td>
+<td>0</td>
+<td>0</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>casa_conforto_2</td>
+<td>home_comfort_2</td>
+<td>9</td>
+<td>3</td>
+<td>0</td>
+<td>34</td>
+</tr>
+<tr class="odd">
+<td>dvds_blu_ray</td>
+<td>dvds_blu_ray</td>
+<td>9</td>
+<td>17</td>
+<td>0</td>
+<td>146</td>
+</tr>
+<tr class="even">
+<td>tablets_impressao_imagem</td>
+<td>tablets_printing_image</td>
+<td>9</td>
+<td>24</td>
+<td>0</td>
+<td>113</td>
+</tr>
+<tr class="odd">
+<td>construcao_ferramentas_ferramentas</td>
+<td>costruction_tools_tools</td>
+<td>9</td>
+<td>37</td>
+<td>0</td>
+<td>274</td>
+</tr>
+<tr class="even">
+<td>fashion_esporte</td>
+<td>fashion_sport</td>
+<td>6</td>
+<td>17</td>
+<td>0</td>
+<td>106</td>
+</tr>
+<tr class="odd">
+<td>artigos_de_festas</td>
+<td>party_supplies</td>
+<td>6</td>
+<td>35</td>
+<td>0</td>
+<td>215</td>
+</tr>
+<tr class="even">
+<td>musica</td>
+<td>music</td>
+<td>5</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Insights:</strong></p>
+<ul>
+<li>Analyzing the avg_days_between_orders is not sufficient to make important conclusions about purchase frequency, since the more important metric is how many times the products are purchased repeatedly. Therefore, we should consider the repeat_purchase_events column as well, which shows us how many times the products in each category were purchased repeatedly. For example, the ‘moveis_decoracao’ (furniture_decor) category has the highest number of repeat purchase events (2266) and an average of 7 days between orders, indicating that customers frequently repurchase items in this category within a short time frame. This could suggest that customers are buying multiple items for home decoration or that they are replacing items frequently.</li>
+<li>The following categories with high repeat purchase events include ‘cama_mesa_banho’ (bed_bath_table) and ‘informatica_acessorios’ (computers_accessories), which also show relatively short average days between orders (14 and 12 days, respectively). This indicates that customers in these categories also have a high purchase frequency, possibly due to the nature of the products, which may require regular replacement or upgrading.</li>
+<li>On the other hand, categories like ‘artigos_de_festas’ (party_supplies) and ‘musica’ (music) have fewer repeat purchase events and longer average days between orders, suggesting that customers may not need to repurchase these items as frequently. This could be due to the fact that party supplies are often used for specific events and music may be purchased for long-term enjoyment, leading to less frequent repurchases.</li>
+<li>Overall, the analysis of purchase latency across different product categories provides valuable insights into customer behavior and can help Olist identify which categories have higher purchase frequencies. This information can be used to optimize inventory management, tailor marketing strategies, and improve customer retention by targeting customers with personalized offers based on their purchasing patterns in specific categories.</li>
+</ul>
+</section>
+<section id="high-risk-of-churn-detection" class="level1">
+<h1>High Risk of Churn Detection</h1>
+<blockquote class="blockquote">
+<ol start="5" type="1">
+<li>Which customers have exceeded the average purchase cycle by more than 2 standard deviations without placing a new order? Can we flag these users as ‘High Risk of Churn’ based on their deviation from the typical repurchase behavior?</li>
+</ol>
+</blockquote>
+<p><strong>Solution</strong>: To identify customers who are at high risk of churn based on their purchase behavior, we will follow these steps:</p>
+<ol type="1">
+<li>First, we will calculate the average purchase cycle (the average time interval between consecutive orders) and the standard deviation of the purchase cycle for customers with multiple purchases. This will help us establish a benchmark for typical repurchase behavior.</li>
+<li>Next, we will calculate the recency of the last purchase for each customer by finding the difference in days between their last order date and the reference date (the maximum order purchase timestamp in the dataset).</li>
+<li>We will then compare the recency of each customer’s last purchase to the average purchase cycle plus two standard deviations. Customers whose recency exceeds this threshold will be flagged as ‘High Risk of Churn’ because they have gone significantly longer than the typical repurchase cycle without making a new purchase.</li>
+<li>Finally, we will count the number of customers who fall into the ‘High Risk of Churn’ category to understand the potential size of this segment and to inform retention strategies.</li>
+</ol>
+<details>
+<summary>
+Show SQL Code
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> dataset_max_date <span class="kw">as</span> (</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- finding the last order date in the dataset to act as "today" for recency/churn calculation</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> <span class="fu">max</span>(order_purchase_timestamp) <span class="kw">as</span> max_date <span class="kw">from</span> orders</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>purchase_intervals <span class="kw">as</span> (</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 1: use lag() to calculate the day-gap between consecutive orders for the same unique user</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        c.customer_unique_id,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        o.order_purchase_timestamp,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        days_since_prior <span class="op">=</span> datediff(<span class="dt">day</span>, <span class="fu">lag</span>(o.order_purchase_timestamp) <span class="kw">over</span> (</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>            <span class="kw">partition</span> <span class="kw">by</span> c.customer_unique_id </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>            <span class="kw">order</span> <span class="kw">by</span> o.order_purchase_timestamp</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        ), o.order_purchase_timestamp)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        orders o</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        customers c <span class="kw">on</span> o.customer_id <span class="op">=</span> c.customer_id</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        o.order_status <span class="kw">not</span> <span class="kw">in</span> (<span class="st">'canceled'</span>, <span class="st">'unavailable'</span>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>cycle_stats <span class="kw">as</span> (</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 2: calculate global benchmarks for repurchase behavior</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- stdev() helps define what is "statistically normal" vs "anomalous"</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>        avg_cycle <span class="op">=</span> <span class="fu">avg</span>(days_since_prior <span class="op">*</span> <span class="fl">1.0</span>),</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>        std_dev_cycle <span class="op">=</span> stdev(days_since_prior)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>        purchase_intervals</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>        days_since_prior <span class="kw">is</span> <span class="kw">not</span> <span class="kw">null</span> <span class="co">-- only includes repeat purchase events</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>customer_last_purchase <span class="kw">as</span> (</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 3: find the recency of the absolute last order for every customer</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>        c.customer_unique_id,</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>        <span class="fu">max</span>(o.order_purchase_timestamp) <span class="kw">as</span> last_order_date,</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>        days_since_last_order <span class="op">=</span> datediff(<span class="dt">day</span>, <span class="fu">max</span>(o.order_purchase_timestamp), d.max_date)</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>        orders o</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>        customers c <span class="kw">on</span> o.customer_id <span class="op">=</span> c.customer_id</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>    <span class="kw">cross</span> <span class="kw">join</span> </span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>        dataset_max_date d</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>        o.order_status <span class="kw">not</span> <span class="kw">in</span> (<span class="st">'canceled'</span>, <span class="st">'unavailable'</span>)</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>        c.customer_unique_id, d.max_date</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a><span class="co">-- final output: count only the users exceeding the churn threshold</span></span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> </span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>    <span class="fu">count</span>(<span class="kw">distinct</span> lp.customer_unique_id) <span class="kw">as</span> high_risk_churn_customer_count</span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> </span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>    customer_last_purchase lp</span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a><span class="kw">cross</span> <span class="kw">join</span> </span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>    cycle_stats stats</span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> </span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>    lp.days_since_last_order <span class="op">&gt;</span> (stats.avg_cycle <span class="op">+</span> (<span class="dv">2</span> <span class="op">*</span> stats.std_dev_cycle));</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p><strong>Results:</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>high_risk_churn_customer_count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>42051</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Insights:</strong></p>
+<ul>
+<li>The analysis identified 42,051 customers who have exceeded the average purchase cycle by more than 2 standard deviations without placing a new order. These customers can be flagged as ‘High Risk of Churn’ based on their significant deviation from typical repurchase behavior.</li>
+</ul>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>Through the analysis of customer retention, purchase frequency, and churn risk, we have gained valuable insights into the behavior of Olist’s customer base. The segmentation of customers using RFM analysis has allowed us to identify key segments such as ‘Champions’, ‘Loyal Customers’, ‘At Risk’, and ‘Hibernating’, each with distinct characteristics and opportunities for targeted marketing strategies. The cohort analysis revealed trends in customer acquisition and retention rates over time, highlighting the challenges of retaining customers after their initial purchase. The Pareto Principle analysis showed that a small percentage of customers contribute to a significant portion of the revenue, emphasizing the importance of understanding and catering to these high-value customers. Finally, the purchase frequency analysis across product categories provided insights into customer behavior and potential opportunities for optimizing inventory and marketing strategies. The identification of customers at high risk of churn allows Olist to implement targeted retention efforts to re-engage these customers and prevent them from becoming inactive. Overall, these analyses provide a comprehensive understanding of customer behavior and retention patterns, enabling Olist to make informed decisions to enhance customer loyalty and drive revenue growth.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

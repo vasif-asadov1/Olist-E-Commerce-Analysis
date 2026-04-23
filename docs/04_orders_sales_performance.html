@@ -1,0 +1,3851 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Orders and Sales Performance Analysis – Vasif | Olist E-Commerce Analysis</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-acf12a64177840b8d86f2d4f01b2e9fb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-948e61940ef19b6a40d753e4856fbf86.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Vasif | Olist E-Commerce Analysis</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Olist Data Analysis</a></li><li class="breadcrumb-item"><a href="./04_orders_sales_performance.html">Orders and Sales Performance Analysis</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Olist Data Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Olist E-Commerce Sales Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_data_normalization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Ingestion and Cleaning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_business_questions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Business Questions for Olist E-Commerce Sales Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_customer_retention.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Customer Behavior and Retention Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_orders_sales_performance.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Orders and Sales Performance Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_delivery_logistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Delivery and Logistics Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_seller_performance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Seller Performance Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_payments_and_risk.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Payments and Risk Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08_customer_reviews.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Customer Review and Satisfaction Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09_time_series.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Time Series Analysis</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#monthly-sales-trends" id="toc-monthly-sales-trends" class="nav-link" data-scroll-target="#monthly-sales-trends">Monthly Sales Trends</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Olist Data Analysis</a></li><li class="breadcrumb-item"><a href="./04_orders_sales_performance.html">Orders and Sales Performance Analysis</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Orders and Sales Performance Analysis</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>In this section, we will analyze the following aspects of Olist’s sales performance:</p>
+<ol type="1">
+<li><strong>Monthly Sales Trends</strong>. We will examine the monthly sales trends for Olist over the past few years to identify any seasonal patterns or significant flu ctuations in sales performance.</li>
+<li><strong>Pareto Principle for Product Categories</strong>. We will identify which product categories constitute the top 20% of sales volume and whether they align with the top 20% of revenue generators. We will also classify categories into ‘High Volume / Low Value’ and ‘Low Volume / High Value’ segments.</li>
+<li><strong>Rolling Average for Revenue</strong>. We will calculate the 3-month rolling average for total revenue to smooth out daily and weekly volatility and compare this trendline to the raw sales data to understand the true direction of business growth.</li>
+<li><strong>Regional Sales Distribution</strong>. We will analyze how revenue is distributed across different states and cities, identifying the top 5 regions with the highest sales density per capita versus regions with high order volume but low total revenue.</li>
+<li><strong>AOV and Basket Size Analysis</strong>. We will analyze the Average Order Value (AOV) and average basket size over time to understand customer purchasing behavior and identify any trends or shifts in these metrics.</li>
+</ol>
+</section>
+<section id="monthly-sales-trends" class="level1">
+<h1>Monthly Sales Trends</h1>
+<blockquote class="blockquote">
+<ol start="6" type="1">
+<li>Monthly Sales Trends: What are the monthly sales trends for Olist over the past few years? Are there any seasonal patterns or significant fluctuations in sales performance that can be identified?</li>
+</ol>
+</blockquote>
+<p><strong>Solution:</strong></p>
+<p>Solution Steps for Review Response Analysis</p>
+<ol type="1">
+<li><p><strong>Firstly, we calculate the time gap for survey responses (<code>review_response_times</code> CTE)</strong>: We use the <code>datediff</code> function to calculate the <code>response_time_hours</code> between <code>review_creation_date</code> (when the satisfaction survey was sent) and <code>review_answer_timestamp</code> (when the customer submitted it). We filter out records where <code>review_score</code> is null.</p></li>
+<li><p><strong>Secondly, we segment the response times into analytical cohorts (<code>response_buckets</code> CTE)</strong>: We use a <code>CASE</code> statement to group the continuous hour values into logical buckets: “Fast (Under 24 Hours)”, “Medium (1 - 3 Days)”, “Slow (3 - 7 Days)”, and “Very Slow (Over 1 Week)”, alongside handling missing timestamps.</p></li>
+<li><p><strong>Finally, we aggregate the scores to find correlations (Final <code>SELECT</code>)</strong>: We group the results by the new <code>response_speed_category</code>. We calculate the <code>avg_review_score</code> for each bucket and use conditional summation (<code>sum(case when...)</code>) to find the exact percentage of 1-star and 5-star reviews, revealing how response speed correlates with customer satisfaction.</p></li>
+</ol>
+<details>
+<summary>
+Show SQL Code
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> monthly_sales <span class="kw">as</span> (</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 1: aggregate core metrics by month</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- we use the calendar table to ensure clean date grouping</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        c.<span class="dt">year</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        c.month_number,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        c.month_name,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">count</span>(<span class="kw">distinct</span> o.order_id) <span class="kw">as</span> total_orders,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(p.payment_value) <span class="kw">as</span> total_revenue</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        orders o</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        payments p <span class="kw">on</span> o.order_id <span class="op">=</span> p.order_id</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        Calendar c <span class="kw">on</span> o.purchase_datekey <span class="op">=</span> c.datekey</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        o.order_status <span class="kw">not</span> <span class="kw">in</span> (<span class="st">'canceled'</span>, <span class="st">'unavailable'</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        c.<span class="dt">year</span>, c.month_number, c.month_name</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>growth_metrics <span class="kw">as</span> (</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 2: use lag() to fetch values from the previous month and previous year</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span>,</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- previous month values</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        prev_month_orders <span class="op">=</span> <span class="fu">lag</span>(total_orders) <span class="kw">over</span> (<span class="kw">order</span> <span class="kw">by</span> <span class="dt">year</span>, month_number),</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        prev_month_revenue <span class="op">=</span> <span class="fu">lag</span>(total_revenue) <span class="kw">over</span> (<span class="kw">order</span> <span class="kw">by</span> <span class="dt">year</span>, month_number),</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- previous year values (offset of 12 rows)</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>        prev_year_orders <span class="op">=</span> <span class="fu">lag</span>(total_orders, <span class="dv">12</span>) <span class="kw">over</span> (<span class="kw">order</span> <span class="kw">by</span> <span class="dt">year</span>, month_number),</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>        prev_year_revenue <span class="op">=</span> <span class="fu">lag</span>(total_revenue, <span class="dv">12</span>) <span class="kw">over</span> (<span class="kw">order</span> <span class="kw">by</span> <span class="dt">year</span>, month_number)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>        monthly_sales</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="co">-- final output: calculating percentage growth</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> </span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="dt">year</span>,</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    month_name,</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    total_orders,</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    total_revenue,</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- month-over-month (mom) growth</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    mom_revenue_growth_pct <span class="op">=</span> <span class="fu">cast</span>(<span class="fl">100.0</span> <span class="op">*</span> (total_revenue <span class="op">-</span> prev_month_revenue) <span class="op">/</span> <span class="fu">nullif</span>(prev_month_revenue, <span class="dv">0</span>) <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">2</span>)),</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- year-over-year (yoy) growth</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    yoy_revenue_growth_pct <span class="op">=</span> <span class="fu">cast</span>(<span class="fl">100.0</span> <span class="op">*</span> (total_revenue <span class="op">-</span> prev_year_revenue) <span class="op">/</span> <span class="fu">nullif</span>(prev_year_revenue, <span class="dv">0</span>) <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">2</span>)),</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- identifying seasonal spikes</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> </span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>        <span class="cf">when</span> month_number <span class="op">=</span> <span class="dv">11</span> <span class="cf">then</span> <span class="st">'Black Friday Period'</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>        <span class="cf">when</span> month_number <span class="op">=</span> <span class="dv">12</span> <span class="cf">then</span> <span class="st">'Holiday Season'</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>        <span class="cf">when</span> month_number <span class="op">=</span> <span class="dv">1</span> <span class="cf">then</span> <span class="st">'New Year Peak'</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span> <span class="st">'Standard Period'</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span> <span class="kw">as</span> seasonality_tag</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> </span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>    growth_metrics</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="kw">order</span> <span class="kw">by</span> </span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>    <span class="dt">year</span>, month_number;</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>go</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p><strong>Results:</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 4%">
+<col style="width: 10%">
+<col style="width: 12%">
+<col style="width: 13%">
+<col style="width: 22%">
+<col style="width: 22%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>year</th>
+<th>month_name</th>
+<th>total_orders</th>
+<th>total_revenue</th>
+<th>mom_revenue_growth_pct</th>
+<th>yoy_revenue_growth_pct</th>
+<th>seasonality_tag</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2016</td>
+<td>September</td>
+<td>1</td>
+<td>136.22999572753906</td>
+<td></td>
+<td></td>
+<td>Standard Period</td>
+</tr>
+<tr class="even">
+<td>2016</td>
+<td>October</td>
+<td>293</td>
+<td>51657.52999472618</td>
+<td>37819.35</td>
+<td></td>
+<td>Standard Period</td>
+</tr>
+<tr class="odd">
+<td>2016</td>
+<td>December</td>
+<td>1</td>
+<td>19.6200008392334</td>
+<td>-99.96</td>
+<td></td>
+<td>Holiday Season</td>
+</tr>
+<tr class="even">
+<td>2017</td>
+<td>January</td>
+<td>787</td>
+<td>137006.76003867388</td>
+<td>698201.50</td>
+<td></td>
+<td>New Year Peak</td>
+</tr>
+<tr class="odd">
+<td>2017</td>
+<td>February</td>
+<td>1718</td>
+<td>283621.93943831325</td>
+<td>107.01</td>
+<td></td>
+<td>Standard Period</td>
+</tr>
+<tr class="even">
+<td>2017</td>
+<td>March</td>
+<td>2617</td>
+<td>425656.3995541632</td>
+<td>50.08</td>
+<td></td>
+<td>Standard Period</td>
+</tr>
+<tr class="odd">
+<td>2017</td>
+<td>April</td>
+<td>2377</td>
+<td>405988.3795110285</td>
+<td>-4.62</td>
+<td></td>
+<td>Standard Period</td>
+</tr>
+<tr class="even">
+<td>2017</td>
+<td>May</td>
+<td>3640</td>
+<td>582926.160167003</td>
+<td>43.58</td>
+<td></td>
+<td>Standard Period</td>
+</tr>
+<tr class="odd">
+<td>2017</td>
+<td>June</td>
+<td>3205</td>
+<td>499827.47035080194</td>
+<td>-14.26</td>
+<td></td>
+<td>Standard Period</td>
+</tr>
+<tr class="even">
+<td>2017</td>
+<td>July</td>
+<td>3946</td>
+<td>578858.5795211494</td>
+<td>15.81</td>
+<td></td>
+<td>Standard Period</td>
+</tr>
+<tr class="odd">
+<td>2017</td>
+<td>August</td>
+<td>4272</td>
+<td>662071.7698084246</td>
+<td>14.38</td>
+<td></td>
+<td>Standard Period</td>
+</tr>
+<tr class="even">
+<td>2017</td>
+<td>September</td>
+<td>4227</td>
+<td>717195.2203616947</td>
+<td>8.33</td>
+<td></td>
+<td>Standard Period</td>
+</tr>
+<tr class="odd">
+<td>2017</td>
+<td>October</td>
+<td>4547</td>
+<td>764785.2796836384</td>
+<td>6.64</td>
+<td>561292.72</td>
+<td>Standard Period</td>
+</tr>
+<tr class="even">
+<td>2017</td>
+<td>November</td>
+<td>7423</td>
+<td>1172639.2297811043</td>
+<td>53.33</td>
+<td>2170.03</td>
+<td>Black Friday Period</td>
+</tr>
+<tr class="odd">
+<td>2017</td>
+<td>December</td>
+<td>5620</td>
+<td>861914.4599985629</td>
+<td>-26.50</td>
+<td>4392939.87</td>
+<td>Holiday Season</td>
+</tr>
+<tr class="even">
+<td>2018</td>
+<td>January</td>
+<td>7187</td>
+<td>1102639.4091129452</td>
+<td>27.93</td>
+<td>704.81</td>
+<td>New Year Peak</td>
+</tr>
+<tr class="odd">
+<td>2018</td>
+<td>February</td>
+<td>6625</td>
+<td>979966.2302345932</td>
+<td>-11.13</td>
+<td>245.52</td>
+<td>Standard Period</td>
+</tr>
+<tr class="even">
+<td>2018</td>
+<td>March</td>
+<td>7168</td>
+<td>1152736.7396906763</td>
+<td>17.63</td>
+<td>170.81</td>
+<td>Standard Period</td>
+</tr>
+<tr class="odd">
+<td>2018</td>
+<td>April</td>
+<td>6919</td>
+<td>1156303.9107048158</td>
+<td>0.31</td>
+<td>184.81</td>
+<td>Standard Period</td>
+</tr>
+<tr class="even">
+<td>2018</td>
+<td>May</td>
+<td>6833</td>
+<td>1145748.6310662013</td>
+<td>-0.91</td>
+<td>96.55</td>
+<td>Standard Period</td>
+</tr>
+<tr class="odd">
+<td>2018</td>
+<td>June</td>
+<td>6145</td>
+<td>1020494.2907593064</td>
+<td>-10.93</td>
+<td>104.17</td>
+<td>Standard Period</td>
+</tr>
+<tr class="even">
+<td>2018</td>
+<td>July</td>
+<td>6233</td>
+<td>1039880.1590387616</td>
+<td>1.90</td>
+<td>79.64</td>
+<td>Standard Period</td>
+</tr>
+<tr class="odd">
+<td>2018</td>
+<td>August</td>
+<td>6421</td>
+<td>996896.1512343884</td>
+<td>-4.13</td>
+<td>50.57</td>
+<td>Standard Period</td>
+</tr>
+<tr class="even">
+<td>2018</td>
+<td>September</td>
+<td>1</td>
+<td>166.4600067138672</td>
+<td>-99.98</td>
+<td>-99.98</td>
+<td>Standard Period</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Insights:</strong></p>
+<ul>
+<li>There is a clear seasonal pattern with significant spikes in revenue during the Black Friday period (November) and the Holiday Season (December). The New Year Peak in January also shows a notable increase in sales.</li>
+<li>The month-over-month growth rates are highly volatile, especially around the holiday season, indicating that raw monthly revenue can be influenced by short-term factors. This underscores the importance of using rolling averages to identify long-term trends.</li>
+<li>The year-over-year growth rates show a strong upward trajectory, particularly in the early months of 2018 compared to 2017, suggesting that Olist is experiencing significant growth year over year, despite the volatility in month-over-month performance.</li>
+<li>The data reveals distinct patterns in product category performance, with some categories driving high sales volumes while others generate substantial revenue per unit sold. This highlights the need for a nuanced approach to inventory and marketing strategies, focusing on both high-volume and high-value categories to optimize overall sales performance.</li>
+</ul>
+<blockquote class="blockquote">
+<ol start="7" type="1">
+<li>Which product categories constitute the top 20% of sales volume, and do they align with the top 20% of revenue generators? Can we identify ‘High Volume / Low Value’ categories versus ‘Low Volume / High Value’ (Niche/Luxury) categories?</li>
+</ol>
+</blockquote>
+<p><strong>Solution:</strong></p>
+<ol type="1">
+<li><p><strong>Firstly, we aggregate volume and revenue per category (<code>category_metrics</code> CTE)</strong>: We join the <code>order_items</code>, <code>products</code>, and <code>orders</code> tables to calculate the total number of items sold (<code>total_volume</code>) and the sum of their prices (<code>total_revenue</code>) for each <code>product_category_name</code>. We also ensure to filter out any ‘canceled’ or ‘unavailable’ orders so our metrics reflect actual successful sales.</p></li>
+<li><p><strong>Secondly, we calculate the percentile rankings (<code>category_rankings</code> CTE)</strong>: We utilize the <code>percent_rank()</code> window function, ordering descendingly by volume and revenue respectively. This gives us a statistical ranking from 0 to 1 (<code>volume_percentile</code> and <code>revenue_percentile</code>), showing exactly where each category stands relative to all others.</p></li>
+<li><p><strong>Finally, we segment the categories based on the top 20% thresholds (Final <code>SELECT</code>)</strong>: We compute the <code>avg_unit_price</code> and use a <code>CASE</code> statement to classify each category. Since <code>percent_rank()</code> outputs 0 for the highest value, checking for <code>&lt;= 0.20</code> captures the top 20%. By intersecting the volume and revenue conditions, we can easily identify the ‘High Vol / Low Rev’ (cheap but popular) and ‘Low Vol / High Rev’ (niche/luxury) segments.</p></li>
+</ol>
+<details>
+<summary>
+Show SQL Code
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> category_metrics <span class="kw">as</span>  (</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        products.product_category_name,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">count</span>(order_items.order_item_id) <span class="kw">as</span>  total_volume,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(order_items.price) <span class="kw">as</span> total_revenue       </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        order_items</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        products <span class="kw">on</span> products.product_id <span class="op">=</span> order_items.product_id</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        orders <span class="kw">on</span> orders.order_id <span class="op">=</span> order_items.order_id</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        orders.order_status <span class="kw">not</span> <span class="kw">in</span> (<span class="st">'canceled'</span>, <span class="st">'unavailable'</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>            <span class="kw">and</span> products.product_category_name <span class="kw">is</span> <span class="kw">not</span> <span class="kw">null</span> </span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        products.product_category_name</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>), </span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>category_rankings <span class="kw">as</span> (</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span>,</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        <span class="fu">percent_rank</span>() <span class="kw">over</span> (<span class="kw">order</span> <span class="kw">by</span> total_volume <span class="kw">desc</span>) <span class="kw">as</span> volume_percentile,</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        <span class="fu">percent_rank</span>() <span class="kw">over</span> (<span class="kw">order</span> <span class="kw">by</span> total_revenue <span class="kw">desc</span>) <span class="kw">as</span> revenue_percentile</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span>  </span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>        category_metrics</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    product_category_name,</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    total_volume,</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    total_revenue,</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>( total_revenue <span class="op">/</span> total_volume <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_unit_price,</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">when</span> volume_percentile <span class="op">&lt;=</span> <span class="fl">0.20</span> <span class="kw">and</span> revenue_percentile <span class="op">&lt;=</span> <span class="fl">0.20</span> <span class="cf">then</span> <span class="st">'High Vol / High Rev'</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">when</span> volume_percentile <span class="op">&lt;=</span> <span class="fl">0.20</span> <span class="kw">and</span> revenue_percentile <span class="op">&gt;</span> <span class="fl">0.20</span> <span class="cf">then</span> <span class="st">'High Vol / Low Rev'</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">when</span> volume_percentile <span class="op">&gt;</span> <span class="fl">0.20</span> <span class="kw">and</span> revenue_percentile <span class="op">&lt;=</span> <span class="fl">0.20</span> <span class="cf">then</span> <span class="st">'Low Vol / High Rev'</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span> <span class="st">'Standard'</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span> <span class="kw">as</span> category_segmentation</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> </span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    category_rankings</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="kw">order</span> <span class="kw">by</span> </span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    total_revenue <span class="kw">desc</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p><strong>Results:</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 14%">
+<col style="width: 16%">
+<col style="width: 17%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>product_category_name</th>
+<th>total_volume</th>
+<th>total_revenue</th>
+<th>avg_unit_price</th>
+<th>category_segmentation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>beleza_saude</td>
+<td>9634</td>
+<td>1255695.130966425</td>
+<td>130.34</td>
+<td>High Vol / High Rev</td>
+</tr>
+<tr class="even">
+<td>relogios_presentes</td>
+<td>5970</td>
+<td>1198185.207540512</td>
+<td>200.70</td>
+<td>High Vol / High Rev</td>
+</tr>
+<tr class="odd">
+<td>cama_mesa_banho</td>
+<td>11097</td>
+<td>1035964.0600271225</td>
+<td>93.36</td>
+<td>High Vol / High Rev</td>
+</tr>
+<tr class="even">
+<td>esporte_lazer</td>
+<td>8590</td>
+<td>979740.9188661575</td>
+<td>114.06</td>
+<td>High Vol / High Rev</td>
+</tr>
+<tr class="odd">
+<td>informatica_acessorios</td>
+<td>7781</td>
+<td>904322.0174894333</td>
+<td>116.22</td>
+<td>High Vol / High Rev</td>
+</tr>
+<tr class="even">
+<td>moveis_decoracao</td>
+<td>8298</td>
+<td>727465.0523052216</td>
+<td>87.67</td>
+<td>High Vol / High Rev</td>
+</tr>
+<tr class="odd">
+<td>utilidades_domesticas</td>
+<td>6915</td>
+<td>626825.8007874489</td>
+<td>90.65</td>
+<td>High Vol / High Rev</td>
+</tr>
+<tr class="even">
+<td>cool_stuff</td>
+<td>3779</td>
+<td>620770.4918966293</td>
+<td>164.27</td>
+<td>High Vol / High Rev</td>
+</tr>
+<tr class="odd">
+<td>automotivo</td>
+<td>4204</td>
+<td>586585.7307322025</td>
+<td>139.53</td>
+<td>High Vol / High Rev</td>
+</tr>
+<tr class="even">
+<td>ferramentas_jardim</td>
+<td>4328</td>
+<td>481009.94201755524</td>
+<td>111.14</td>
+<td>High Vol / High Rev</td>
+</tr>
+<tr class="odd">
+<td>brinquedos</td>
+<td>4083</td>
+<td>479808.5404686928</td>
+<td>117.51</td>
+<td>High Vol / High Rev</td>
+</tr>
+<tr class="even">
+<td>bebes</td>
+<td>3043</td>
+<td>410312.2000389099</td>
+<td>134.84</td>
+<td>High Vol / High Rev</td>
+</tr>
+<tr class="odd">
+<td>perfumaria</td>
+<td>3402</td>
+<td>396599.30858802795</td>
+<td>116.58</td>
+<td>High Vol / High Rev</td>
+</tr>
+<tr class="even">
+<td>telefonia</td>
+<td>4527</td>
+<td>322342.6394162178</td>
+<td>71.20</td>
+<td>High Vol / High Rev</td>
+</tr>
+<tr class="odd">
+<td>moveis_escritorio</td>
+<td>1690</td>
+<td>273580.70111846924</td>
+<td>161.88</td>
+<td>Low Vol / High Rev</td>
+</tr>
+<tr class="even">
+<td>papelaria</td>
+<td>2505</td>
+<td>229593.83988118172</td>
+<td>91.65</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>pcs</td>
+<td>203</td>
+<td>222963.1298828125</td>
+<td>1098.34</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>pet_shop</td>
+<td>1942</td>
+<td>213766.63003492355</td>
+<td>110.08</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>eletroportateis</td>
+<td>671</td>
+<td>187907.2599811554</td>
+<td>280.04</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>instrumentos_musicais</td>
+<td>669</td>
+<td>187788.44005393982</td>
+<td>280.70</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>1589</td>
+<td>178572.54968833923</td>
+<td>112.38</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>eletronicos</td>
+<td>2755</td>
+<td>157079.53940558434</td>
+<td>57.02</td>
+<td>High Vol / Low Rev</td>
+</tr>
+<tr class="odd">
+<td>consoles_games</td>
+<td>1127</td>
+<td>154927.27038812637</td>
+<td>137.47</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>fashion_bolsas_e_acessorios</td>
+<td>2025</td>
+<td>151622.75041007996</td>
+<td>74.88</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>construcao_ferramentas_construcao</td>
+<td>927</td>
+<td>144550.18987429142</td>
+<td>155.93</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>malas_acessorios</td>
+<td>1088</td>
+<td>140111.37979125977</td>
+<td>128.78</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>eletrodomesticos_2</td>
+<td>235</td>
+<td>110649.73986434937</td>
+<td>470.85</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>casa_construcao</td>
+<td>603</td>
+<td>83010.11981487274</td>
+<td>137.66</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>eletrodomesticos</td>
+<td>769</td>
+<td>80001.24019479752</td>
+<td>104.03</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>agro_industria_e_comercio</td>
+<td>212</td>
+<td>72530.46979904175</td>
+<td>342.12</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>moveis_sala</td>
+<td>501</td>
+<td>68638.55983161926</td>
+<td>137.00</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>casa_conforto</td>
+<td>434</td>
+<td>58572.04043722153</td>
+<td>134.96</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>telefonia_fixa</td>
+<td>261</td>
+<td>57824.20998239517</td>
+<td>221.55</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>climatizacao</td>
+<td>295</td>
+<td>54723.15971946716</td>
+<td>185.50</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>audio</td>
+<td>363</td>
+<td>50668.59962081909</td>
+<td>139.58</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>portateis_casa_forno_e_cafe</td>
+<td>76</td>
+<td>47445.71008014679</td>
+<td>624.29</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>moveis_cozinha_area_de_servico_jantar_e_jardim</td>
+<td>279</td>
+<td>46070.37002372742</td>
+<td>165.13</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>livros_interesse_geral</td>
+<td>546</td>
+<td>45622.29049873352</td>
+<td>83.56</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>construcao_ferramentas_iluminacao</td>
+<td>302</td>
+<td>40002.00014305115</td>
+<td>132.46</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>industria_comercio_e_negocios</td>
+<td>268</td>
+<td>39669.61002922058</td>
+<td>148.02</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>construcao_ferramentas_seguranca</td>
+<td>189</td>
+<td>39589.01976776123</td>
+<td>209.47</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>alimentos</td>
+<td>509</td>
+<td>29243.509969711304</td>
+<td>57.45</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>market_place</td>
+<td>310</td>
+<td>28288.470039367676</td>
+<td>91.25</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>construcao_ferramentas_jardim</td>
+<td>234</td>
+<td>25552.180088043213</td>
+<td>109.20</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>artes</td>
+<td>208</td>
+<td>24167.639976978302</td>
+<td>116.19</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>fashion_calcados</td>
+<td>260</td>
+<td>23352.87992477417</td>
+<td>89.82</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>bebidas</td>
+<td>378</td>
+<td>22378.71004676819</td>
+<td>59.20</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>sinalizacao_e_seguranca</td>
+<td>199</td>
+<td>21509.230089187622</td>
+<td>108.09</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>moveis_quarto</td>
+<td>109</td>
+<td>20028.77994632721</td>
+<td>183.75</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>livros_tecnicos</td>
+<td>267</td>
+<td>19096.060108184814</td>
+<td>71.52</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>construcao_ferramentas_ferramentas</td>
+<td>103</td>
+<td>15903.94997882843</td>
+<td>154.41</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>alimentos_bebidas</td>
+<td>276</td>
+<td>15119.4800491333</td>
+<td>54.78</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>fashion_roupa_masculina</td>
+<td>131</td>
+<td>10748.8200340271</td>
+<td>82.05</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>fashion_underwear_e_moda_praia</td>
+<td>131</td>
+<td>9541.550102233887</td>
+<td>72.84</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>artigos_de_natal</td>
+<td>152</td>
+<td>8787.830072879791</td>
+<td>57.81</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>tablets_impressao_imagem</td>
+<td>83</td>
+<td>7528.410045623779</td>
+<td>90.70</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>cine_foto</td>
+<td>72</td>
+<td>6933.459958076477</td>
+<td>96.30</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>musica</td>
+<td>38</td>
+<td>6034.349970340729</td>
+<td>158.80</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>livros_importados</td>
+<td>60</td>
+<td>4639.849992752075</td>
+<td>77.33</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>dvds_blu_ray</td>
+<td>62</td>
+<td>4559.4899826049805</td>
+<td>73.54</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>artigos_de_festas</td>
+<td>43</td>
+<td>4485.180006027222</td>
+<td>104.31</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>moveis_colchao_e_estofado</td>
+<td>38</td>
+<td>4368.079982757568</td>
+<td>114.95</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>portateis_cozinha_e_preparadores_de_alimentos</td>
+<td>14</td>
+<td>3933.6299953460693</td>
+<td>280.97</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>fashion_roupa_feminina</td>
+<td>48</td>
+<td>2803.6400108337402</td>
+<td>58.41</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>fashion_esporte</td>
+<td>30</td>
+<td>2119.510019302368</td>
+<td>70.65</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>la_cuisine</td>
+<td>14</td>
+<td>2054.9899978637695</td>
+<td>146.78</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>artes_e_artesanato</td>
+<td>24</td>
+<td>1814.0100049972534</td>
+<td>75.58</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>fraldas_higiene</td>
+<td>38</td>
+<td>1538.7899932861328</td>
+<td>40.49</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>pc_gamer</td>
+<td>8</td>
+<td>1306.9500274658203</td>
+<td>163.37</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>flores</td>
+<td>33</td>
+<td>1110.0400066375732</td>
+<td>33.64</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>casa_conforto_2</td>
+<td>30</td>
+<td>760.2699966430664</td>
+<td>25.34</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>cds_dvds_musicais</td>
+<td>14</td>
+<td>730.0</td>
+<td>52.14</td>
+<td>Standard</td>
+</tr>
+<tr class="odd">
+<td>fashion_roupa_infanto_juvenil</td>
+<td>8</td>
+<td>569.8500022888184</td>
+<td>71.23</td>
+<td>Standard</td>
+</tr>
+<tr class="even">
+<td>seguros_e_servicos</td>
+<td>2</td>
+<td>283.2899932861328</td>
+<td>141.64</td>
+<td>Standard</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="blockquote">
+<ol start="8" type="1">
+<li>Can we calculate the 3-month rolling average for total revenue to smooth out daily and weekly volatility? How does this long-term trendline compare to the raw sales data in identifying the true direction of business growth?</li>
+</ol>
+</blockquote>
+<p><strong>Solution:</strong></p>
+<ol type="1">
+<li><p><strong>Firstly, we aggregate the raw monthly revenue (<code>monthly_revenue</code> CTE)</strong>: We join the <code>orders</code>, <code>payments</code>, and <code>Calendar</code> tables to calculate the total <code>payment_value</code> (<code>raw_monthly_revenue</code>) for each month and year. We also filter out ‘canceled’ or ‘unavailable’ orders to ensure we only look at valid sales data.</p></li>
+<li><p><strong>Secondly, we calculate the 3-month rolling average (Final <code>SELECT</code>)</strong>: We use the <code>avg()</code> window function coupled with <code>rows between 2 preceding and current row</code>. By ordering chronologically by year and month, this smooths out short-term volatility by averaging the current month’s revenue with the two previous months to establish a trendline.</p></li>
+<li><p><strong>Finally, we calculate the variance from the trend</strong>: We determine how much the current month’s raw revenue deviates from the calculated 3-month rolling average. We compute this as a percentage <code>((raw - average) / raw) * 100</code> using <code>nullif</code> to prevent division by zero, which helps easily identify months that significantly overperformed or underperformed the smoothed long-term growth trend.</p></li>
+</ol>
+<details>
+<summary>
+Show SQL Code
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> monthly_revenue <span class="kw">as</span> (</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        Calendar.<span class="dt">year</span>, </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        Calendar.month_number,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        Calendar.month_name,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(payments.payment_value) <span class="kw">as</span> raw_monthly_revenue</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        orders </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        payments <span class="kw">on</span> payments.order_id <span class="op">=</span> orders.order_id </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        Calendar <span class="kw">on</span> Calendar.datekey <span class="op">=</span> orders.purchase_datekey</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        orders.order_status <span class="kw">not</span> <span class="kw">in</span> (<span class="st">'canceled'</span>, <span class="st">'unavailable'</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        Calendar.<span class="dt">year</span>, calendar.month_number, Calendar.month_name</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> </span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    [<span class="dt">year</span>], </span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    month_number,</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    month_name,</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    raw_monthly_revenue,</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- average the current month and 2 preceding (last) months</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span> (<span class="fu">avg</span>(raw_monthly_revenue) <span class="kw">over</span> (<span class="kw">order</span> <span class="kw">by</span> [<span class="dt">year</span>], month_number </span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>            <span class="kw">rows</span> <span class="kw">between</span> <span class="dv">2</span> <span class="kw">preceding</span> <span class="kw">and</span> <span class="kw">current</span> <span class="kw">row</span>) <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">3</span>)) <span class="kw">as</span> rolling_avg_3m,</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- calculate deviation from the trend = (current_month - rolling_avg_3m) / current_month * 100.0 = var_dev %</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(<span class="fl">100.0</span> <span class="op">*</span> (raw_monthly_revenue <span class="op">-</span> <span class="fu">avg</span>(raw_monthly_revenue) <span class="kw">over</span> (<span class="kw">order</span> <span class="kw">by</span> [<span class="dt">year</span>], month_number </span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>            <span class="kw">rows</span> <span class="kw">between</span> <span class="dv">2</span> <span class="kw">preceding</span> <span class="kw">and</span> <span class="kw">current</span> <span class="kw">row</span>)) <span class="op">/</span> <span class="fu">nullif</span>(raw_monthly_revenue,<span class="dv">0</span>) <span class="kw">as</span> <span class="dt">decimal</span> (<span class="dv">10</span>,<span class="dv">2</span>)) <span class="kw">as</span> variance_from_trend</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> </span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    monthly_revenue</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    [<span class="dt">year</span>], </span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    month_number, </span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    month_name,</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    raw_monthly_revenue</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="kw">order</span> <span class="kw">by</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    [<span class="dt">year</span>], month_number;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Results:</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 5%">
+<col style="width: 15%">
+<col style="width: 12%">
+<col style="width: 24%">
+<col style="width: 17%">
+<col style="width: 24%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>year</th>
+<th>month_number</th>
+<th>month_name</th>
+<th>raw_monthly_revenue</th>
+<th>rolling_avg_3m</th>
+<th>variance_from_trend</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2016</td>
+<td>9</td>
+<td>September</td>
+<td>136.22999572753906</td>
+<td>136.230</td>
+<td>0.00</td>
+</tr>
+<tr class="even">
+<td>2016</td>
+<td>10</td>
+<td>October</td>
+<td>51657.52999472618</td>
+<td>25896.880</td>
+<td>49.87</td>
+</tr>
+<tr class="odd">
+<td>2016</td>
+<td>12</td>
+<td>December</td>
+<td>19.6200008392334</td>
+<td>17271.127</td>
+<td>-87928.16</td>
+</tr>
+<tr class="even">
+<td>2017</td>
+<td>1</td>
+<td>January</td>
+<td>137006.76003867388</td>
+<td>62894.637</td>
+<td>54.09</td>
+</tr>
+<tr class="odd">
+<td>2017</td>
+<td>2</td>
+<td>February</td>
+<td>283621.93943831325</td>
+<td>140216.106</td>
+<td>50.56</td>
+</tr>
+<tr class="even">
+<td>2017</td>
+<td>3</td>
+<td>March</td>
+<td>425656.3995541632</td>
+<td>282095.033</td>
+<td>33.73</td>
+</tr>
+<tr class="odd">
+<td>2017</td>
+<td>4</td>
+<td>April</td>
+<td>405988.3795110285</td>
+<td>371755.573</td>
+<td>8.43</td>
+</tr>
+<tr class="even">
+<td>2017</td>
+<td>5</td>
+<td>May</td>
+<td>582926.160167003</td>
+<td>471523.646</td>
+<td>19.11</td>
+</tr>
+<tr class="odd">
+<td>2017</td>
+<td>6</td>
+<td>June</td>
+<td>499827.47035080194</td>
+<td>496247.337</td>
+<td>0.72</td>
+</tr>
+<tr class="even">
+<td>2017</td>
+<td>7</td>
+<td>July</td>
+<td>578858.5795211494</td>
+<td>553870.737</td>
+<td>4.32</td>
+</tr>
+<tr class="odd">
+<td>2017</td>
+<td>8</td>
+<td>August</td>
+<td>662071.7698084246</td>
+<td>580252.607</td>
+<td>12.36</td>
+</tr>
+<tr class="even">
+<td>2017</td>
+<td>9</td>
+<td>September</td>
+<td>717195.2203616947</td>
+<td>652708.523</td>
+<td>8.99</td>
+</tr>
+<tr class="odd">
+<td>2017</td>
+<td>10</td>
+<td>October</td>
+<td>764785.2796836384</td>
+<td>714684.090</td>
+<td>6.55</td>
+</tr>
+<tr class="even">
+<td>2017</td>
+<td>11</td>
+<td>November</td>
+<td>1172639.2297811043</td>
+<td>884873.243</td>
+<td>24.54</td>
+</tr>
+<tr class="odd">
+<td>2017</td>
+<td>12</td>
+<td>December</td>
+<td>861914.4599985629</td>
+<td>933112.990</td>
+<td>-8.26</td>
+</tr>
+<tr class="even">
+<td>2018</td>
+<td>1</td>
+<td>January</td>
+<td>1102639.4091129452</td>
+<td>1045731.033</td>
+<td>5.16</td>
+</tr>
+<tr class="odd">
+<td>2018</td>
+<td>2</td>
+<td>February</td>
+<td>979966.2302345932</td>
+<td>981506.700</td>
+<td>-0.16</td>
+</tr>
+<tr class="even">
+<td>2018</td>
+<td>3</td>
+<td>March</td>
+<td>1152736.7396906763</td>
+<td>1078447.460</td>
+<td>6.44</td>
+</tr>
+<tr class="odd">
+<td>2018</td>
+<td>4</td>
+<td>April</td>
+<td>1156303.9107048158</td>
+<td>1096335.627</td>
+<td>5.19</td>
+</tr>
+<tr class="even">
+<td>2018</td>
+<td>5</td>
+<td>May</td>
+<td>1145748.6310662013</td>
+<td>1151596.427</td>
+<td>-0.51</td>
+</tr>
+<tr class="odd">
+<td>2018</td>
+<td>6</td>
+<td>June</td>
+<td>1020494.2907593064</td>
+<td>1107515.611</td>
+<td>-8.53</td>
+</tr>
+<tr class="even">
+<td>2018</td>
+<td>7</td>
+<td>July</td>
+<td>1039880.1590387616</td>
+<td>1068707.694</td>
+<td>-2.77</td>
+</tr>
+<tr class="odd">
+<td>2018</td>
+<td>8</td>
+<td>August</td>
+<td>996896.1512343884</td>
+<td>1019090.200</td>
+<td>-2.23</td>
+</tr>
+<tr class="even">
+<td>2018</td>
+<td>9</td>
+<td>September</td>
+<td>166.4600067138672</td>
+<td>678980.923</td>
+<td>-407794.33</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="blockquote">
+<ol start="9" type="1">
+<li>How is revenue distributed across different states (<code>customer_state</code>) and cities? specifically, identifying the top 5 regions with the highest sales density per capita versus regions with high order volume but low total revenue?</li>
+</ol>
+</blockquote>
+<p><strong>Solution:</strong></p>
+<ol type="1">
+<li><p><strong>Firstly, we calculate regional baseline metrics (<code>region_performance</code> CTE)</strong>: We join the <code>orders</code>, <code>customers</code>, and <code>payments</code> tables to aggregate the <code>total_orders</code> and <code>total_revenue</code> for each <code>customer_state</code> and <code>customer_city</code>. We also calculate the <code>avg_order_value</code> (revenue density) by dividing total revenue by the distinct order count, ensuring we exclude ‘canceled’ or ‘unavailable’ orders.</p></li>
+<li><p><strong>Secondly, we rank the regions (<code>region_rankings</code> CTE)</strong>: We use the <code>rank()</code> window function to assign a <code>revenue_rank</code> and a <code>volume_rank</code> to each city/state combination. By ordering descendingly, the regions with the highest revenue and order counts receive the top ranks (e.g., Rank 1, 2, 3).</p></li>
+<li><p><strong>Finally, we segment the regions based on their rankings (Final <code>SELECT</code>)</strong>: We use a <code>CASE</code> statement to classify each region’s profile by evaluating its volume and revenue ranks. This allows us to categorize regions into distinct business profiles such as ‘Major Economic Hub’ (top ranks in both volume and revenue) or ‘Affluent Niche’ (lower volume rank but high revenue rank), clearly identifying the sales density and distribution across different geographies.</p></li>
+</ol>
+<details>
+<summary>
+Show SQL Code
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> region_performance <span class="kw">as</span> (</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        customers.customer_state,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        customers.customer_city,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">count</span>(<span class="kw">distinct</span> orders.order_id) <span class="kw">as</span> total_orders,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(payments.payment_value) <span class="kw">as</span> total_revenue,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- avg order value -&gt; revenue density</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(payments.payment_value) <span class="op">/</span> <span class="fu">count</span>(<span class="kw">distinct</span> orders.order_id) <span class="kw">as</span> avg_order_value</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        orders</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">join</span>   </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        customers <span class="kw">on</span> customers.customer_id <span class="op">=</span> orders.customer_id</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">join</span> </span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        payments <span class="kw">on</span> payments.order_id <span class="op">=</span> orders.order_id</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        orders.order_status <span class="kw">not</span> <span class="kw">in</span> (<span class="st">'canceled'</span>, <span class="st">'unavailable'</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        customers.customer_state,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        customers.customer_city</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>), </span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>region_rankings <span class="kw">as</span> (</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span>,</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>        <span class="fu">rank</span>() <span class="kw">over</span> (<span class="kw">order</span> <span class="kw">by</span> total_revenue <span class="kw">desc</span>) <span class="kw">as</span> revenue_rank, </span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        <span class="fu">rank</span>() <span class="kw">over</span> ( <span class="kw">order</span> <span class="kw">by</span> total_orders <span class="kw">desc</span>) <span class="kw">as</span> volume_rank</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        region_performance</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> </span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    customer_state,</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    customer_city,</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    total_orders,</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    total_revenue,</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(avg_order_value <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_order_value,</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> </span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">when</span> revenue_rank <span class="op">&lt;=</span> <span class="dv">10</span> <span class="kw">and</span> volume_rank <span class="op">&lt;=</span> <span class="dv">10</span> <span class="cf">then</span> <span class="st">'Major Economic Hub (High Vol / High Rev)'</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">when</span> revenue_rank <span class="op">&lt;=</span> <span class="dv">20</span> <span class="kw">and</span> volume_rank <span class="op">&gt;</span> <span class="dv">50</span> <span class="cf">then</span> <span class="st">'Affluent Niche (Low Vol / High Rev)'</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">when</span> revenue_rank <span class="op">&lt;=</span> <span class="dv">10</span> <span class="kw">and</span> volume_rank <span class="op">&lt;=</span> <span class="dv">10</span> <span class="cf">then</span> <span class="st">'Mass Market (High Vol / Low Rev)'</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span> <span class="st">'Standard Market'</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span> <span class="kw">as</span> regional_profile</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> </span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>    region_rankings</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a><span class="kw">order</span> <span class="kw">by</span> </span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>    total_revenue <span class="kw">desc</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p><strong>Results:</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 15%">
+<col style="width: 14%">
+<col style="width: 15%">
+<col style="width: 18%">
+<col style="width: 19%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>customer_state</th>
+<th>customer_city</th>
+<th>total_orders</th>
+<th>total_revenue</th>
+<th>avg_order_value</th>
+<th>regional_profile</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SP</td>
+<td>sao paulo</td>
+<td>15291</td>
+<td>2150534.770117907</td>
+<td>140.64</td>
+<td>Major Economic Hub (High Vol / High Rev)</td>
+</tr>
+<tr class="even">
+<td>RJ</td>
+<td>rio de janeiro</td>
+<td>6801</td>
+<td>1147675.809347108</td>
+<td>168.75</td>
+<td>Major Economic Hub (High Vol / High Rev)</td>
+</tr>
+<tr class="odd">
+<td>MG</td>
+<td>belo horizonte</td>
+<td>2737</td>
+<td>411571.5802227948</td>
+<td>150.37</td>
+<td>Major Economic Hub (High Vol / High Rev)</td>
+</tr>
+<tr class="even">
+<td>DF</td>
+<td>brasilia</td>
+<td>2112</td>
+<td>350563.3297816515</td>
+<td>165.99</td>
+<td>Major Economic Hub (High Vol / High Rev)</td>
+</tr>
+<tr class="odd">
+<td>PR</td>
+<td>curitiba</td>
+<td>1502</td>
+<td>240889.5599949062</td>
+<td>160.38</td>
+<td>Major Economic Hub (High Vol / High Rev)</td>
+</tr>
+<tr class="even">
+<td>RS</td>
+<td>porto alegre</td>
+<td>1370</td>
+<td>220135.7902894616</td>
+<td>160.68</td>
+<td>Major Economic Hub (High Vol / High Rev)</td>
+</tr>
+<tr class="odd">
+<td>BA</td>
+<td>salvador</td>
+<td>1234</td>
+<td>216352.82025164366</td>
+<td>175.33</td>
+<td>Major Economic Hub (High Vol / High Rev)</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>campinas</td>
+<td>1422</td>
+<td>211539.7600118816</td>
+<td>148.76</td>
+<td>Major Economic Hub (High Vol / High Rev)</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>guarulhos</td>
+<td>1167</td>
+<td>161739.5199765265</td>
+<td>138.59</td>
+<td>Major Economic Hub (High Vol / High Rev)</td>
+</tr>
+<tr class="even">
+<td>RJ</td>
+<td>niteroi</td>
+<td>842</td>
+<td>137399.449943915</td>
+<td>163.18</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>sao bernardo do campo</td>
+<td>921</td>
+<td>118343.4201908093</td>
+<td>128.49</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>CE</td>
+<td>fortaleza</td>
+<td>647</td>
+<td>117983.99994421005</td>
+<td>182.36</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>GO</td>
+<td>goiania</td>
+<td>681</td>
+<td>117095.89010572433</td>
+<td>171.95</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>santos</td>
+<td>706</td>
+<td>111670.21002027392</td>
+<td>158.17</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>PE</td>
+<td>recife</td>
+<td>610</td>
+<td>109421.82003313303</td>
+<td>179.38</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>santo andre</td>
+<td>786</td>
+<td>103892.71011769772</td>
+<td>132.18</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SC</td>
+<td>florianopolis</td>
+<td>563</td>
+<td>99524.4301700592</td>
+<td>176.78</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>PA</td>
+<td>belem</td>
+<td>440</td>
+<td>95455.55000805855</td>
+<td>216.94</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>osasco</td>
+<td>736</td>
+<td>93696.3600088805</td>
+<td>127.30</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>jundiai</td>
+<td>556</td>
+<td>91147.71014773846</td>
+<td>163.93</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>sao jose dos campos</td>
+<td>683</td>
+<td>89081.69994664192</td>
+<td>130.43</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>sorocaba</td>
+<td>621</td>
+<td>86911.57992458344</td>
+<td>139.95</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>ribeirao preto</td>
+<td>507</td>
+<td>75379.01995331049</td>
+<td>148.68</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>MG</td>
+<td>juiz de fora</td>
+<td>425</td>
+<td>75089.71999931335</td>
+<td>176.68</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>RJ</td>
+<td>nova iguacu</td>
+<td>438</td>
+<td>70736.99004948139</td>
+<td>161.50</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>MS</td>
+<td>campo grande</td>
+<td>315</td>
+<td>65520.08040642738</td>
+<td>208.00</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>MA</td>
+<td>sao luis</td>
+<td>345</td>
+<td>63114.89991879463</td>
+<td>182.94</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>PB</td>
+<td>joao pessoa</td>
+<td>253</td>
+<td>62606.56971311569</td>
+<td>247.46</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>ES</td>
+<td>vitoria</td>
+<td>376</td>
+<td>62057.10984182358</td>
+<td>165.05</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>RJ</td>
+<td>sao goncalo</td>
+<td>405</td>
+<td>61570.400188207626</td>
+<td>152.03</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>PI</td>
+<td>teresina</td>
+<td>278</td>
+<td>60322.97010374069</td>
+<td>216.99</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>piracicaba</td>
+<td>363</td>
+<td>58216.87995111942</td>
+<td>160.38</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>barueri</td>
+<td>425</td>
+<td>58004.639814246446</td>
+<td>136.48</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>mogi das cruzes</td>
+<td>377</td>
+<td>57979.230025827885</td>
+<td>153.79</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>MG</td>
+<td>contagem</td>
+<td>419</td>
+<td>57814.660032749176</td>
+<td>137.98</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>MG</td>
+<td>uberlandia</td>
+<td>372</td>
+<td>56786.0901248306</td>
+<td>152.65</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>ES</td>
+<td>vila velha</td>
+<td>329</td>
+<td>55557.45991837978</td>
+<td>168.87</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>sao jose do rio preto</td>
+<td>332</td>
+<td>53719.34991595149</td>
+<td>161.81</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>AL</td>
+<td>maceio</td>
+<td>246</td>
+<td>53101.38010084629</td>
+<td>215.86</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>PR</td>
+<td>londrina</td>
+<td>302</td>
+<td>53029.720022678375</td>
+<td>175.60</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>maua</td>
+<td>319</td>
+<td>48421.219797849655</td>
+<td>151.79</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>MT</td>
+<td>cuiaba</td>
+<td>248</td>
+<td>47117.16004541516</td>
+<td>189.99</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>bauru</td>
+<td>269</td>
+<td>44903.49977505207</td>
+<td>166.93</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>PR</td>
+<td>maringa</td>
+<td>264</td>
+<td>44655.54022991657</td>
+<td>169.15</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SE</td>
+<td>aracaju</td>
+<td>220</td>
+<td>44598.79984438419</td>
+<td>202.72</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>RS</td>
+<td>caxias do sul</td>
+<td>223</td>
+<td>44111.57005023956</td>
+<td>197.81</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>praia grande</td>
+<td>304</td>
+<td>44072.049874305725</td>
+<td>144.97</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>ES</td>
+<td>serra</td>
+<td>285</td>
+<td>42965.76991789043</td>
+<td>150.76</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>RN</td>
+<td>natal</td>
+<td>205</td>
+<td>42851.00978708267</td>
+<td>209.03</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>indaiatuba</td>
+<td>277</td>
+<td>41590.47012972832</td>
+<td>150.15</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SC</td>
+<td>joinville</td>
+<td>262</td>
+<td>40905.22002220154</td>
+<td>156.13</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>RJ</td>
+<td>duque de caxias</td>
+<td>263</td>
+<td>39908.03999757767</td>
+<td>151.74</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>RJ</td>
+<td>campos dos goytacazes</td>
+<td>237</td>
+<td>39898.530123472214</td>
+<td>168.35</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>taboao da serra</td>
+<td>288</td>
+<td>39766.34001151472</td>
+<td>138.08</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>RJ</td>
+<td>petropolis</td>
+<td>237</td>
+<td>39532.84000623226</td>
+<td>166.81</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>MG</td>
+<td>divinopolis</td>
+<td>134</td>
+<td>38727.710107803345</td>
+<td>289.01</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>RJ</td>
+<td>volta redonda</td>
+<td>228</td>
+<td>38645.94992351532</td>
+<td>169.50</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>RJ</td>
+<td>macae</td>
+<td>236</td>
+<td>37543.26006150246</td>
+<td>159.08</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>marilia</td>
+<td>196</td>
+<td>37493.970249176025</td>
+<td>191.30</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>RS</td>
+<td>santa maria</td>
+<td>194</td>
+<td>37224.64966106415</td>
+<td>191.88</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>carapicuiba</td>
+<td>324</td>
+<td>37196.800077438354</td>
+<td>114.80</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>sao caetano do sul</td>
+<td>274</td>
+<td>36571.90995502472</td>
+<td>133.47</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>cotia</td>
+<td>247</td>
+<td>34772.90995979309</td>
+<td>140.78</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>taubate</td>
+<td>266</td>
+<td>34560.32997727394</td>
+<td>129.93</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>MG</td>
+<td>betim</td>
+<td>201</td>
+<td>34349.920018196106</td>
+<td>170.90</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>sao carlos</td>
+<td>231</td>
+<td>33906.410032749176</td>
+<td>146.78</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>guaruja</td>
+<td>224</td>
+<td>33690.860169410706</td>
+<td>150.41</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>diadema</td>
+<td>282</td>
+<td>33675.98999106884</td>
+<td>119.42</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>BA</td>
+<td>feira de santana</td>
+<td>185</td>
+<td>32466.80003336072</td>
+<td>175.50</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>RS</td>
+<td>canoas</td>
+<td>209</td>
+<td>31982.830045431852</td>
+<td>153.03</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>MG</td>
+<td>uberaba</td>
+<td>187</td>
+<td>31911.67006677389</td>
+<td>170.65</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>MG</td>
+<td>montes claros</td>
+<td>209</td>
+<td>31283.009807288647</td>
+<td>149.68</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>RJ</td>
+<td>nova friburgo</td>
+<td>148</td>
+<td>31206.370090961456</td>
+<td>210.85</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>presidente prudente</td>
+<td>160</td>
+<td>29916.460077762604</td>
+<td>186.98</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SC</td>
+<td>blumenau</td>
+<td>186</td>
+<td>29206.580057948828</td>
+<td>157.02</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>suzano</td>
+<td>232</td>
+<td>29022.78001856804</td>
+<td>125.10</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>americana</td>
+<td>219</td>
+<td>28545.730053901672</td>
+<td>130.35</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>PR</td>
+<td>cascavel</td>
+<td>148</td>
+<td>27649.599861621857</td>
+<td>186.82</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>RS</td>
+<td>pelotas</td>
+<td>184</td>
+<td>27356.58004850149</td>
+<td>148.68</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>limeira</td>
+<td>187</td>
+<td>26206.299997091293</td>
+<td>140.14</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>RO</td>
+<td>porto velho</td>
+<td>109</td>
+<td>26121.920029640198</td>
+<td>239.65</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>santana de parnaiba</td>
+<td>180</td>
+<td>26074.63006234169</td>
+<td>144.86</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>MG</td>
+<td>ipatinga</td>
+<td>170</td>
+<td>26003.559985399246</td>
+<td>152.96</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>AM</td>
+<td>manaus</td>
+<td>139</td>
+<td>25793.0799767375</td>
+<td>185.56</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>franca</td>
+<td>158</td>
+<td>25736.110070228577</td>
+<td>162.89</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>valinhos</td>
+<td>182</td>
+<td>25607.430002212524</td>
+<td>140.70</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>PE</td>
+<td>jaboatao dos guararapes</td>
+<td>133</td>
+<td>25458.900188446045</td>
+<td>191.42</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>sumare</td>
+<td>179</td>
+<td>24509.429921627045</td>
+<td>136.92</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SC</td>
+<td>sao jose</td>
+<td>168</td>
+<td>24347.42995071411</td>
+<td>144.93</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>MG</td>
+<td>pouso alegre</td>
+<td>131</td>
+<td>24195.410016059875</td>
+<td>184.70</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>atibaia</td>
+<td>157</td>
+<td>23783.42003250122</td>
+<td>151.49</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>RJ</td>
+<td>rio das ostras</td>
+<td>135</td>
+<td>23584.38001394272</td>
+<td>174.70</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>MG</td>
+<td>nova lima</td>
+<td>98</td>
+<td>23287.82988166809</td>
+<td>237.63</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>rio claro</td>
+<td>152</td>
+<td>23181.3299202919</td>
+<td>152.51</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>araraquara</td>
+<td>153</td>
+<td>23106.97009086609</td>
+<td>151.03</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>RJ</td>
+<td>barra mansa</td>
+<td>120</td>
+<td>22938.179938793182</td>
+<td>191.15</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>embu das artes</td>
+<td>162</td>
+<td>22846.049993515015</td>
+<td>141.02</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>PB</td>
+<td>campina grande</td>
+<td>68</td>
+<td>22783.29009628296</td>
+<td>335.05</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>braganca paulista</td>
+<td>144</td>
+<td>22683.220050811768</td>
+<td>157.52</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>MG</td>
+<td>governador valadares</td>
+<td>135</td>
+<td>22368.88001060486</td>
+<td>165.70</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>sao vicente</td>
+<td>161</td>
+<td>22237.13000050187</td>
+<td>138.12</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>PR</td>
+<td>ponta grossa</td>
+<td>142</td>
+<td>22152.279952526093</td>
+<td>156.00</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>RJ</td>
+<td>sao joao de meriti</td>
+<td>131</td>
+<td>21932.93999648094</td>
+<td>167.43</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>TO</td>
+<td>palmas</td>
+<td>90</td>
+<td>21790.370041251183</td>
+<td>242.12</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>RS</td>
+<td>gravatai</td>
+<td>112</td>
+<td>21719.35986328125</td>
+<td>193.92</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>itaquaquecetuba</td>
+<td>170</td>
+<td>21716.27007201314</td>
+<td>127.74</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>RJ</td>
+<td>angra dos reis</td>
+<td>84</td>
+<td>21567.900049209595</td>
+<td>256.76</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SC</td>
+<td>itajai</td>
+<td>119</td>
+<td>21465.519989013672</td>
+<td>180.38</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>PA</td>
+<td>ananindeua</td>
+<td>88</td>
+<td>21236.850120782852</td>
+<td>241.33</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>itapevi</td>
+<td>170</td>
+<td>21190.409993935376</td>
+<td>124.65</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>jacarei</td>
+<td>191</td>
+<td>21113.10000383854</td>
+<td>110.54</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>ES</td>
+<td>cariacica</td>
+<td>138</td>
+<td>20593.749937057495</td>
+<td>149.23</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>RS</td>
+<td>novo hamburgo</td>
+<td>121</td>
+<td>20527.589955329895</td>
+<td>169.65</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>RJ</td>
+<td>teresopolis</td>
+<td>119</td>
+<td>20266.340026408434</td>
+<td>170.31</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>MG</td>
+<td>sete lagoas</td>
+<td>127</td>
+<td>20239.31993675232</td>
+<td>159.36</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>GO</td>
+<td>anapolis</td>
+<td>111</td>
+<td>20029.820016860962</td>
+<td>180.45</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>RJ</td>
+<td>cabo frio</td>
+<td>114</td>
+<td>19568.42012345791</td>
+<td>171.65</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>aracatuba</td>
+<td>140</td>
+<td>19530.12003302574</td>
+<td>139.50</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>MG</td>
+<td>pocos de caldas</td>
+<td>118</td>
+<td>19415.190086126328</td>
+<td>164.54</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SC</td>
+<td>balneario camboriu</td>
+<td>99</td>
+<td>19358.679819107056</td>
+<td>195.54</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>MG</td>
+<td>patos de minas</td>
+<td>100</td>
+<td>19349.550039052963</td>
+<td>193.50</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>RS</td>
+<td>rio grande</td>
+<td>123</td>
+<td>19338.510021209717</td>
+<td>157.22</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>BA</td>
+<td>vitoria da conquista</td>
+<td>88</td>
+<td>19252.20994949341</td>
+<td>218.78</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>RJ</td>
+<td>araruama</td>
+<td>77</td>
+<td>19196.049936294556</td>
+<td>249.30</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>ES</td>
+<td>cachoeiro de itapemirim</td>
+<td>121</td>
+<td>19175.44999051094</td>
+<td>158.47</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>botucatu</td>
+<td>101</td>
+<td>19053.070067703724</td>
+<td>188.64</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>paulinia</td>
+<td>129</td>
+<td>18790.840075671673</td>
+<td>145.67</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>hortolandia</td>
+<td>145</td>
+<td>18748.569893836975</td>
+<td>129.30</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>RJ</td>
+<td>mage</td>
+<td>110</td>
+<td>18679.999910354614</td>
+<td>169.82</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>MG</td>
+<td>vicosa</td>
+<td>89</td>
+<td>18649.7098236084</td>
+<td>209.55</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>RJ</td>
+<td>marica</td>
+<td>137</td>
+<td>18511.419981002808</td>
+<td>135.12</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>RS</td>
+<td>passo fundo</td>
+<td>112</td>
+<td>18088.809967041016</td>
+<td>161.51</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SC</td>
+<td>criciuma</td>
+<td>92</td>
+<td>17812.22989654541</td>
+<td>193.61</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>PR</td>
+<td>sao jose dos pinhais</td>
+<td>131</td>
+<td>17763.43998658657</td>
+<td>135.60</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SC</td>
+<td>chapeco</td>
+<td>102</td>
+<td>17607.440014123917</td>
+<td>172.62</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>ferraz de vasconcelos</td>
+<td>110</td>
+<td>17471.239877700806</td>
+<td>158.83</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>GO</td>
+<td>aparecida de goiania</td>
+<td>109</td>
+<td>16962.150075912476</td>
+<td>155.62</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>PE</td>
+<td>petrolina</td>
+<td>65</td>
+<td>16959.21994781494</td>
+<td>260.91</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>AC</td>
+<td>rio branco</td>
+<td>70</td>
+<td>16928.469888687134</td>
+<td>241.84</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>birigui</td>
+<td>78</td>
+<td>16626.830087661743</td>
+<td>213.16</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>guaratingueta</td>
+<td>96</td>
+<td>16593.199988663197</td>
+<td>172.85</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>MG</td>
+<td>itajuba</td>
+<td>94</td>
+<td>16505.20000600815</td>
+<td>175.59</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>RJ</td>
+<td>resende</td>
+<td>117</td>
+<td>16496.71998155117</td>
+<td>141.00</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>RJ</td>
+<td>belford roxo</td>
+<td>110</td>
+<td>16281.119910791516</td>
+<td>148.01</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>MG</td>
+<td>varginha</td>
+<td>88</td>
+<td>16022.510070800781</td>
+<td>182.07</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>RJ</td>
+<td>nilopolis</td>
+<td>106</td>
+<td>15881.68000793457</td>
+<td>149.83</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>PE</td>
+<td>olinda</td>
+<td>93</td>
+<td>15650.040005683899</td>
+<td>168.28</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SC</td>
+<td>jaragua do sul</td>
+<td>89</td>
+<td>15357.909955978394</td>
+<td>172.56</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>MG</td>
+<td>lavras</td>
+<td>83</td>
+<td>15307.959968531504</td>
+<td>184.43</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>araras</td>
+<td>94</td>
+<td>15187.249944269657</td>
+<td>161.57</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>caraguatatuba</td>
+<td>86</td>
+<td>15082.739949911833</td>
+<td>175.38</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>MG</td>
+<td>araxa</td>
+<td>75</td>
+<td>15041.850039482117</td>
+<td>200.56</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>santa barbara d’oeste</td>
+<td>118</td>
+<td>14980.129915863276</td>
+<td>126.95</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>MG</td>
+<td>ribeirao das neves</td>
+<td>99</td>
+<td>14890.069915771484</td>
+<td>150.40</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>caieiras</td>
+<td>98</td>
+<td>14729.870056152344</td>
+<td>150.30</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>itu</td>
+<td>132</td>
+<td>14614.819989204407</td>
+<td>110.72</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>pindamonhangaba</td>
+<td>100</td>
+<td>14375.700001001358</td>
+<td>143.76</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>ourinhos</td>
+<td>77</td>
+<td>14325.329902648926</td>
+<td>186.04</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>MG</td>
+<td>barbacena</td>
+<td>80</td>
+<td>14321.699979782104</td>
+<td>179.02</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>MT</td>
+<td>rondonopolis</td>
+<td>65</td>
+<td>14105.620091438293</td>
+<td>217.01</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>itapetininga</td>
+<td>77</td>
+<td>14048.460102081299</td>
+<td>182.45</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>ES</td>
+<td>linhares</td>
+<td>64</td>
+<td>13987.340067327023</td>
+<td>218.55</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>mogi-guacu</td>
+<td>91</td>
+<td>13972.309995651245</td>
+<td>153.54</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>PR</td>
+<td>foz do iguacu</td>
+<td>87</td>
+<td>13902.670015335083</td>
+<td>159.80</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>assis</td>
+<td>84</td>
+<td>13819.309928894043</td>
+<td>164.52</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>AP</td>
+<td>macapa</td>
+<td>54</td>
+<td>13666.030033111572</td>
+<td>253.07</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>itatiba</td>
+<td>97</td>
+<td>13634.020051956177</td>
+<td>140.56</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SC</td>
+<td>lages</td>
+<td>83</td>
+<td>13616.230019569397</td>
+<td>164.05</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>sao joao da boa vista</td>
+<td>81</td>
+<td>13608.180032730103</td>
+<td>168.00</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>MG</td>
+<td>santa luzia</td>
+<td>91</td>
+<td>13575.690139114857</td>
+<td>149.18</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>CE</td>
+<td>sobral</td>
+<td>35</td>
+<td>13295.730205535889</td>
+<td>379.88</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>RS</td>
+<td>sao leopoldo</td>
+<td>104</td>
+<td>13291.570051595569</td>
+<td>127.80</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SC</td>
+<td>palhoca</td>
+<td>93</td>
+<td>13273.769969940186</td>
+<td>142.73</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>amparo</td>
+<td>66</td>
+<td>13001.819974184036</td>
+<td>197.00</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>BA</td>
+<td>barreiras</td>
+<td>52</td>
+<td>12952.729969024658</td>
+<td>249.09</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>tatui</td>
+<td>73</td>
+<td>12815.720006942749</td>
+<td>175.56</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>MG</td>
+<td>itabira</td>
+<td>79</td>
+<td>12748.300029754639</td>
+<td>161.37</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>varzea paulista</td>
+<td>78</td>
+<td>12659.479978561401</td>
+<td>162.30</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>PE</td>
+<td>caruaru</td>
+<td>64</td>
+<td>12579.229939937592</td>
+<td>196.55</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>MG</td>
+<td>muriae</td>
+<td>63</td>
+<td>12532.070067167282</td>
+<td>198.92</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>itanhaem</td>
+<td>79</td>
+<td>12338.11986541748</td>
+<td>156.18</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>salto</td>
+<td>93</td>
+<td>12137.629947304726</td>
+<td>130.51</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SC</td>
+<td>tubarao</td>
+<td>60</td>
+<td>12130.980094909668</td>
+<td>202.18</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>votorantim</td>
+<td>84</td>
+<td>12085.639886379242</td>
+<td>143.88</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>MG</td>
+<td>araguari</td>
+<td>54</td>
+<td>12048.940017700195</td>
+<td>223.13</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>ES</td>
+<td>guarapari</td>
+<td>67</td>
+<td>12021.139976501465</td>
+<td>179.42</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>RS</td>
+<td>santa cruz do sul</td>
+<td>62</td>
+<td>11974.649991989136</td>
+<td>193.14</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>franco da rocha</td>
+<td>109</td>
+<td>11893.329976558685</td>
+<td>109.11</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>GO</td>
+<td>rio verde</td>
+<td>64</td>
+<td>11847.880012512207</td>
+<td>185.12</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>ribeirao pires</td>
+<td>107</td>
+<td>11780.649990081787</td>
+<td>110.10</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>PR</td>
+<td>toledo</td>
+<td>70</td>
+<td>11688.66003036499</td>
+<td>166.98</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>BA</td>
+<td>porto seguro</td>
+<td>39</td>
+<td>11671.599877357483</td>
+<td>299.27</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SC</td>
+<td>gaspar</td>
+<td>29</td>
+<td>11602.949851989746</td>
+<td>400.10</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>cacapava</td>
+<td>73</td>
+<td>11520.139964461327</td>
+<td>157.81</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>SP</td>
+<td>cajamar</td>
+<td>98</td>
+<td>11515.510002374649</td>
+<td>117.51</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>GO</td>
+<td>jatai</td>
+<td>54</td>
+<td>11337.930023908615</td>
+<td>209.96</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>BA</td>
+<td>lauro de freitas</td>
+<td>75</td>
+<td>11278.609934806824</td>
+<td>150.38</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>MG</td>
+<td>caratinga</td>
+<td>62</td>
+<td>11211.449956178665</td>
+<td>180.83</td>
+<td>Standard Market</td>
+</tr>
+<tr class="odd">
+<td>MG</td>
+<td>conselheiro lafaiete</td>
+<td>84</td>
+<td>11192.38003563881</td>
+<td>133.24</td>
+<td>Standard Market</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>catanduva</td>
+<td>74</td>
+<td>11183.029972076416</td>
+<td>151.12</td>
+<td>Standard Market</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="blockquote">
+<ol start="10" type="1">
+<li>AOV and Busket Size Analysis: What is the average order value (AOV) and average basket size (number of items per order) for Olist? How do these metrics vary across year and months?</li>
+</ol>
+</blockquote>
+<p><strong>Solution:</strong></p>
+<ol type="1">
+<li><p><strong>Firstly, we isolate order-level totals (<code>order_item_totals</code> and <code>order_payment_totals</code> CTEs)</strong>: This is crucial to prevent data duplication caused by 1-to-many relationships (multiple items or payment methods per order). We calculate the total number of items (<code>items_in_basket</code>) and the total payment value (<code>total_order_payment</code>) grouped strictly by unique <code>order_id</code>.</p></li>
+<li><p><strong>Secondly, we aggregate these metrics by month (<code>monthly_metrics</code> CTE)</strong>: We join our safe order-level totals with the <code>orders</code> and <code>Calendar</code> tables, ensuring we filter out ‘canceled’ or ‘unavailable’ orders. This gives us the absolute <code>total_orders</code>, <code>monthly_revenue</code>, and <code>monthly_items_count</code> for each specific year and month.</p></li>
+<li><p><strong>Finally, we calculate the key performance indicators (Final <code>SELECT</code>)</strong>: By dividing the monthly revenue by total orders, we get the Average Order Value (AOV). Dividing the total items by total orders gives us the Average Basket Size. We also calculate an <code>avg_price_per_item</code> proxy (AOV divided by basket size) to understand the value density of the baskets over time.</p></li>
+</ol>
+<details>
+<summary>
+Show SQL Code
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> order_item_totals <span class="kw">as</span> (</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 1: calculate total items and total price per order</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- this prevents duplication before joining with payments</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        order_id,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">count</span>(order_item_id) <span class="kw">as</span> items_in_basket,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(price) <span class="kw">as</span> total_items_price</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        order_items</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        order_id</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>order_payment_totals <span class="kw">as</span> (</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 2: calculate total payment value per order </span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- (accounts for multi-payment methods/installments)</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        order_id,</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(payment_value) <span class="kw">as</span> total_order_payment</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        payments</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>        order_id</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>monthly_metrics <span class="kw">as</span> (</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 3: aggregate metrics by month</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>        c.<span class="dt">year</span>,</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>        c.month_number,</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>        c.month_name,</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>        <span class="fu">count</span>(o.order_id) <span class="kw">as</span> total_orders,</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(p.total_order_payment) <span class="kw">as</span> monthly_revenue,</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(i.items_in_basket) <span class="kw">as</span> monthly_items_count</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>        orders o</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>        Calendar c <span class="kw">on</span> o.purchase_datekey <span class="op">=</span> c.datekey</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>        order_item_totals i <span class="kw">on</span> o.order_id <span class="op">=</span> i.order_id</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>        order_payment_totals p <span class="kw">on</span> o.order_id <span class="op">=</span> p.order_id</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>        o.order_status <span class="kw">not</span> <span class="kw">in</span> (<span class="st">'canceled'</span>, <span class="st">'unavailable'</span>)</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>        c.<span class="dt">year</span>, c.month_number, c.month_name</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a><span class="co">-- final output: calculating aov and avg basket size trends</span></span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> </span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>    <span class="dt">year</span>,</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>    month_name,</span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>    total_orders,</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- aov: total revenue / total orders</span></span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(monthly_revenue <span class="op">/</span> total_orders <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">2</span>)) <span class="kw">as</span> aov,</span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- avg basket size: total items / total orders</span></span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(monthly_items_count <span class="op">*</span> <span class="fl">1.0</span> <span class="op">/</span> total_orders <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_basket_size,</span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- item value proxy: aov / avg basket size (average price per item)</span></span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>((monthly_revenue <span class="op">/</span> total_orders) <span class="op">/</span> (monthly_items_count <span class="op">*</span> <span class="fl">1.0</span> <span class="op">/</span> total_orders) <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_price_per_item</span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> </span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>    monthly_metrics</span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a><span class="kw">order</span> <span class="kw">by</span> </span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>    <span class="dt">year</span>, month_number;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p><strong>Results:</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>year</th>
+<th>month_name</th>
+<th>total_orders</th>
+<th>aov</th>
+<th>avg_basket_size</th>
+<th>avg_price_per_item</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2016</td>
+<td>September</td>
+<td>1</td>
+<td>136.23</td>
+<td>2.00</td>
+<td>68.11</td>
+</tr>
+<tr class="even">
+<td>2016</td>
+<td>October</td>
+<td>290</td>
+<td>177.35</td>
+<td>1.18</td>
+<td>150.38</td>
+</tr>
+<tr class="odd">
+<td>2016</td>
+<td>December</td>
+<td>1</td>
+<td>19.62</td>
+<td>1.00</td>
+<td>19.62</td>
+</tr>
+<tr class="even">
+<td>2017</td>
+<td>January</td>
+<td>787</td>
+<td>174.09</td>
+<td>1.21</td>
+<td>143.76</td>
+</tr>
+<tr class="odd">
+<td>2017</td>
+<td>February</td>
+<td>1718</td>
+<td>165.09</td>
+<td>1.13</td>
+<td>146.50</td>
+</tr>
+<tr class="even">
+<td>2017</td>
+<td>March</td>
+<td>2617</td>
+<td>162.65</td>
+<td>1.14</td>
+<td>143.08</td>
+</tr>
+<tr class="odd">
+<td>2017</td>
+<td>April</td>
+<td>2377</td>
+<td>170.80</td>
+<td>1.12</td>
+<td>152.63</td>
+</tr>
+<tr class="even">
+<td>2017</td>
+<td>May</td>
+<td>3640</td>
+<td>160.14</td>
+<td>1.13</td>
+<td>141.97</td>
+</tr>
+<tr class="odd">
+<td>2017</td>
+<td>June</td>
+<td>3205</td>
+<td>155.95</td>
+<td>1.11</td>
+<td>139.97</td>
+</tr>
+<tr class="even">
+<td>2017</td>
+<td>July</td>
+<td>3946</td>
+<td>146.70</td>
+<td>1.14</td>
+<td>128.84</td>
+</tr>
+<tr class="odd">
+<td>2017</td>
+<td>August</td>
+<td>4272</td>
+<td>154.98</td>
+<td>1.14</td>
+<td>135.61</td>
+</tr>
+<tr class="even">
+<td>2017</td>
+<td>September</td>
+<td>4227</td>
+<td>169.67</td>
+<td>1.14</td>
+<td>148.95</td>
+</tr>
+<tr class="odd">
+<td>2017</td>
+<td>October</td>
+<td>4547</td>
+<td>168.20</td>
+<td>1.17</td>
+<td>144.30</td>
+</tr>
+<tr class="even">
+<td>2017</td>
+<td>November</td>
+<td>7421</td>
+<td>157.98</td>
+<td>1.16</td>
+<td>135.91</td>
+</tr>
+<tr class="odd">
+<td>2017</td>
+<td>December</td>
+<td>5618</td>
+<td>153.37</td>
+<td>1.12</td>
+<td>136.77</td>
+</tr>
+<tr class="even">
+<td>2018</td>
+<td>January</td>
+<td>7187</td>
+<td>153.42</td>
+<td>1.14</td>
+<td>134.91</td>
+</tr>
+<tr class="odd">
+<td>2018</td>
+<td>February</td>
+<td>6624</td>
+<td>147.92</td>
+<td>1.15</td>
+<td>128.98</td>
+</tr>
+<tr class="even">
+<td>2018</td>
+<td>March</td>
+<td>7168</td>
+<td>160.82</td>
+<td>1.14</td>
+<td>140.66</td>
+</tr>
+<tr class="odd">
+<td>2018</td>
+<td>April</td>
+<td>6919</td>
+<td>167.12</td>
+<td>1.15</td>
+<td>145.32</td>
+</tr>
+<tr class="even">
+<td>2018</td>
+<td>May</td>
+<td>6833</td>
+<td>167.68</td>
+<td>1.16</td>
+<td>145.07</td>
+</tr>
+<tr class="odd">
+<td>2018</td>
+<td>June</td>
+<td>6145</td>
+<td>166.07</td>
+<td>1.15</td>
+<td>144.55</td>
+</tr>
+<tr class="even">
+<td>2018</td>
+<td>July</td>
+<td>6233</td>
+<td>166.83</td>
+<td>1.13</td>
+<td>147.73</td>
+</tr>
+<tr class="odd">
+<td>2018</td>
+<td>August</td>
+<td>6421</td>
+<td>155.26</td>
+<td>1.12</td>
+<td>138.15</td>
+</tr>
+<tr class="even">
+<td>2018</td>
+<td>September</td>
+<td>1</td>
+<td>166.46</td>
+<td>1.00</td>
+<td>166.46</td>
+</tr>
+</tbody>
+</table>
+
+
+</details></section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,231 @@
+---
+title: "Business Questions for Olist E-Commerce Sales Analysis"
+---
+
+# Introduction
+
+Before doing the proper analysis, it is crucial to define the business questions that we want to answer through our data analysis. These questions will guide our analysis and help us focus on the most relevant insights that can drive business growth for Olist. The questions must be clear and straightforward since they will shape the direction of our analysis and the insights we will uncover. The questions should be designed to address specific business problems and provide actionable insights that can inform strategic decisions. By defining these questions upfront, we can ensure that our analysis is focused and relevant to the company's needs, and that we are able to uncover insights that can drive business growth and improve customer satisfaction.
+
+The questions are generated both AI LLM tools and my domain knowledge as a data analyst. The questions are categorized into different domains such as sales, customers, products, and regions to ensure a comprehensive analysis of the data. By addressing these questions through our analysis, we can provide valuable insights that can inform strategic decisions and drive business growth for Olist.
+
+The questions are designed into the following domains: 
+
+1. **Customer Behavior and Retention:** 
+2. **Orders and Sales Performance:** 
+3. **Delivery and Logistics Performance:**
+4. **Seller Performance and Marketplace Health:**
+5. **Payments and Financial Risk:**
+6. **Customer Experience and Reviews:**
+7. **Time Seasonality and Growth:**  
+
+
+# Customer Behavior and Retention 
+
+
+1. Can we segment the customer base into distinct clusters, specifically, *Champions*, *Loyalists*, *Hibernating* and *At Risk*  by scoring each unique user based on the recency of their last order, the frequency of their purchases and their total monetary contribution? 
+
+
+**Business Value**: This question is crucial for understanding customer behavior and retention. By segmenting the customer base into distinct clusters, Olist can tailor its marketing strategies and customer engagement efforts to each segment's specific needs and preferences. For example, *Champions* may be targeted with loyalty programs and exclusive offers, while *At Risk* customers may receive re-engagement campaigns to encourage them to return. This segmentation can help Olist improve customer retention, increase sales, and enhance overall customer satisfaction.
+
+
+2. How does customer retention evolve over time when users are grouped by their acquisition month? Specifically, what percentage of customers acquired in a specific month (e.g., Jan 2017) return to make a second purchase within months 1, 3, and 6?"
+
+**Business Value**: This question is important for understanding the effectiveness of customer acquisition strategies and the long-term value of customers. By analyzing retention rates over time for different acquisition cohorts, Olist can identify trends and patterns in customer behavior, such as which acquisition channels or campaigns are most effective at attracting loyal customers. This insight can help Olist optimize its marketing efforts, improve customer retention, and ultimately drive business growth.
+
+
+3. Does the customer base adhere to the '80/20 Rule' (Pareto Principle), where the top 20% of unique customers contribute to 80% of the total revenue? If so, what defines the profile of these top-tier customers?"
+
+
+**Business Value**: Understanding the 80/20 rule can help Olist focus its resources on the most valuable customers and optimize its marketing and sales strategies. By identifying the characteristics of top-tier customers, Olist can develop targeted approaches to attract and retain similar customers, ultimately driving revenue growth and improving customer satisfaction.
+
+
+4. For the segment of customers with multiple purchases, what is the average time interval (in days) between consecutive orders? How does this 'purchase latency' vary across different product categories?"
+
+**Business Value**: Analyzing purchase latency can provide insights into customer buying patterns and preferences. By understanding how the time interval between purchases varies across product categories, Olist can optimize its inventory management, marketing strategies, and customer engagement efforts. For example, if customers tend to purchase certain products more frequently, Olist can ensure that these products are well-stocked and promote them more aggressively to drive sales.
+
+
+5. "Which customers have exceeded the average purchase cycle by more than 2 standard deviations without placing a new order? Can we flag these users as 'High Risk of Churn' based on their deviation from the typical repurchase behavior?"
+
+**Business Value**: Identifying customers who are at high risk of churn is crucial for retention efforts. By flagging customers who have exceeded the average purchase cycle by a significant margin, Olist can proactively engage with these customers through targeted marketing campaigns, personalized offers, or re-engagement strategies to encourage them to return and make a purchase. This can help reduce churn rates, improve customer retention, and ultimately drive business growth.
+
+
+
+# Orders and Sales Performance 
+
+6. Monthly Sales Trends: What are the monthly sales trends for Olist over the past few years? Are there any seasonal patterns or significant fluctuations in sales performance that can be identified?
+
+**Business Value**: Understanding monthly sales trends can help Olist identify seasonal patterns and fluctuations in sales performance. This insight can inform inventory management, marketing strategies, and promotional campaigns to capitalize on peak sales periods and mitigate the impact of slower months. By aligning business strategies with sales trends, Olist can optimize revenue generation and improve overall business performance.
+
+
+7. Which product categories constitute the top 20% of sales volume, and do they align with the top 20% of revenue generators? Can we identify 'High Volume / Low Value' categories versus 'Low Volume / High Value' (Niche/Luxury) categories?"
+
+**Business Value**: Analyzing the relationship between sales volume and revenue can help Olist identify which product categories are driving the most sales and which are generating the most revenue. This insight can inform inventory management, marketing strategies, and product development efforts. For example, 'High Volume / Low Value' categories may require different marketing approaches compared to 'Low Volume / High Value' categories, allowing Olist to optimize its resources and maximize profitability.
+
+
+8. Can we calculate the 3-month rolling average for total revenue to smooth out daily and weekly volatility? How does this long-term trendline compare to the raw sales data in identifying the true direction of business growth?
+
+**Business Value**: Calculating a rolling average can help Olist smooth out short-term volatility in sales data and identify long-term trends in revenue growth. By comparing the rolling average to raw sales data, Olist can gain a clearer understanding of the underlying growth trajectory of the business, which can inform strategic planning, resource allocation, and performance evaluation.
+
+
+9. How is revenue distributed across different states (`customer_state`) and cities? specifically, identifying the top 5 regions 
+with the highest sales density per capita versus regions with high order volume but low total revenue?
+
+**Business Value**: Analyzing revenue distribution across different regions can help Olist identify areas with high sales density and potential growth opportunities. By understanding the geographic distribution of revenue, Olist can tailor its marketing strategies, optimize logistics and delivery operations, and allocate resources more effectively to capitalize on regional demand and drive business growth.
+
+
+10. AOV and Busket Size Analysis: What is the average order value (AOV) and average basket size (number of items per order) for Olist? How do these metrics vary across year and months? 
+
+**Business Value**: Analyzing AOV and basket size can provide insights into customer purchasing behavior and preferences. By understanding how these metrics vary across time, Olist can identify trends and patterns in customer spending, which can inform marketing strategies, promotional campaigns, and inventory management. For example, if AOV tends to increase during certain months, Olist can capitalize on this trend by offering targeted promotions or bundling products to encourage higher spending.
+
+
+
+# Delivery and Logistics Performance
+
+11. What is the overall 'On-Time Delivery Rate' (percentage of orders delivered before the `order_estimated_delivery_date`)? Furthermore, what is the average variance between the estimated and actual delivery dates across different states?" 
+
+
+**Business Value**: Analyzing on-time delivery rates and delivery date variance can help Olist identify areas for improvement in its logistics and delivery operations. By understanding the performance of deliveries across different regions, Olist can optimize its supply chain, improve customer satisfaction, and reduce costs associated with late deliveries or logistical inefficiencies. This insight can also inform decisions about partnerships with delivery providers and investments in logistics infrastructure.
+
+
+12. How does the average freight cost (`freight_value`) correlate with average delivery time across different states? Can we identify regions that suffer from the 'Logistics Gap' - paying disproportionately high shipping fees for the slowest service?
+
+
+**Business Value**: Analyzing the correlation between freight costs and delivery times can help Olist identify regions where customers are paying high shipping fees for slow delivery service. This insight can inform decisions about optimizing logistics operations, negotiating better rates with delivery providers, or investing in infrastructure to improve delivery performance in these regions. By addressing the 'Logistics Gap', Olist can enhance customer satisfaction, reduce costs, and improve overall business performance.
+
+
+13. Can we decompose the total delivery timeline into three distinct stages: 'Approval Time' (Purchase to Approval), 'Dispatch Time' (Approval to Carrier Handover), and 'Last-Mile Delivery' (Carrier to Customer)? Which of these stages contributes the most to overall delays? 
+
+**Business Value**: Decomposing the delivery timeline into distinct stages can help Olist identify specific areas within the delivery process that contribute to delays. By understanding which stage is the bottleneck, Olist can implement targeted improvements to streamline operations, reduce delivery times, and enhance customer satisfaction. For example, if 'Last-Mile Delivery' is identified as the primary source of delays, Olist can focus on optimizing last-mile logistics, such as partnering with local delivery providers or investing in technology to improve route planning and tracking.
+
+
+14. How does logistics performance compare between 'Local Orders' (where `customer_state` matches `seller_state`) and 'Long-Haul Orders' (Cross-border)? Specifically, what is the 'Speed Premium' - the reduction in delivery days achieved by fulfilling orders locally?"
+
+**Business Value**: Analyzing the logistics performance of local versus long-haul orders can help Olist understand the benefits of fulfilling orders locally and identify opportunities to optimize its supply chain. 'Speed Premium' means the advantage of faster delivery times for local orders and the potential for cost savings. By quantifying the 'Speed Premium' for local orders, Olist can make informed decisions about inventory placement, warehouse locations, and partnerships with local sellers to improve delivery performance and enhance customer satisfaction. This insight can also inform marketing strategies that emphasize faster delivery times for local customers, potentially driving increased sales in those regions.
+
+
+15. What is the average 'Freight Ratio' (Freight Value / Product Price) across different product categories? Can we identify categories where shipping costs are disproportionately high (`>20%` of item value), leading to potential 'Cart Abandonment'?
+
+**Business Value**: Analyzing the 'Freight Ratio' can help Olist identify product categories where shipping costs are disproportionately high relative to the product price. This insight can inform strategies to reduce cart abandonment, such as offering free shipping for certain categories, bundling products to increase order value, or negotiating better shipping rates with carriers. By addressing high freight ratios, Olist can improve the customer experience, increase conversion rates, and drive business growth.
+
+
+
+# Seller Performance and Marketplace Health 
+
+16. What is the average time gap between `order_approved_at` and `order_delivered_carrier_date` for each seller? Who are the 'Bottom 10%' of sellers who consistently take the longest to hand over packaged orders to the logistics partner?
+
+**Business Value**: Analyzing the time gap between order approval and delivery to the carrier can help Olist identify sellers who may be causing delays in the fulfillment process. By identifying the 'Bottom 10%' of sellers, Olist can take targeted actions to improve their performance, such as providing additional training, implementing performance incentives, or even reconsidering partnerships with consistently underperforming sellers. Improving seller performance can lead to faster order fulfillment, enhanced customer satisfaction, and overall marketplace health.
+
+
+
+17. Do the top 10% of sellers generate more than 50% of the platform's total revenue? Furthermore, which product categories are dominated by a single 'Monopoly Seller' vs. categories with a healthy, competitive mix of multiple vendors?
+
+**Business Value**: This question is another pareto analysis question in which we want to understand the distribution of revenue among sellers and identify potential monopolies in product categories. By understanding the concentration of revenue among sellers, Olist can make informed decisions about seller management, such as providing support to high-performing sellers or addressing issues with underperforming sellers. Additionally, identifying 'Monopoly Sellers' can help Olist ensure a competitive marketplace, which can lead to better prices and options for customers, ultimately driving business growth.
+
+
+
+
+18. What is the churn rate of sellers on the platform? Specifically, how many sellers who made a sale in 2017 became inactive (zero sales) in 2018? Is there a correlation between high 'Order Cancellation Rates' and subsequent seller churn?
+
+**Business Value**: This question is important to analyze customer churn in all sellers. By understanding the churn rate of sellers and its correlation with order cancellation rates, Olist can identify potential issues in the seller experience and take proactive measures to improve seller retention. This could involve providing better support, implementing performance incentives, or addressing specific pain points that lead to cancellations and churn. Improving seller retention can enhance the overall health of the marketplace, increase product availability, and drive business growth.
+
+
+19. Which sellers have a high sales volume (>50 orders) but a consistently low average review score (<3 stars)? Can we identify specific sellers who are responsible for a disproportionate number of the platform's 1-star reviews?
+
+**Business Value**: Identifying sellers with high sales volume but low average review scores can help Olist address potential issues with product quality, customer service, or fulfillment that may be leading to negative customer experiences. By pinpointing specific sellers responsible for a disproportionate number of 1-star reviews, Olist can take targeted actions to improve their performance, such as providing additional training, implementing quality control measures, or reconsidering partnerships with consistently underperforming sellers. Improving seller performance can lead to enhanced customer satisfaction, better reviews, and ultimately drive business growth.
+
+
+
+# Payments and Financial Risk 
+
+20. What is the distribution of total revenue across different payment methods (Credit Card, Boleto, Voucher, Debit Card)?  Specifically, does the 'Average Transaction Value' differ significantly between Credit Card users and Boleto users?"
+
+**Business Value**: Analyzing the distribution of revenue across different payment methods can help Olist understand customer preferences and identify potential opportunities for optimizing payment options. By comparing the average transaction value between different payment methods, Olist can tailor its marketing strategies and promotional offers to encourage higher spending through preferred payment channels, ultimately driving business growth.
+
+
+21. Is there a positive correlation between the number of installments chosen (`payment_installments`) and  the total order value? Specifically, what percentage of high-ticket orders (\>R\$500) are purchased using 5+ installments?"
+
+
+**Business Value**: Analyzing the correlation between payment installments and order value can provide insights into customer purchasing behavior and preferences. By understanding how customers choose to pay for high-ticket orders, Olist can optimize its payment options, offer targeted promotions for installment plans, and potentially increase sales of higher-value products. This insight can also inform marketing strategies that emphasize the availability of flexible payment options for expensive items, driving business growth.
+
+
+
+
+22. How does payment preference vary by region (`customer_state`)? Are there specific states where "Boleto' usage is isproportionately high compared to the national average, indicating a lower penetration of credit cards?
+
+
+**Business Value**: Payment preferences can vary significantly by region. For example, in Brazil, 'Boleto' is a popular payment method, especially in regions with lower credit card penetration. By analyzing payment preferences by region, Olist can tailor its marketing strategies and payment options to better serve customers in different areas. For instance, in regions where 'Boleto' usage is high, Olist can promote this payment method more prominently and offer incentives for using it, ultimately improving the customer experience and driving business growth.
+
+
+
+# Customer Experience and Reviews 
+
+23. What is the quantitative correlation between **Delivery Delay** (Actual Delivery Date - Estimated Delivery Date) and the **Average Review Score**? Specifically, at what 'delay threshold' (e.g., +1 day, +3 days) does the average customer rating strictly drop below 3 stars?
+
+**Business Value**: The delivery delay and delivery problems are one of the most common reasons for negative customer reviews and low satisfaction scores. By analyzing the correlation between delivery delays and review scores, Olist can identify specific thresholds where customer satisfaction significantly drops. This insight can inform logistics improvements, such as optimizing delivery routes, partnering with more reliable carriers, or implementing better communication with customers about delivery status. By reducing delivery delays and improving the customer experience, Olist can enhance customer satisfaction, increase positive reviews, and drive business growth.
+
+
+
+24. Can we identify product categories that consistently have **Fast Delivery** (Top 25% speed) but **Low Review Scores** (Bottom 25% rating)? Conversely, which categories have slow delivery but high scores?
+
+
+**Business Value**: Analyzing the relationship between delivery speed and review scores across product categories can help Olist identify potential issues with specific products or categories that may be affecting customer satisfaction. For example, if a category has fast delivery but low review scores, it may indicate issues with product quality or customer service that need to be addressed. Conversely, if a category has slow delivery but high scores, it may suggest that customers are willing to tolerate longer delivery times for certain products due to their quality or value. This insight can inform strategies to improve product offerings, optimize logistics, and enhance the overall customer experience, ultimately driving business growth.
+
+
+
+25. What is the distribution of review scores across different product categories? Specifically, which categories have the highest percentage of 1-star reviews, and can we identify any common issues or themes in the negative feedback for these categories?
+
+**Business Value**: Analyzing the distribution of review scores across product categories can help Olist identify areas where customers are experiencing dissatisfaction. By pinpointing categories with a high percentage of 1-star reviews and analyzing the common issues or themes in the negative feedback, Olist can take targeted actions to address these problems, such as improving product quality, enhancing customer service, or providing better product descriptions. This insight can lead to improved customer satisfaction, better reviews, and ultimately drive business growth.
+
+
+26. Is there a correlation between the number of reviews a product receives and its average review score? Specifically, do products with a higher volume of reviews tend to have more polarized ratings (more 1-star and 5-star reviews) compared to products with fewer reviews?
+
+**Business Value**: Analyzing the correlation between the number of reviews and average review scores can provide insights into customer behavior and product performance. If products with a higher volume of reviews tend to have more polarized ratings, it may indicate that these products are more popular and generate stronger opinions among customers. This insight can inform marketing strategies, such as promoting products with high engagement or addressing issues with products that receive a high volume of negative reviews. Ultimately, understanding this correlation can help Olist improve product offerings, enhance customer satisfaction, and drive business growth.
+
+
+27. Can we identify specific sellers or products that are responsible for a disproportionate number of 1-star reviews? Specifically, which sellers have the highest percentage of their orders resulting in 1-star reviews, and what common issues are cited in these reviews?
+
+**Business Value**: Identifying sellers or products that are responsible for a disproportionate number of 1-star reviews can help Olist address specific issues that may be affecting customer satisfaction. By pinpointing these sellers or products and analyzing the common issues cited in the negative reviews, Olist can take targeted actions to improve their performance, such as providing additional training to sellers, implementing quality control measures, or reconsidering partnerships with consistently underperforming sellers. Improving the performance of these sellers or products can lead to enhanced customer satisfaction, better reviews, and ultimately drive business growth.
+
+
+28. What is the effect of customer review answers on the average review score? Specifically, do products that receive responses to customer reviews (e.g., seller replies) tend to have higher average review scores compared to products that do not receive any responses? Also the average response time to customer reviews and its correlation with review scores?
+
+**Business Value**: Analyzing the effect of customer review answers on average review scores can provide insights into the importance of customer engagement and responsiveness. If products that receive responses to customer reviews tend to have higher average review scores, it may indicate that customers value seller engagement and are more likely to leave positive reviews when they feel heard. Additionally, analyzing the average response time to customer reviews and its correlation with review scores can help Olist understand the impact of timely responses on customer satisfaction. This insight can inform strategies to improve customer service, enhance the overall customer experience, and ultimately drive business growth.
+
+
+# Time Seasonality and Growth
+
+29. What is the Month-over-Month (MoM) growth rate for total revenue across the entire dataset? Can we identify specific months where the business experienced 'Hyper-Growth' (\>20% increase) versus months of stagnation or contraction?
+
+**Business Value**: Analyzing month-over-month growth rates can help Olist identify periods of significant growth or decline in revenue. By pinpointing specific months where the business experienced 'Hyper-Growth' or stagnation, Olist can investigate the underlying factors contributing to these trends, such as marketing campaigns, seasonal demand, or external events. This insight can inform strategic planning, resource allocation, and performance evaluation to capitalize on growth opportunities and address challenges effectively.
+
+
+30. How does the revenue of specific months compare across different years (e.g., Jan 2017 vs. Jan 2018)? Can we observe a consistent 'Seasonality Effect' where certain months (like November) consistently outperform others regardless of the year?
+
+**Business Value**: Analyzing revenue across specific months over multiple years can help Olist identify consistent seasonal patterns in sales performance. If certain months consistently outperform others, it may indicate a strong seasonality effect that Olist can leverage for marketing campaigns, inventory management, and promotional strategies. Understanding these seasonal trends can help Olist optimize its operations and maximize revenue during peak periods, ultimately driving business growth.
+
+
+
+31. What is the distribution of order volume across different **Days of the Week** and **Hours of the Day**? Specifically, do we see a 'Lunchtime Spike' (12 PM - 2 PM) or an 'Evening Spike' (8 PM - 10 PM)?
+
+**Business Value**: Analyzing the distribution of order volume across different days of the week and hours of the day can provide insights into customer purchasing behavior and preferences. If there are specific time periods, such as a 'Lunchtime Spike' or an 'Evening Spike', Olist can optimize its marketing strategies, promotional campaigns, and inventory management to capitalize on these peak ordering times. This insight can help Olist improve customer engagement, increase sales, and drive business growth.
+
+
+32. What is the cumulative revenue generated over time since the inception of the platform? By plotting the running total of sales, can we visually confirm the business's transition from 'Linear Growth' to 'Exponential Growth' (The Hockey Stick Curve)?
+
+**Business Value**: Analyzing cumulative revenue over time can help Olist visualize its growth trajectory and identify key inflection points in its business development. By confirming the transition from linear to exponential growth, Olist can gain confidence in its business model and make informed decisions about scaling operations, investing in marketing, and expanding product offerings to sustain and accelerate growth. This insight can also be valuable for attracting investors and stakeholders by demonstrating the company's growth potential.
+
+
+# Conclusion
+
+This section outlined 32 real-world analytical business questions that we will address through our SQL analysis of the Olist E-Commerce dataset. These questions are designed to uncover insights across various domains, including customer behavior, sales performance, delivery logistics, seller performance, payment preferences, customer experience, and time-based trends. By answering these questions, we aim to provide actionable insights that can inform strategic decisions and drive business growth for Olist. The next step will be to write SQL queries to address these questions and analyze the data to uncover the insights that will help Olist increase sales and improve customer satisfaction.
+
+
+
+
+
+
+
+
+
+
+

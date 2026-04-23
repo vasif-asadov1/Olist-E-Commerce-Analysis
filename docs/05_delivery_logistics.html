@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Delivery and Logistics Analysis – Vasif | Olist E-Commerce Analysis</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-acf12a64177840b8d86f2d4f01b2e9fb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-948e61940ef19b6a40d753e4856fbf86.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Vasif | Olist E-Commerce Analysis</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Olist Data Analysis</a></li><li class="breadcrumb-item"><a href="./05_delivery_logistics.html">Delivery and Logistics Analysis</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Olist Data Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Olist E-Commerce Sales Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_data_normalization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Ingestion and Cleaning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_business_questions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Business Questions for Olist E-Commerce Sales Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_customer_retention.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Customer Behavior and Retention Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_orders_sales_performance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Orders and Sales Performance Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_delivery_logistics.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Delivery and Logistics Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_seller_performance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Seller Performance Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_payments_and_risk.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Payments and Risk Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08_customer_reviews.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Customer Review and Satisfaction Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09_time_series.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Time Series Analysis</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#delivery-performance-analysis" id="toc-delivery-performance-analysis" class="nav-link" data-scroll-target="#delivery-performance-analysis">Delivery Performance Analysis</a></li>
+  <li><a href="#freight-cost-by-regions" id="toc-freight-cost-by-regions" class="nav-link" data-scroll-target="#freight-cost-by-regions">Freight Cost by Regions</a></li>
+  <li><a href="#delivery-timeline-decomposition" id="toc-delivery-timeline-decomposition" class="nav-link" data-scroll-target="#delivery-timeline-decomposition">Delivery Timeline Decomposition</a></li>
+  <li><a href="#local-vs-long-haul-logistics-performance" id="toc-local-vs-long-haul-logistics-performance" class="nav-link" data-scroll-target="#local-vs-long-haul-logistics-performance">Local vs Long-Haul Logistics Performance</a></li>
+  <li><a href="#freight-ratio-analysis-by-product-category" id="toc-freight-ratio-analysis-by-product-category" class="nav-link" data-scroll-target="#freight-ratio-analysis-by-product-category">Freight Ratio Analysis by Product Category</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Olist Data Analysis</a></li><li class="breadcrumb-item"><a href="./05_delivery_logistics.html">Delivery and Logistics Analysis</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Delivery and Logistics Analysis</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+</section>
+<section id="delivery-performance-analysis" class="level1">
+<h1>Delivery Performance Analysis</h1>
+<blockquote class="blockquote">
+<ol start="11" type="1">
+<li>What is the overall ‘On-Time Delivery Rate’ (percentage of orders delivered before the <code>order_estimated_delivery_date</code>)? Furthermore, what is the average variance between the estimated and actual delivery dates across different states?”</li>
+</ol>
+</blockquote>
+<p><strong>Solution:</strong></p>
+<ol type="1">
+<li><p><strong>Firstly, we prepare order-level delivery variances (<code>delivery_data</code> CTE)</strong>: We join the <code>orders</code> and <code>customers</code> tables, filtering strictly for successfully ‘delivered’ orders with valid dates. We use a <code>CASE</code> statement to flag if an order was delivered on or before the estimate (<code>is_on_time</code>), and use <code>datediff</code> to calculate the exact <code>delivery_variance_days</code>.</p></li>
+<li><p><strong>Secondly, we aggregate performance by state (<code>state_performance</code> CTE)</strong>: Grouping by <code>customer_state</code>, we sum the on-time flags to calculate the <code>on_time_rate</code> percentage. We calculate the state’s average delivery variance (<code>state_avg_accuracy</code>). Crucially, we also use a window function <code>avg() over ()</code> without a partition to calculate the <code>national_avg_accuracy</code> baseline across all states.</p></li>
+<li><p><strong>Finally, we classify states against the national benchmark (Final <code>SELECT</code>)</strong>: We format the output metrics and use a <code>CASE</code> statement to evaluate the state’s performance. By comparing the <code>state_avg_accuracy</code> against the <code>national_avg_accuracy</code> (+/- a 2-day buffer), we categorize the logistics estimation strategy for that region as ‘Extremely Conservative’, ‘Relatively Aggressive’, or ‘Standard’.</p></li>
+</ol>
+<details>
+<summary>
+Show SQL Code
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> delivery_data <span class="kw">as</span> (</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 1: prepare variance data per order</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        c.customer_state,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        o.order_id,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        o.order_estimated_delivery_date,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        o.order_delivered_customer_date,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">case</span> </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">when</span> o.order_delivered_customer_date <span class="op">&lt;=</span> o.order_estimated_delivery_date <span class="cf">then</span> <span class="dv">1</span> </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span> <span class="dv">0</span> </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span> <span class="kw">as</span> is_on_time,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        datediff(<span class="dt">day</span>, o.order_delivered_customer_date, o.order_estimated_delivery_date) <span class="kw">as</span> delivery_variance_days</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        orders o</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        customers c <span class="kw">on</span> o.customer_id <span class="op">=</span> c.customer_id</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        o.order_status <span class="op">=</span> <span class="st">'delivered'</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        <span class="kw">and</span> o.order_delivered_customer_date <span class="kw">is</span> <span class="kw">not</span> <span class="kw">null</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        <span class="kw">and</span> o.order_estimated_delivery_date <span class="kw">is</span> <span class="kw">not</span> <span class="kw">null</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>state_performance <span class="kw">as</span> (</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 2: aggregate by state and calculate national benchmark</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        customer_state,</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        <span class="fu">count</span>(order_id) <span class="kw">as</span> total_delivered_orders,</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cast</span>(<span class="fl">100.0</span> <span class="op">*</span> <span class="fu">sum</span>(is_on_time) <span class="op">/</span> <span class="fu">count</span>(order_id) <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">5</span>,<span class="dv">2</span>)) <span class="kw">as</span> on_time_rate,</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>        <span class="fu">avg</span>(delivery_variance_days <span class="op">*</span> <span class="fl">1.0</span>) <span class="kw">as</span> state_avg_accuracy,</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- getting the national average across all states to use as a baseline</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>        <span class="fu">avg</span>(<span class="fu">avg</span>(delivery_variance_days <span class="op">*</span> <span class="fl">1.0</span>)) <span class="kw">over</span> () <span class="kw">as</span> national_avg_accuracy</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>        delivery_data</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>        customer_state</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co">-- final output: categorizing states relative to the national logistics standard</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> </span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    customer_state,</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    total_delivered_orders,</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    on_time_rate,</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(state_avg_accuracy <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_accuracy_days,</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(national_avg_accuracy <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">2</span>)) <span class="kw">as</span> national_benchmark,</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> </span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>        <span class="cf">when</span> state_avg_accuracy <span class="op">&gt;</span> national_avg_accuracy <span class="op">+</span> <span class="dv">2</span> <span class="cf">then</span> <span class="st">'Extremely Conservative (High Buffer)'</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>        <span class="cf">when</span> state_avg_accuracy <span class="op">&lt;</span> national_avg_accuracy <span class="op">-</span> <span class="dv">2</span> <span class="cf">then</span> <span class="st">'Relatively Aggressive (Lower Buffer)'</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span> <span class="st">'Standard (Aligned with National Avg)'</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span> <span class="kw">as</span> relative_performance</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> </span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    state_performance</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="kw">order</span> <span class="kw">by</span> </span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>    avg_accuracy_days <span class="kw">desc</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</section>
+<section id="freight-cost-by-regions" class="level1">
+<h1>Freight Cost by Regions</h1>
+<blockquote class="blockquote">
+<ol start="12" type="1">
+<li>How does the average freight cost (<code>freight_value</code>) correlate with average delivery time across different states? Can we identify regions that suffer from the ‘Logistics Gap’ - paying disproportionately high shipping fees for the slowest service?</li>
+</ol>
+</blockquote>
+<p><strong>Solution:</strong></p>
+<ol type="1">
+<li><p><strong>Firstly, we prepare order-level freight and delivery data (<code>order_metrics</code> CTE)</strong>: We join the <code>orders</code>, <code>customers</code>, and <code>order_items</code> tables, filtering strictly for successfully ‘delivered’ orders. We calculate the <code>total_order_freight</code> by summing up the freight values of all items within an order (handling multi-item orders properly), and we use <code>datediff</code> to calculate the total <code>delivery_time_days</code> from purchase to customer delivery.</p></li>
+<li><p><strong>Secondly, we calculate state averages and national benchmarks (<code>state_benchmarks</code> CTE)</strong>: Grouping by <code>customer_state</code>, we average both the freight costs (<code>avg_state_freight</code>) and delivery times (<code>avg_state_delivery_time</code>) to establish the typical performance for each region. Crucially, we use the <code>avg() over ()</code> window function to establish the overall <code>national_avg_freight</code> and <code>national_avg_delivery_time</code> as baselines.</p></li>
+<li><p><strong>Finally, we classify regional logistics efficiency (Final <code>SELECT</code>)</strong>: We format the output metrics and use a <code>CASE</code> statement to compare each state’s averages against the national benchmarks. By cross-evaluating whether a state is above or below average in both cost and speed, we neatly categorize them into actionable profiles like ‘Logistics Gap (High Cost / Slow)’, ‘Premium Service’, ‘Budget / Inefficient’, or ‘Optimized Logistics’.</p></li>
+</ol>
+<details>
+<summary>
+Show SQL Code
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> order_metrics <span class="kw">as</span> (</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 1: prepare freight and delivery time per order</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- we sum freight_value per order first to handle cases with multiple items</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        o.order_id,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        c.customer_state,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(oi.freight_value) <span class="kw">as</span> total_order_freight,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        datediff(<span class="dt">day</span>, o.order_purchase_timestamp, o.order_delivered_customer_date) <span class="kw">as</span> delivery_time_days</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        orders o</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        customers c <span class="kw">on</span> o.customer_id <span class="op">=</span> c.customer_id</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        order_items oi <span class="kw">on</span> o.order_id <span class="op">=</span> oi.order_id</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        o.order_status <span class="op">=</span> <span class="st">'delivered'</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        <span class="kw">and</span> o.order_delivered_customer_date <span class="kw">is</span> <span class="kw">not</span> <span class="kw">null</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        o.order_id, c.customer_state, o.order_purchase_timestamp, o.order_delivered_customer_date</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>state_benchmarks <span class="kw">as</span> (</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 2: calculate state averages and compare to national benchmarks</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>        customer_state,</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>        <span class="fu">avg</span>(total_order_freight) <span class="kw">as</span> avg_state_freight,</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>        <span class="fu">avg</span>(delivery_time_days <span class="op">*</span> <span class="fl">1.0</span>) <span class="kw">as</span> avg_state_delivery_time,</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- national benchmarks using window functions</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>        <span class="fu">avg</span>(<span class="fu">avg</span>(total_order_freight)) <span class="kw">over</span> () <span class="kw">as</span> national_avg_freight,</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>        <span class="fu">avg</span>(<span class="fu">avg</span>(delivery_time_days <span class="op">*</span> <span class="fl">1.0</span>)) <span class="kw">over</span> () <span class="kw">as</span> national_avg_delivery_time</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>        order_metrics</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>        customer_state</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co">-- final output: classifying the logistics efficiency of each state</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> </span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    customer_state,</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(avg_state_freight <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_freight,</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(avg_state_delivery_time <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_delivery_days,</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> </span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>        <span class="cf">when</span> avg_state_freight <span class="op">&gt;</span> national_avg_freight <span class="kw">and</span> avg_state_delivery_time <span class="op">&gt;</span> national_avg_delivery_time <span class="cf">then</span> <span class="st">'Logistics Gap (High Cost / Slow)'</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>        <span class="cf">when</span> avg_state_freight <span class="op">&gt;</span> national_avg_freight <span class="kw">and</span> avg_state_delivery_time <span class="op">&lt;=</span> national_avg_delivery_time <span class="cf">then</span> <span class="st">'Premium Service (High Cost / Fast)'</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">when</span> avg_state_freight <span class="op">&lt;=</span> national_avg_freight <span class="kw">and</span> avg_state_delivery_time <span class="op">&gt;</span> national_avg_delivery_time <span class="cf">then</span> <span class="st">'Budget / Inefficient (Low Cost / Slow)'</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span> <span class="st">'Optimized Logistics (Low Cost / Fast)'</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span> <span class="kw">as</span> logistics_classification</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> </span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    state_benchmarks</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="kw">order</span> <span class="kw">by</span> </span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    avg_state_freight <span class="kw">desc</span>, avg_state_delivery_time <span class="kw">desc</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</section>
+<section id="delivery-timeline-decomposition" class="level1">
+<h1>Delivery Timeline Decomposition</h1>
+<blockquote class="blockquote">
+<ol start="13" type="1">
+<li>Can we decompose the total delivery timeline into three distinct stages: ‘Approval Time’ (Purchase to Approval), ‘Dispatch Time’ (Approval to Carrier Handover), and ‘Last-Mile Delivery’ (Carrier to Customer)? Which of these stages contributes the most to overall delays?</li>
+</ol>
+</blockquote>
+<p><strong>Solution:</strong></p>
+<ol type="1">
+<li><p><strong>Firstly, we extract time intervals for each fulfillment stage (<code>order_lifecycle</code> CTE)</strong>: We use the <code>datediff</code> function to calculate the time spent in each distinct phase: ‘Approval Time’ (purchase to approval), ‘Dispatch Time’ (approval to carrier handover), and ‘Last-Mile Delivery’ (carrier to customer). We calculate these differences in seconds and divide by 3600.0 to get precise hour measurements, filtering strictly for ‘delivered’ orders that have all necessary timestamp data.</p></li>
+<li><p><strong>Secondly, we calculate the mean duration of each stage (<code>stage_averages</code> CTE)</strong>: We aggregate the data by taking the average of the hours spent in each respective stage (<code>avg_approval_hrs</code>, <code>avg_dispatch_hrs</code>, <code>avg_last_mile_hrs</code>, and <code>avg_total_hrs</code>). Crucially, we include a <code>WHERE</code> clause here to filter out negative durations (<code>&gt;= 0</code>), eliminating potential data entry errors or anomalies from skewing our averages.</p></li>
+<li><p><strong>Finally, we calculate the percentage contributions (Final <code>SELECT</code>)</strong>: We convert our aggregated average hour metrics into average days (by dividing by 24.0) for easier human readability. To answer the core of the question—identifying the primary source of delays—we calculate the exact percentage each stage contributes to the total lead time (e.g., <code>100.0 * avg_last_mile_hrs / avg_total_hrs</code>).</p></li>
+</ol>
+<details>
+<summary>
+Show SQL Code
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> order_lifecycle <span class="kw">as</span> (</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 1: extract time intervals for each stage of the fulfillment process</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- using hours (3600.0 seconds) to maintain precision for fast stages like approval</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        order_id,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- stage 1: approval time (internal processing)</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        approval_hours <span class="op">=</span> datediff(<span class="dt">second</span>, order_purchase_timestamp, order_approved_at) <span class="op">/</span> <span class="fl">3600.0</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- stage 2: dispatch time (warehouse / seller preparation)</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        dispatch_hours <span class="op">=</span> datediff(<span class="dt">second</span>, order_approved_at, order_delivered_carrier_date) <span class="op">/</span> <span class="fl">3600.0</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- stage 3: last-mile delivery (carrier performance)</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        last_mile_hours <span class="op">=</span> datediff(<span class="dt">second</span>, order_delivered_carrier_date, order_delivered_customer_date) <span class="op">/</span> <span class="fl">3600.0</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- total lead time</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        total_lead_time_hours <span class="op">=</span> datediff(<span class="dt">second</span>, order_purchase_timestamp, order_delivered_customer_date) <span class="op">/</span> <span class="fl">3600.0</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        orders</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>        order_status <span class="op">=</span> <span class="st">'delivered'</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>        <span class="kw">and</span> order_approved_at <span class="kw">is</span> <span class="kw">not</span> <span class="kw">null</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>        <span class="kw">and</span> order_delivered_carrier_date <span class="kw">is</span> <span class="kw">not</span> <span class="kw">null</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        <span class="kw">and</span> order_delivered_customer_date <span class="kw">is</span> <span class="kw">not</span> <span class="kw">null</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>stage_averages <span class="kw">as</span> (</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 2: calculate mean durations across all orders</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>        avg_approval_hrs <span class="op">=</span> <span class="fu">avg</span>(approval_hours),</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>        avg_dispatch_hrs <span class="op">=</span> <span class="fu">avg</span>(dispatch_hours),</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>        avg_last_mile_hrs <span class="op">=</span> <span class="fu">avg</span>(last_mile_hours),</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>        avg_total_hrs <span class="op">=</span> <span class="fu">avg</span>(total_lead_time_hours)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>        order_lifecycle</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- filtering out negative values (data entry errors) to ensure clean averages</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>        approval_hours <span class="op">&gt;=</span> <span class="dv">0</span> <span class="kw">and</span> dispatch_hours <span class="op">&gt;=</span> <span class="dv">0</span> <span class="kw">and</span> last_mile_hours <span class="op">&gt;=</span> <span class="dv">0</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="co">-- final output: showing the "weight" of each stage in the delivery process</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> </span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(avg_approval_hrs <span class="op">/</span> <span class="fl">24.0</span> <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_approval_days,</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(avg_dispatch_hrs <span class="op">/</span> <span class="fl">24.0</span> <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_dispatch_days,</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(avg_last_mile_hrs <span class="op">/</span> <span class="fl">24.0</span> <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_last_mile_days,</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(avg_total_hrs <span class="op">/</span> <span class="fl">24.0</span> <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_total_lead_days,</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- contribution percentages</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(<span class="fl">100.0</span> <span class="op">*</span> avg_approval_hrs <span class="op">/</span> avg_total_hrs <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">5</span>,<span class="dv">2</span>)) <span class="kw">as</span> approval_pct_contribution,</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(<span class="fl">100.0</span> <span class="op">*</span> avg_dispatch_hrs <span class="op">/</span> avg_total_hrs <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">5</span>,<span class="dv">2</span>)) <span class="kw">as</span> dispatch_pct_contribution,</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(<span class="fl">100.0</span> <span class="op">*</span> avg_last_mile_hrs <span class="op">/</span> avg_total_hrs <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">5</span>,<span class="dv">2</span>)) <span class="kw">as</span> last_mile_pct_contribution</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> </span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>    stage_averages;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</section>
+<section id="local-vs-long-haul-logistics-performance" class="level1">
+<h1>Local vs Long-Haul Logistics Performance</h1>
+<blockquote class="blockquote">
+<ol start="14" type="1">
+<li>How does logistics performance compare between ‘Local Orders’ (where <code>customer_state</code> matches <code>seller_state</code>) and ‘Long-Haul Orders’ (Cross-border)? Specifically, what is the ‘Speed Premium’ - the reduction in delivery days achieved by fulfilling orders locally?”</li>
+</ol>
+</blockquote>
+<p><strong>Solution:</strong></p>
+<ol type="1">
+<li><p><strong>Firstly, we classify the fulfillment path (<code>shipment_classification</code> CTE)</strong>: We join the <code>orders</code>, <code>customers</code>, <code>order_items</code>, and <code>sellers</code> tables to access both the customer’s and seller’s locations. We use a <code>CASE</code> statement to flag an order as ‘Local’ if the <code>customer_state</code> matches the <code>seller_state</code>, and ‘Long-Haul’ otherwise. We crucially use <code>DISTINCT</code> here to ensure that if a customer buys multiple items from the same seller in one order, we only evaluate the order’s delivery timeline once.</p></li>
+<li><p><strong>Secondly, we calculate individual delivery metrics (<code>performance_metrics</code> CTE)</strong>: For each classified order, we calculate the exact <code>delivery_days</code> (using seconds divided by 86400.0 for precision) and create a binary flag (<code>is_on_time</code>) by comparing the actual delivery date against the estimated delivery date.</p></li>
+<li><p><strong>Thirdly, we aggregate the performance statistics (<code>summary_stats</code> CTE)</strong>: Grouping strictly by our new <code>shipment_type</code>, we calculate the total <code>shipment_count</code>, the <code>avg_delivery_days</code>, and the overall <code>on_time_rate_pct</code>.</p></li>
+<li><p><strong>Finally, we calculate the ‘Speed Premium’ (Final <code>SELECT</code>)</strong>: We format the output fields and use the <code>lag()</code> window function to compare the two rows. By subtracting the current row’s average delivery days from the previous row’s (ordered descendingly so Long-Haul comes first), we isolate the exact <code>speed_premium_days</code>—the amount of time saved by fulfilling an order locally.</p></li>
+</ol>
+<details>
+<summary>
+Show SQL Code
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> shipment_classification <span class="kw">as</span> (</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 1: link customers and sellers to classify the fulfillment path</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- we use distinct to handle multiple items from the same seller in one order</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> <span class="kw">distinct</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        o.order_id,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        c.customer_state,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        s.seller_state,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        o.order_purchase_timestamp,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        o.order_delivered_customer_date,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        o.order_estimated_delivery_date,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- classification logic</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">case</span> </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">when</span> c.customer_state <span class="op">=</span> s.seller_state <span class="cf">then</span> <span class="st">'Local'</span> </span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span> <span class="st">'Long-Haul'</span> </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span> <span class="kw">as</span> shipment_type</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        orders o</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        customers c <span class="kw">on</span> o.customer_id <span class="op">=</span> c.customer_id</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        order_items oi <span class="kw">on</span> o.order_id <span class="op">=</span> oi.order_id</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>        sellers s <span class="kw">on</span> oi.seller_id <span class="op">=</span> s.seller_id</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>        o.order_status <span class="op">=</span> <span class="st">'delivered'</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        <span class="kw">and</span> o.order_delivered_customer_date <span class="kw">is</span> <span class="kw">not</span> <span class="kw">null</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>performance_metrics <span class="kw">as</span> (</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 2: calculate duration and on-time status for each shipment</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>        shipment_type,</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>        datediff(<span class="dt">second</span>, order_purchase_timestamp, order_delivered_customer_date) <span class="op">/</span> <span class="fl">86400.0</span> <span class="kw">as</span> delivery_days,</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">case</span> <span class="cf">when</span> order_delivered_customer_date <span class="op">&lt;=</span> order_estimated_delivery_date <span class="cf">then</span> <span class="dv">1</span> <span class="cf">else</span> <span class="dv">0</span> <span class="cf">end</span> <span class="kw">as</span> is_on_time</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>        shipment_classification</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>summary_stats <span class="kw">as</span> (</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 3: aggregate results by shipment type</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>        shipment_type,</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>        <span class="fu">count</span>(<span class="op">*</span>) <span class="kw">as</span> shipment_count,</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>        <span class="fu">avg</span>(delivery_days) <span class="kw">as</span> avg_delivery_days,</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cast</span>(<span class="fl">100.0</span> <span class="op">*</span> <span class="fu">sum</span>(is_on_time) <span class="op">/</span> <span class="fu">count</span>(<span class="op">*</span>) <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">5</span>,<span class="dv">2</span>)) <span class="kw">as</span> on_time_rate_pct</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>        performance_metrics</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>        shipment_type</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a><span class="co">-- final output: comparing the two groups and calculating the speed premium</span></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> </span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>    shipment_type,</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>    shipment_count,</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(avg_delivery_days <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_delivery_days,</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>    on_time_rate_pct,</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- speed premium: calculating how much faster local is compared to long-haul</span></span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- we use a window function to find the difference between the two rows</span></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(</span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>        <span class="fu">lag</span>(avg_delivery_days) <span class="kw">over</span> (<span class="kw">order</span> <span class="kw">by</span> avg_delivery_days <span class="kw">desc</span>) <span class="op">-</span> avg_delivery_days </span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>    <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">2</span>)) <span class="kw">as</span> speed_premium_days</span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> </span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>    summary_stats;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</section>
+<section id="freight-ratio-analysis-by-product-category" class="level1">
+<h1>Freight Ratio Analysis by Product Category</h1>
+<blockquote class="blockquote">
+<ol start="15" type="1">
+<li>What is the average ‘Freight Ratio’ (Freight Value / Product Price) across different product categories? Can we identify categories where shipping costs are disproportionately high (<code>&gt;20%</code> of item value), leading to potential ‘Cart Abandonment’?</li>
+</ol>
+</blockquote>
+<p><strong>Solution:</strong></p>
+<ol type="1">
+<li><p><strong>Firstly, we aggregate price and freight metrics per category (<code>category_freight_stats</code> CTE)</strong>: We join the <code>order_items</code> and <code>products</code> tables to calculate the total revenue (<code>sum(price)</code>) and total freight costs (<code>sum(freight_value)</code>) for each <code>product_category_name</code>. We also calculate the average price and average freight cost per item, making sure to filter out any records with a null category.</p></li>
+<li><p><strong>Finally, we calculate the ‘Freight Ratio’ and classify abandonment risk (Final <code>SELECT</code>)</strong>: We compute the <code>freight_ratio_pct</code> by dividing the total category freight by the total category revenue (using <code>nullif</code> to prevent division by zero). We then use a <code>CASE</code> statement to flag categories where shipping costs exceed 20% of the product value as ‘High Abandonment Risk (&gt;20%)’ and those between 10% and 20% as ‘Moderate Overhead’. This allows us to easily spot product lines where shipping fees might be disproportionately high and deterring customers.</p></li>
+</ol>
+<details>
+<summary>
+Show SQL Code
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> category_freight_stats <span class="kw">as</span> (</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 1: aggregate total price and freight per category</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- we use order_items directly as it contains both price and freight_value</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        p.product_category_name,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">count</span>(oi.order_item_id) <span class="kw">as</span> total_items_sold,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">avg</span>(oi.price) <span class="kw">as</span> avg_product_price,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">avg</span>(oi.freight_value) <span class="kw">as</span> avg_freight_cost,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(oi.price) <span class="kw">as</span> total_category_revenue,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(oi.freight_value) <span class="kw">as</span> total_category_freight</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        order_items oi</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        products p <span class="kw">on</span> oi.product_id <span class="op">=</span> p.product_id</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        p.product_category_name <span class="kw">is</span> <span class="kw">not</span> <span class="kw">null</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        p.product_category_name</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co">-- final output: calculating the ratio and risk levels</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> </span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    product_category_name,</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(avg_product_price <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_price,</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(avg_freight_cost <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_freight,</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- freight ratio: what percentage of the product price is the shipping cost?</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(<span class="fl">100.0</span> <span class="op">*</span> total_category_freight <span class="op">/</span> <span class="fu">nullif</span>(total_category_revenue, <span class="dv">0</span>) <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">5</span>,<span class="dv">2</span>)) <span class="kw">as</span> freight_ratio_pct,</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- risk classification</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> </span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">when</span> (total_category_freight <span class="op">/</span> <span class="fu">nullif</span>(total_category_revenue, <span class="dv">0</span>)) <span class="op">&gt;</span> <span class="fl">0.20</span> <span class="cf">then</span> <span class="st">'High Abandonment Risk (&gt;20%)'</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">when</span> (total_category_freight <span class="op">/</span> <span class="fu">nullif</span>(total_category_revenue, <span class="dv">0</span>)) <span class="kw">between</span> <span class="fl">0.10</span> <span class="kw">and</span> <span class="fl">0.20</span> <span class="cf">then</span> <span class="st">'Moderate Overhead'</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span> <span class="st">'Optimized / Low Shipping Impact'</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span> <span class="kw">as</span> shipping_cost_impact</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> </span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    category_freight_stats</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="kw">order</span> <span class="kw">by</span> </span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    freight_ratio_pct <span class="kw">desc</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p><strong>Results:</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 26%">
+<col style="width: 11%">
+<col style="width: 14%">
+<col style="width: 21%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>product_category_name</th>
+<th>avg_price</th>
+<th>avg_freight</th>
+<th>freight_ratio_pct</th>
+<th>shipping_cost_impact</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>casa_conforto_2</td>
+<td>25.34</td>
+<td>13.68</td>
+<td>53.97</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="even">
+<td>flores</td>
+<td>33.64</td>
+<td>14.81</td>
+<td>44.04</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="odd">
+<td>moveis_colchao_e_estofado</td>
+<td>114.95</td>
+<td>42.91</td>
+<td>37.33</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="even">
+<td>artigos_de_natal</td>
+<td>57.52</td>
+<td>21.11</td>
+<td>36.69</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="odd">
+<td>fraldas_higiene</td>
+<td>40.19</td>
+<td>14.71</td>
+<td>36.60</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="even">
+<td>cds_dvds_musicais</td>
+<td>52.14</td>
+<td>16.07</td>
+<td>30.82</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="odd">
+<td>sinalizacao_e_seguranca</td>
+<td>108.09</td>
+<td>32.70</td>
+<td>30.26</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="even">
+<td>alimentos_bebidas</td>
+<td>54.60</td>
+<td>16.22</td>
+<td>29.70</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="odd">
+<td>eletronicos</td>
+<td>57.91</td>
+<td>16.83</td>
+<td>29.07</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="even">
+<td>fashion_esporte</td>
+<td>70.65</td>
+<td>19.27</td>
+<td>27.28</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="odd">
+<td>moveis_sala</td>
+<td>137.01</td>
+<td>35.72</td>
+<td>26.07</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="even">
+<td>moveis_cozinha_area_de_servico_jantar_e_jardim</td>
+<td>164.87</td>
+<td>42.70</td>
+<td>25.90</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="odd">
+<td>bebidas</td>
+<td>59.18</td>
+<td>15.15</td>
+<td>25.60</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="even">
+<td>moveis_escritorio</td>
+<td>162.01</td>
+<td>40.55</td>
+<td>25.03</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="odd">
+<td>alimentos</td>
+<td>57.63</td>
+<td>14.26</td>
+<td>24.74</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="even">
+<td>moveis_decoracao</td>
+<td>87.56</td>
+<td>20.73</td>
+<td>23.67</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="odd">
+<td>moveis_quarto</td>
+<td>183.75</td>
+<td>42.50</td>
+<td>23.13</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="even">
+<td>utilidades_domesticas</td>
+<td>90.79</td>
+<td>20.99</td>
+<td>23.12</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="odd">
+<td>livros_tecnicos</td>
+<td>71.52</td>
+<td>16.04</td>
+<td>22.43</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="even">
+<td>fashion_roupa_feminina</td>
+<td>58.41</td>
+<td>12.95</td>
+<td>22.18</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="odd">
+<td>telefonia</td>
+<td>71.21</td>
+<td>15.67</td>
+<td>22.00</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="even">
+<td>malas_acessorios</td>
+<td>128.60</td>
+<td>27.88</td>
+<td>21.68</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="odd">
+<td>dvds_blu_ray</td>
+<td>93.74</td>
+<td>20.14</td>
+<td>21.48</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="even">
+<td>fashion_calcados</td>
+<td>89.93</td>
+<td>18.77</td>
+<td>20.88</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="odd">
+<td>construcao_ferramentas_jardim</td>
+<td>108.05</td>
+<td>22.32</td>
+<td>20.65</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="even">
+<td>fashion_bolsas_e_acessorios</td>
+<td>75.25</td>
+<td>15.48</td>
+<td>20.58</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="odd">
+<td>artes_e_artesanato</td>
+<td>75.58</td>
+<td>15.42</td>
+<td>20.40</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="even">
+<td>ferramentas_jardim</td>
+<td>111.63</td>
+<td>22.77</td>
+<td>20.39</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="odd">
+<td>papelaria</td>
+<td>91.75</td>
+<td>18.59</td>
+<td>20.26</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="even">
+<td>fashion_underwear_e_moda_praia</td>
+<td>72.84</td>
+<td>14.63</td>
+<td>20.08</td>
+<td>High Abandonment Risk (&gt;20%)</td>
+</tr>
+<tr class="odd">
+<td>fashion_roupa_masculina</td>
+<td>81.80</td>
+<td>16.31</td>
+<td>19.93</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="even">
+<td>industria_comercio_e_negocios</td>
+<td>148.02</td>
+<td>29.42</td>
+<td>19.88</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="odd">
+<td>cama_mesa_banho</td>
+<td>93.30</td>
+<td>18.42</td>
+<td>19.74</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="even">
+<td>livros_interesse_geral</td>
+<td>84.73</td>
+<td>16.63</td>
+<td>19.62</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="odd">
+<td>market_place</td>
+<td>91.25</td>
+<td>17.54</td>
+<td>19.23</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="even">
+<td>eletrodomesticos</td>
+<td>103.98</td>
+<td>19.22</td>
+<td>18.48</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="odd">
+<td>artigos_de_festas</td>
+<td>104.31</td>
+<td>19.26</td>
+<td>18.46</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="even">
+<td>construcao_ferramentas_iluminacao</td>
+<td>135.13</td>
+<td>24.95</td>
+<td>18.46</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="odd">
+<td>pet_shop</td>
+<td>110.07</td>
+<td>20.32</td>
+<td>18.46</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="even">
+<td>cine_foto</td>
+<td>96.30</td>
+<td>17.45</td>
+<td>18.12</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="odd">
+<td>esporte_lazer</td>
+<td>114.34</td>
+<td>19.51</td>
+<td>17.06</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="even">
+<td>fashion_roupa_infanto_juvenil</td>
+<td>71.23</td>
+<td>11.94</td>
+<td>16.76</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="odd">
+<td>artes</td>
+<td>115.80</td>
+<td>19.35</td>
+<td>16.71</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="even">
+<td>casa_construcao</td>
+<td>137.56</td>
+<td>22.90</td>
+<td>16.65</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="odd">
+<td>bebes</td>
+<td>134.34</td>
+<td>22.30</td>
+<td>16.60</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="even">
+<td>livros_importados</td>
+<td>77.33</td>
+<td>12.83</td>
+<td>16.59</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="odd">
+<td>tablets_impressao_imagem</td>
+<td>90.70</td>
+<td>14.77</td>
+<td>16.29</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="even">
+<td>la_cuisine</td>
+<td>146.78</td>
+<td>23.82</td>
+<td>16.23</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="odd">
+<td>informatica_acessorios</td>
+<td>116.51</td>
+<td>18.82</td>
+<td>16.15</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="even">
+<td>brinquedos</td>
+<td>117.55</td>
+<td>18.81</td>
+<td>16.00</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>112.00</td>
+<td>17.57</td>
+<td>15.69</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="even">
+<td>automotivo</td>
+<td>139.96</td>
+<td>21.88</td>
+<td>15.63</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="odd">
+<td>seguros_e_servicos</td>
+<td>141.64</td>
+<td>20.61</td>
+<td>14.55</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="even">
+<td>casa_conforto</td>
+<td>134.96</td>
+<td>19.59</td>
+<td>14.51</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="odd">
+<td>beleza_saude</td>
+<td>130.16</td>
+<td>18.88</td>
+<td>14.50</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="even">
+<td>construcao_ferramentas_construcao</td>
+<td>155.73</td>
+<td>22.23</td>
+<td>14.27</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="odd">
+<td>perfumaria</td>
+<td>116.74</td>
+<td>15.86</td>
+<td>13.58</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="even">
+<td>cool_stuff</td>
+<td>167.36</td>
+<td>22.14</td>
+<td>13.23</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="odd">
+<td>construcao_ferramentas_ferramentas</td>
+<td>154.41</td>
+<td>19.71</td>
+<td>12.77</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="even">
+<td>consoles_games</td>
+<td>138.49</td>
+<td>17.44</td>
+<td>12.59</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="odd">
+<td>climatizacao</td>
+<td>185.27</td>
+<td>22.72</td>
+<td>12.27</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="even">
+<td>musica</td>
+<td>158.80</td>
+<td>18.17</td>
+<td>11.44</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="odd">
+<td>audio</td>
+<td>139.25</td>
+<td>15.69</td>
+<td>11.27</td>
+<td>Moderate Overhead</td>
+</tr>
+<tr class="even">
+<td>instrumentos_musicais</td>
+<td>281.62</td>
+<td>27.41</td>
+<td>9.73</td>
+<td>Optimized / Low Shipping Impact</td>
+</tr>
+<tr class="odd">
+<td>construcao_ferramentas_seguranca</td>
+<td>208.99</td>
+<td>20.20</td>
+<td>9.67</td>
+<td>Optimized / Low Shipping Impact</td>
+</tr>
+<tr class="even">
+<td>eletrodomesticos_2</td>
+<td>476.12</td>
+<td>44.54</td>
+<td>9.35</td>
+<td>Optimized / Low Shipping Impact</td>
+</tr>
+<tr class="odd">
+<td>pc_gamer</td>
+<td>171.77</td>
+<td>14.84</td>
+<td>8.64</td>
+<td>Optimized / Low Shipping Impact</td>
+</tr>
+<tr class="even">
+<td>eletroportateis</td>
+<td>280.78</td>
+<td>23.59</td>
+<td>8.40</td>
+<td>Optimized / Low Shipping Impact</td>
+</tr>
+<tr class="odd">
+<td>relogios_presentes</td>
+<td>201.14</td>
+<td>16.78</td>
+<td>8.34</td>
+<td>Optimized / Low Shipping Impact</td>
+</tr>
+<tr class="even">
+<td>agro_industria_e_comercio</td>
+<td>342.12</td>
+<td>27.56</td>
+<td>8.06</td>
+<td>Optimized / Low Shipping Impact</td>
+</tr>
+<tr class="odd">
+<td>portateis_cozinha_e_preparadores_de_alimentos</td>
+<td>264.57</td>
+<td>20.65</td>
+<td>7.81</td>
+<td>Optimized / Low Shipping Impact</td>
+</tr>
+<tr class="even">
+<td>telefonia_fixa</td>
+<td>225.69</td>
+<td>17.57</td>
+<td>7.78</td>
+<td>Optimized / Low Shipping Impact</td>
+</tr>
+<tr class="odd">
+<td>portateis_casa_forno_e_cafe</td>
+<td>624.29</td>
+<td>36.16</td>
+<td>5.79</td>
+<td>Optimized / Low Shipping Impact</td>
+</tr>
+<tr class="even">
+<td>pcs</td>
+<td>1098.34</td>
+<td>48.45</td>
+<td>4.41</td>
+<td>Optimized / Low Shipping Impact</td>
+</tr>
+</tbody>
+</table>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,32 @@
+{
+  "05_delivery_logistics.qmd": {
+    "05_delivery_logistics.html": "b7c8212e"
+  },
+  "06_seller_performance.qmd": {
+    "06_seller_performance.html": "3383b427"
+  },
+  "04_orders_sales_performance.qmd": {
+    "04_orders_sales_performance.html": "06d5ad27"
+  },
+  "07_payments_and_risk.qmd": {
+    "07_payments_and_risk.html": "4bb1fe1f"
+  },
+  "08_customer_reviews.qmd": {
+    "08_customer_reviews.html": "5fc0f31c"
+  },
+  "01_data_normalization.qmd": {
+    "01_data_normalization.html": "51ff050a"
+  },
+  "09_time_series.qmd": {
+    "09_time_series.html": "edc316fe"
+  },
+  "03_customer_retention.qmd": {
+    "03_customer_retention.html": "eac05312"
+  },
+  "02_business_questions.qmd": {
+    "02_business_questions.html": "c4257896"
+  },
+  "index.qmd": {
+    "index.html": "853dd7d7"
+  }
+}

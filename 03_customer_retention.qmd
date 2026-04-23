@@ -1,0 +1,658 @@
+---
+title: "Customer Behavior and Retention Analysis"
+---
+
+# Introduction
+
+In this section we will analyze customer behavior and retention patterns using the Olist e-commerce dataset. The goal is to segment the customer base into distinct clusters based on their purchasing behavior, identify trends in customer retention, and understand the factors that influence customer loyalty. We will do the following analysis:
+
+- Segment customers into clusters such as Champions, Loyalists, Hibernating, and At Risk based on their recency, frequency, and monetary value (RFM analysis).
+- Understand how the customer base has evolved over time, including trends in new customer acquisition and retention rates.
+- Analyze whether pareto principle holds true for the customer base, i.e., if a small percentage of customers contribute to a large percentage of revenue.
+- Explore the average time between repeat customers' purchase timestamps to understand the frequency of repeat purchases. 
+- Identify the customers that exceeded the average purchase cycle time more than 2 standard deviations, and analyze their behavior to understand potential reasons for their inactivity.
+
+Each question will be solved by SQL queries toghether with supportive explanations, tabular results and obtained insights. The insights obtained from the analysis will guide our market strategies and help Olist company to improve customer retention and loyalty, ultimately driving business growth.
+
+
+# Customer Segmentation using RFM Analysis
+
+> 1. Can we segment the customer base into distinct clusters, specifically, *Champions*, *Loyalists*, *Hibernating* and *At Risk*  by scoring each unique user based on the recency of their last order, the frequency of their purchases and their total monetary contribution? 
+
+
+**Solution**: Before solving the problem, let's briefly explain the RFM analysis and how we will use it to segment customers. RFM stands for Recency, Frequency, and Monetary value. Recency means how recently a customer made a purchase. It is calculated as the number of days since the last purchase. Frequency refers to how often a customer makes a purchase, which can be measured by counting the number of orders. Monetary value represents how much money a customer has spent, which can be calculated by summing the total payment value for each customer.
+
+To segment customers, we will assign scores from 1 to 5 for each RFM metric, where 5 is the best score and 1 is the worst. For recency, customers with lower days since their last purchase will receive higher scores. For frequency and monetary value, customers with higher counts and values will receive higher scores. After assigning scores, we will group customers into segments based on their RFM scores.
+
+To correctly divide the customers into segments, we will use `ntile` window function to assign scores based on the distribution of RFM values. This method allows us to create segments that are relative to the overall customer base, ensuring that we capture the nuances in customer behavior effectively.
+
+I have structured my SQL query in the folllowing sequence: 
+
+1. First, I will find the last order date in the dataset to use as a reference point for calculating recency.
+2. Then, I will calculate the RFM values for each unique customer by joining the relevant tables and aggregating the necessary metrics.
+3. Next, I will assign RFM scores using the `ntile` function to create relative scores for each metric. This function firstly, will order the customers based on their RFM values and then divide them into 5 equal groups and then for corresponding customer, it will assign a score from 1 to 5 based on the group they belong to. For example, customer with id = 1 has recency value of 10 days, frequency count of 5 and monetary value of 100. If the customer falls into the top 20% of customers with the lowest recency values, they will receive an R score of 5. If they fall into the top 20% of customers with the highest frequency counts, they will receive an F score of 5. If they fall into the bottom 20% of customers with the lowest monetary values, they will receive an M score of 1. This way, we can effectively segment customers based on their relative standing in each RFM metric.
+4. Finally, I will group the customers into segments based on their RFM scores and calculate the average scores and other relevant metrics for each segment.    
+
+
+<details>
+<summary>Show SQL Code</summary>
+
+```sql
+with dataset_max_date as (
+	-- find the last order date in the dataset - reference date
+	select
+		max(order_purchase_timestamp) as max_date
+	from 
+		orders
+),
+
+customer_rfm_base as (
+	-- calculate rfm values for each unique customer
+	select
+		customers.customer_unique_id,
+		max(orders.order_purchase_timestamp) as last_order_date,
+		count(distinct orders.order_id) as frequency_count,
+		sum(payments.payment_value) as monetary_value,
+		dmd.max_date
+	from 
+		orders 
+	inner join 
+		customers on customers.customer_id = orders.customer_id
+	inner join 
+		payments on orders.order_id = payments.order_id
+	cross join 
+		dataset_max_date dmd
+	where 
+		orders.order_status = 'delivered'
+	group by
+		customers.customer_unique_id, 
+		dmd.max_date
+),
+
+rfm_scores as (
+	-- assigning scores from 1 to 5 using ntile window function
+	-- 5 is the best score, 1 is the worst
+	select
+		customer_unique_id,
+		frequency_count, 
+		monetary_value,
+		DATEDIFF(day, last_order_date, max_date) as recency_days, 
+
+		-- recency score: lower_days = better score (5)
+		-- descending order -> larger days will get lower ntile
+		ntile(5) over (order by DATEDIFF(day, last_order_date, max_date) desc) as r_score,
+
+		-- frequency score: higher count = better score
+		ntile(5) over (order by frequency_count asc)  as f_score,
+
+		-- monetary score: higher value = better score
+		ntile(5) over (order by monetary_value asc) as m_score
+
+	from 
+		customer_rfm_base
+),
+
+rfm_segments as (
+	-- group the scores into segments
+	select
+		customer_unique_id,
+		recency_days,
+		frequency_count,
+		monetary_value,
+		r_score, 
+		f_score,
+		m_score, 
+		case
+			when r_score >= 4 and (f_score + m_score) / 2 >= 4 then 'Champions'
+			when r_score >= 3 and (f_score + m_score) / 2 >= 3 then 'Loyal Customers'
+			when r_score <= 2 and (f_score + m_score) / 2 >= 4 then 'At Risk'
+			when r_score <= 2 and (f_score + m_score) / 2 <= 2 then 'Hibernating'
+			else 'Potential Loyalist'
+		end as customer_segment
+	from 
+		rfm_scores
+)
+
+select
+	customer_segment, 
+	count(customer_unique_id) as customer_count,
+	cast(avg(r_score * 1.0) as decimal(5,2)) as avg_recency_score,
+	cast(avg(f_score * 1.0) as decimal(5,2)) as avg_frequency_score, 
+	cast(avg(m_score * 1.0) as decimal(5,2)) as avg_monetary_score, 
+	cast(avg(recency_days * 1.0) as int) as avg_days_since_last_order,
+	cast(avg(frequency_count * 1.0) as int) as avg_frequency_count,
+    cast(avg(monetary_value) as decimal(10,2)) as avg_lifetime_spend
+from 
+	rfm_segments
+group by 
+	customer_segment
+order by 
+	customer_count desc;
+```
+
+</details>
+
+
+**Results:** 
+
+|customer_segment|customer_count|avg_recency_score|avg_frequency_score|avg_monetary_score|avg_days_since_last_order|avg_frequency_count|avg_lifetime_spend|
+|----------------|--------------|-----------------|-------------------|------------------|-------------------------|-------------------|------------------|
+|Hibernating|25937|1.43|1.42|2.25|453|1|84.59|
+|Loyal Customers|25509|3.86|3.83|2.92|193|1|141.31|
+|Potential Loyalist|22558|2.59|2.52|2.89|321|1|190.69|
+|Champions|18417|4.60|4.56|4.23|129|1|272.96|
+|At Risk|936|1.58|4.95|4.40|424|2|315.29|
+
+
+**Insights:**
+
+- The largest segment of customers falls into the 'Hibernating' category, which indicates that a significant portion of the customer base has not made recent purchases and has low frequency and monetary value. This suggests that there may be an opportunity to re-engage these customers through targeted marketing campaigns or promotions.
+- The 'Loyal Customers' segment has a relatively high average recency score, indicating that these customers have made recent purchases. However, their average frequency and monetary scores are moderate, suggesting that while they are loyal, they may not be the most valuable customers in terms of revenue. Strategies to increase their purchase frequency or average order value could be beneficial.
+- The 'Champions' segment, while smaller in size compared to the 'Hibernating' and 'Loyal Customers' segments, has the highest average scores across all RFM metrics, indicating that these customers are highly engaged and valuable. They have made recent purchases, have a high frequency of orders, and contribute significantly to revenue. This segment should be prioritized for retention efforts and could also be targeted for upselling or cross-selling opportunities.
+- The 'At Risk' segment, although small in size, has a high average frequency and monetary score, indicating that these customers have been valuable in the past but have not made recent purchases. This suggests that they may be at risk of churning, and targeted retention strategies should be implemented to re-engage these customers and prevent them from becoming inactive.
+
+
+
+
+# Customer Retention Trends and Analysis
+
+> 2. How has the customer base evolved over time in terms of new customer acquisition and retention rates? Specifically, can we identify trends in the number of new customers acquired each month and the percentage of customers retained month-over-month?
+
+
+**Solution**: This type of questions is called cohort analysis, where we analyze the behavior of groups of customers (cohorts) over time. In this case, we will create monthly cohorts based on the month of the customer's first purchase. We will then track the retention of these cohorts over subsequent months to understand how many customers from each cohort continue to make purchases in the following months.
+
+
+
+
+<details>
+<summary>Show SQL Code</summary>
+
+```sql
+with customer_first_purchase as (
+    -- step 1: identify the acquisition month (birth month) for every unique customer
+    select 
+        c.customer_unique_id,
+        min(datefromparts(year(o.order_purchase_timestamp), month(o.order_purchase_timestamp), 1)) as cohort_month
+    from 
+        orders o
+    inner join 
+        customers c on o.customer_id = c.customer_id
+    where 
+        o.order_status not in ('canceled', 'unavailable')
+    group by 
+        c.customer_unique_id
+),
+
+cohort_activities as (
+    -- step 2: join all orders back to the birth month to see when they returned
+    select 
+        fp.customer_unique_id,
+        fp.cohort_month,
+        datediff(month, fp.cohort_month, datefromparts(year(o.order_purchase_timestamp), month(o.order_purchase_timestamp), 1)) as month_index
+    from 
+        orders o
+    inner join 
+        customers c on o.customer_id = c.customer_id
+    inner join 
+        customer_first_purchase fp on c.customer_unique_id = fp.customer_unique_id
+    where 
+        o.order_status not in ('canceled', 'unavailable')
+),
+
+cohort_sizes as (
+    -- step 3: calculate the denominator (total customers acquired in each month)
+    select 
+        cohort_month,
+        count(distinct customer_unique_id) as total_customers
+    from 
+        customer_first_purchase
+    group by 
+        cohort_month
+),
+
+retention_counts as (
+    -- step 4: count how many unique customers shopped in month 1, 3, and 6
+    select 
+        cohort_month,
+        count(distinct case when month_index = 1 then customer_unique_id end) as month_1_returnees,
+        count(distinct case when month_index = 3 then customer_unique_id end) as month_3_returnees,
+        count(distinct case when month_index = 6 then customer_unique_id end) as month_6_returnees
+    from 
+        cohort_activities
+    group by 
+        cohort_month
+)
+
+-- final output: calculate retention percentages
+-- we filter for cohorts with > 10 customers to remove statistically insignificant beta testing months (late 2016)
+select 
+    r.cohort_month,
+    s.total_customers as cohort_size,
+    cast(100.0 * r.month_1_returnees / s.total_customers as decimal(5,2)) as month_1_retention_pct,
+    cast(100.0 * r.month_3_returnees / s.total_customers as decimal(5,2)) as month_3_retention_pct,
+    cast(100.0 * r.month_6_returnees / s.total_customers as decimal(5,2)) as month_6_retention_pct
+from 
+    retention_counts r
+inner join 
+    cohort_sizes s on r.cohort_month = s.cohort_month
+where
+    s.total_customers > 10
+order by 
+    r.cohort_month;
+
+```
+
+</details>
+
+
+**Results:**
+
+|cohort_month|cohort_size|month_1_retention_pct|month_3_retention_pct|month_6_retention_pct|
+|------------|-----------|---------------------|---------------------|---------------------|
+|2016-10-01|290|0.00|0.00|0.34|
+|2017-01-01|752|0.40|0.13|0.40|
+|2017-02-01|1690|0.24|0.12|0.24|
+|2017-03-01|2571|0.51|0.39|0.16|
+|2017-04-01|2325|0.60|0.17|0.34|
+|2017-05-01|3541|0.48|0.40|0.42|
+|2017-06-01|3102|0.45|0.39|0.35|
+|2017-07-01|3822|0.52|0.24|0.31|
+|2017-08-01|4130|0.68|0.27|0.29|
+|2017-09-01|4075|0.69|0.29|0.22|
+|2017-10-01|4392|0.71|0.09|0.20|
+|2017-11-01|7190|0.56|0.17|0.11|
+|2017-12-01|5439|0.22|0.35|0.17|
+|2018-01-01|6951|0.33|0.29|0.17|
+|2018-02-01|6357|0.36|0.30|0.20|
+|2018-03-01|6931|0.40|0.29|0.00|
+|2018-04-01|6698|0.58|0.24|0.00|
+|2018-05-01|6586|0.52|0.20|0.00|
+|2018-06-01|5920|0.42|0.00|0.00|
+|2018-07-01|6016|0.52|0.00|0.00|
+|2018-08-01|6209|0.02|0.00|0.00|
+
+
+
+**Insights:**
+
+- The customer acquisition trend shows a significant increase in the number of new customers acquired each month, particularly from mid-2017 to early 2018. This indicates that Olist experienced rapid growth during this period, likely due to successful marketing campaigns, expansion of product offerings, or increased brand awareness.
+- The retention rates show a general decline over time, with the highest retention observed in the first month after acquisition (month 1 retention) and a significant drop in retention by month 3 and month 6. This suggests that while Olist was successful in acquiring new customers, retaining them over the long term has been a challenge. The sharp decline in retention rates after the first month indicates that many customers may not have had a positive experience or found enough value to continue shopping with Olist.
+- The retention rates also show some variability across different cohorts, with certain months (e.g., 2017-08-01 and 2017-09-01) exhibiting higher retention rates compared to others. This could be due to various factors such as seasonal promotions, changes in product offerings, or improvements in customer service during those periods. Analyzing the specific actions taken during these months could provide insights into strategies that may have contributed to better retention.
+
+
+# Pareto Principle Analysis for Customer Base
+
+> 3. Does the customer base adhere to the '80/20 Rule' (Pareto Principle), where the top 20% of unique customers contribute to 80% of the total revenue? If so, what defines the profile of these top-tier customers?
+
+
+**Solution**: Pareto Principle, also known as the 80/20 rule, suggests that a small percentage of customers (20%) often contribute to a large percentage of revenue (80%). We can check whether this principle holds true for our case by applying the following steps:
+
+1. First, we will calculate the total lifetime spend for each unique customer by summing up their payment values across all their orders.
+2. Next, we will rank the customers based on their total spend and calculate the cumulative revenue contribution for each customer.
+3. Then, we will use the `percent_rank` window function to determine which customers fall into the top 20% of spenders. This function will assign a percentile rank to each customer based on their total spend. This process is done by ordering the customers in descending order of their total spend and then dividing them into percentiles. Customers with a percentile rank of 0.20 or less will be classified as the top 20% of spenders.
+4. Besides the ranking, we will also calculate the cumulative revenue contribution for each customer to see how much of the total revenue is contributed by the top 20% of customers. This will allow us to determine if the top 20% of customers indeed contribute to around 80% of the total revenue, as suggested by the Pareto Principle.
+5. Finally, we will calculate the total revenue contributed by the top 20% of customers and compare it to the total revenue to see if it adheres to the 80/20 rule. 
+
+If the pareto principle holds true, it means our revenue comes predominantly from a small group of high-value customers. Understanding the profile of these top-tier customers can help us tailor our marketing strategies, improve customer retention, and focus on providing exceptional service to this valuable segment of our customer base.
+
+
+
+<details>
+<summary>Show SQL Code</summary>
+
+```sql
+with customer_revenue as (
+    -- step 1: calculate total lifetime spend per unique customer
+    select 
+        c.customer_unique_id,
+        sum(p.payment_value) as total_spend
+    from 
+        orders o
+    inner join 
+        customers c on o.customer_id = c.customer_id
+    inner join 
+        payments p on o.order_id = p.order_id
+    where 
+        o.order_status not in ('canceled', 'unavailable')
+    group by 
+        c.customer_unique_id
+),
+
+revenue_ranking as (
+    -- step 2: rank customers by spend and calculate cumulative totals
+    select 
+        customer_unique_id,
+        total_spend,
+        -- using percent_rank to determine the top 20% percentile
+        percent_rank() over (order by total_spend desc) as percentile_rank,
+        -- running total of revenue
+        sum(total_spend) over (order by total_spend desc) as cumulative_revenue,
+        -- total revenue across all customers for percentage calculation
+        sum(total_spend) over () as grand_total_revenue
+    from 
+        customer_revenue
+),
+
+pareto_summary as (
+    -- step 3: identify the contribution of the top 20%
+    select 
+        case 
+            when percentile_rank <= 0.20 then 'Top 20% (VIPs)'
+            else 'Bottom 80% (Long Tail)'
+        end as customer_tier,
+        count(customer_unique_id) as customer_count,
+        sum(total_spend) as tier_revenue,
+        max(grand_total_revenue) as total_revenue
+    from 
+        revenue_ranking
+    group by 
+        case 
+            when percentile_rank <= 0.20 then 'Top 20% (VIPs)'
+            else 'Bottom 80% (Long Tail)'
+        end
+)
+
+-- final output: calculating the percentage contribution per tier
+select 
+    customer_tier,
+    customer_count,
+    cast(tier_revenue as decimal(15,2)) as revenue_contribution,
+    cast(100.0 * tier_revenue / total_revenue as decimal(5,2)) as revenue_pct
+from 
+    pareto_summary
+order by 
+    revenue_pct desc;
+```
+
+</details>
+
+
+**Results:**
+
+|customer_tier|customer_count|revenue_contribution|revenue_pct|
+|-------------|--------------|--------------------|-----------|
+|Top 20% (VIPs)|19000|8432842.07|53.58|
+|Bottom 80% (Long Tail)|75989|7306294.94|46.42|
+
+
+**Insights:**
+
+- The analysis revealed that the top 20% of customers contribute to approximately 53.58% of the total revenue. In reality, there is not a perfect adherence to the 80/20 rule, as the top 20% of customers do not contribute to 80% of the revenue always. However, considering that more than half of the revenue of our company comes from only 20% of all customers, it is still a pareto principle type of distribution, where a small percentage of customers contribute to a large percentage of revenue. 
+- The top 20% of customers, often referred to as VIPs, are a critical segment for Olist. They contribute significantly to the company's revenue and likely have higher engagement and loyalty. Understanding the characteristics of these VIP customers, such as their purchasing behavior, preferences, and demographics, can help Olist tailor its marketing strategies and customer service efforts to better meet their needs and enhance their experience. 
+
+
+# Purchase Frequency and Inactivity Analysis
+
+> 4. For the segment of customers with multiple purchases, what is the average time interval (in days) between consecutive orders? How does this 'purchase latency' vary across different product categories?"
+
+
+**Solution*: To analyze the purchase frequency and inactivity patterns among customers with multiple purchases, we will follow these steps:
+
+1. First, we will identify customers who have made multiple purchases by counting the number of orders for each unique customer. We will focus on those customers who have made at least two purchases to analyze the time interval between their consecutive orders.
+2. Next, we will calculate the time interval (in days) between consecutive orders for each customer. This can be done using the `lag` window function to access the previous order's purchase timestamp and then calculating the difference in days between the current order and the previous order.
+3. We will also join the relevant tables to include product category information for each order, allowing us to analyze how purchase latency varies across different product categories.
+4. Finally, we will calculate the average purchase latency for each product category and identify any significant variations in purchase frequency across categories. This analysis will help us understand customer behavior and identify potential opportunities for targeted marketing or promotions based on purchase patterns in different product categories.
+
+
+
+
+<details>
+<summary>Show SQL Code</summary>
+
+```sql
+with purchase_sequences as (
+    -- step 1: identify orders for repeat customers and find the previous order date
+    -- we use lag() to get the prior purchase timestamp for each unique user
+    select 
+        c.customer_unique_id,
+        o.order_purchase_timestamp,
+        p.product_category_name,
+        lag(o.order_purchase_timestamp) over (
+            partition by c.customer_unique_id 
+            order by o.order_purchase_timestamp
+        ) as previous_order_timestamp
+    from 
+        orders o
+    inner join 
+        customers c on o.customer_id = c.customer_id
+    inner join 
+        order_items oi on o.order_id = oi.order_id
+    inner join 
+        products p on oi.product_id = p.product_id
+    where 
+        o.order_status not in ('canceled', 'unavailable')
+),
+
+latency_calculations as (
+    -- step 2: calculate days between orders and filter only for the second+ purchases
+    select 
+        customer_unique_id,
+        product_category_name,
+        datediff(day, previous_order_timestamp, order_purchase_timestamp) as days_to_next_order
+    from 
+        purchase_sequences
+    where 
+        previous_order_timestamp is not null -- ensures we only look at repeat purchase events
+)
+
+-- final output: average latency per category to identify replenishment cycles
+select 
+    lc.product_category_name,
+    pcnt.product_category_name_english,
+    count(*) as repeat_purchase_events,
+    avg(days_to_next_order) as avg_days_between_orders,
+    min(days_to_next_order) as min_days,
+    max(days_to_next_order) as max_days
+from 
+    latency_calculations lc
+left join product_category_name_translation pcnt 
+	on pcnt.product_category_name  = lc.product_category_name
+group by 
+    lc.product_category_name,
+    pcnt.product_category_name_english 
+having 
+    count(*) >= 5 -- filtering for statistical significance in categories
+order by 
+	repeat_purchase_events desc,
+    avg_days_between_orders asc;
+```
+
+
+</details>
+
+
+**Results:**
+
+|product_category_name|product_category_name_english|repeat_purchase_events|avg_days_between_orders|min_days|max_days|
+|---------------------|-----------------------------|----------------------|-----------------------|--------|--------|
+|moveis_decoracao|furniture_decor|2266|7|0|573|
+|cama_mesa_banho|bed_bath_table|2261|14|0|485|
+|informatica_acessorios|computers_accessories|1372|12|0|455|
+|utilidades_domesticas|housewares|1321|11|0|469|
+|esporte_lazer|sports_leisure|1258|18|0|467|
+|beleza_saude|health_beauty|1140|19|0|583|
+|ferramentas_jardim|garden_tools|939|9|0|524|
+|relogios_presentes|watches_gifts|543|30|0|514|
+|telefonia|telephony|447|14|0|491|
+|moveis_escritorio|office_furniture|445|3|0|347|
+|automotivo|auto|444|19|0|449|
+|brinquedos|toys|358|19|0|581|
+|perfumaria|perfumery|358|20|0|609|
+|fashion_bolsas_e_acessorios|fashion_bags_accessories|300|29|0|457|
+|pet_shop|pet_shop|298|23|0|427|
+|bebes|baby|294|18|0|337|
+|papelaria|stationery|272|23|0|522|
+|eletronicos|electronics|266|15|0|367|
+|cool_stuff|cool_stuff|252|19|0|442|
+|||230|14|0|431|
+|construcao_ferramentas_construcao|construction_tools_construction|216|14|0|348|
+|casa_construcao|home_construction|148|14|0|482|
+|moveis_sala|furniture_living_room|111|10|0|489|
+|bebidas|drinks|99|20|0|489|
+|consoles_games|consoles_games|94|23|0|524|
+|malas_acessorios|luggage_accessories|91|22|0|350|
+|eletrodomesticos|home_appliances|80|25|0|338|
+|construcao_ferramentas_iluminacao|construction_tools_lights|79|14|0|509|
+|alimentos|food|76|19|0|362|
+|casa_conforto|home_confort|72|18|0|306|
+|instrumentos_musicais|musical_instruments|67|18|0|297|
+|eletroportateis|small_appliances|65|15|0|235|
+|sinalizacao_e_seguranca|signaling_and_security|62|1|0|102|
+|alimentos_bebidas|food_drink|61|8|0|194|
+|construcao_ferramentas_jardim|costruction_tools_garden|58|15|0|405|
+|climatizacao|air_conditioning|55|10|0|281|
+|telefonia_fixa|fixed_telephony|53|9|0|267|
+|livros_interesse_geral|books_general_interest|51|9|0|331|
+|market_place|market_place|43|6|0|270|
+|moveis_cozinha_area_de_servico_jantar_e_jardim|kitchen_dining_laundry_garden_furniture|41|24|0|340|
+|industria_comercio_e_negocios|industry_commerce_and_business|39|6|0|180|
+|agro_industria_e_comercio|agro_industry_and_commerce|34|18|0|518|
+|construcao_ferramentas_seguranca|construction_tools_safety|34|20|0|248|
+|fashion_calcados|fashion_shoes|31|9|0|93|
+|artigos_de_natal|christmas_supplies|29|15|0|370|
+|fashion_roupa_masculina|fashion_male_clothing|26|1|0|23|
+|pcs|computers|26|11|0|174|
+|audio|audio|23|33|0|404|
+|moveis_quarto|furniture_bedroom|21|3|0|64|
+|artes|art|14|37|0|444|
+|eletrodomesticos_2|home_appliances_2|14|41|0|434|
+|livros_tecnicos|books_technical|13|3|0|36|
+|fraldas_higiene|diapers_and_hygiene|13|4|0|57|
+|fashion_underwear_e_moda_praia|fashion_underwear_beach|13|6|0|77|
+|fashion_roupa_feminina|fashio_female_clothing|10|6|0|68|
+|livros_importados|books_imported|10|15|0|145|
+|cine_foto|cine_photo|9|0|0|5|
+|casa_conforto_2|home_comfort_2|9|3|0|34|
+|dvds_blu_ray|dvds_blu_ray|9|17|0|146|
+|tablets_impressao_imagem|tablets_printing_image|9|24|0|113|
+|construcao_ferramentas_ferramentas|costruction_tools_tools|9|37|0|274|
+|fashion_esporte|fashion_sport|6|17|0|106|
+|artigos_de_festas|party_supplies|6|35|0|215|
+|musica|music|5|0|0|2|
+
+
+
+
+**Insights:**
+
+- Analyzing the avg_days_between_orders is not sufficient to make important conclusions about purchase frequency, since the more important metric is how many times the products are purchased repeatedly. Therefore, we should consider the repeat_purchase_events column as well, which shows us how many times the products in each category were purchased repeatedly. For example, the 'moveis_decoracao' (furniture_decor) category has the highest number of repeat purchase events (2266) and an average of 7 days between orders, indicating that customers frequently repurchase items in this category within a short time frame. This could suggest that customers are buying multiple items for home decoration or that they are replacing items frequently.
+- The following categories with high repeat purchase events include 'cama_mesa_banho' (bed_bath_table) and 'informatica_acessorios' (computers_accessories), which also show relatively short average days between orders (14 and 12 days, respectively). This indicates that customers in these categories also have a high purchase frequency, possibly due to the nature of the products, which may require regular replacement or upgrading.
+- On the other hand, categories like 'artigos_de_festas' (party_supplies) and 'musica' (music) have fewer repeat purchase events and longer average days between orders, suggesting that customers may not need to repurchase these items as frequently. This could be due to the fact that party supplies are often used for specific events and music may be purchased for long-term enjoyment, leading to less frequent repurchases.
+- Overall, the analysis of purchase latency across different product categories provides valuable insights into customer behavior and can help Olist identify which categories have higher purchase frequencies. This information can be used to optimize inventory management, tailor marketing strategies, and improve customer retention by targeting customers with personalized offers based on their purchasing patterns in specific categories.
+
+
+
+
+# High Risk of Churn Detection
+
+> 5. Which customers have exceeded the average purchase cycle by more than 2 standard deviations without placing a new order? Can we flag these users as 'High Risk of Churn' based on their deviation from the typical repurchase behavior?
+
+
+**Solution**: To identify customers who are at high risk of churn based on their purchase behavior, we will follow these steps:
+
+1. First, we will calculate the average purchase cycle (the average time interval between consecutive orders) and the standard deviation of the purchase cycle for customers with multiple purchases. This will help us establish a benchmark for typical repurchase behavior.
+2. Next, we will calculate the recency of the last purchase for each customer by finding the difference in days between their last order date and the reference date (the maximum order purchase timestamp in the dataset).
+3. We will then compare the recency of each customer's last purchase to the average purchase cycle plus two standard deviations. Customers whose recency exceeds this threshold will be flagged as 'High Risk of Churn' because they have gone significantly longer than the typical repurchase cycle without making a new purchase.
+4. Finally, we will count the number of customers who fall into the 'High Risk of Churn' category to understand the potential size of this segment and to inform retention strategies.
+
+
+
+<details>   
+<summary>Show SQL Code</summary>
+
+```sql
+with dataset_max_date as (
+    -- finding the last order date in the dataset to act as "today" for recency/churn calculation
+    select max(order_purchase_timestamp) as max_date from orders
+),
+purchase_intervals as (
+    -- step 1: use lag() to calculate the day-gap between consecutive orders for the same unique user
+    select 
+        c.customer_unique_id,
+        o.order_purchase_timestamp,
+        days_since_prior = datediff(day, lag(o.order_purchase_timestamp) over (
+            partition by c.customer_unique_id 
+            order by o.order_purchase_timestamp
+        ), o.order_purchase_timestamp)
+    from 
+        orders o
+    inner join 
+        customers c on o.customer_id = c.customer_id
+    where 
+        o.order_status not in ('canceled', 'unavailable')
+),
+
+cycle_stats as (
+    -- step 2: calculate global benchmarks for repurchase behavior
+    -- stdev() helps define what is "statistically normal" vs "anomalous"
+    select 
+        avg_cycle = avg(days_since_prior * 1.0),
+        std_dev_cycle = stdev(days_since_prior)
+    from 
+        purchase_intervals
+    where 
+        days_since_prior is not null -- only includes repeat purchase events
+),
+
+customer_last_purchase as (
+    -- step 3: find the recency of the absolute last order for every customer
+    select 
+        c.customer_unique_id,
+        max(o.order_purchase_timestamp) as last_order_date,
+        days_since_last_order = datediff(day, max(o.order_purchase_timestamp), d.max_date)
+    from 
+        orders o
+    inner join 
+        customers c on o.customer_id = c.customer_id
+    cross join 
+        dataset_max_date d
+    where 
+        o.order_status not in ('canceled', 'unavailable')
+    group by 
+        c.customer_unique_id, d.max_date
+)
+
+-- final output: count only the users exceeding the churn threshold
+select 
+    count(distinct lp.customer_unique_id) as high_risk_churn_customer_count
+from 
+    customer_last_purchase lp
+cross join 
+    cycle_stats stats
+where 
+    lp.days_since_last_order > (stats.avg_cycle + (2 * stats.std_dev_cycle));
+```
+</details>
+
+
+**Results:**
+
+|high_risk_churn_customer_count|
+|------------------------------|
+|42051|
+
+
+**Insights:**
+
+- The analysis identified 42,051 customers who have exceeded the average purchase cycle by more than 2 standard deviations without placing a new order. These customers can be flagged as 'High Risk of Churn' based on their significant deviation from typical repurchase behavior. 
+
+
+# Conclusion
+
+Through the analysis of customer retention, purchase frequency, and churn risk, we have gained valuable insights into the behavior of Olist's customer base. The segmentation of customers using RFM analysis has allowed us to identify key segments such as 'Champions', 'Loyal Customers', 'At Risk', and 'Hibernating', each with distinct characteristics and opportunities for targeted marketing strategies. The cohort analysis revealed trends in customer acquisition and retention rates over time, highlighting the challenges of retaining customers after their initial purchase. The Pareto Principle analysis showed that a small percentage of customers contribute to a significant portion of the revenue, emphasizing the importance of understanding and catering to these high-value customers. Finally, the purchase frequency analysis across product categories provided insights into customer behavior and potential opportunities for optimizing inventory and marketing strategies. The identification of customers at high risk of churn allows Olist to implement targeted retention efforts to re-engage these customers and prevent them from becoming inactive. Overall, these analyses provide a comprehensive understanding of customer behavior and retention patterns, enabling Olist to make informed decisions to enhance customer loyalty and drive revenue growth.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

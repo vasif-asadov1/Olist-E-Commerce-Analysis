@@ -1,0 +1,471 @@
+---
+title: "Payments and Risk Analysis"
+---
+
+
+# Introduction
+
+
+
+# Payment Distribution and Risk Analysis
+
+> 20. What is the distribution of total revenue across different payment methods (Credit Card, Boleto, Voucher, Debit Card)?  Specifically, does the 'Average Transaction Value' differ significantly between Credit Card users and Boleto users?"
+
+**Solution:**
+
+Solution Steps for Payment Method Distribution and ATV
+
+1. **Firstly, we aggregate metrics by payment type (`payment_distribution` CTE)**: We query the `payments` table and group by `payment_type` to calculate the total `transaction_count`, the `total_revenue` (`sum(payment_value)`), and the average transaction value (`avg(payment_value)`).
+
+2. **Secondly, we calculate the platform-wide revenue baseline (`global_metrics` CTE)**: We aggregate the sum of all revenue from the previous CTE to establish the `grand_total_revenue`. This gives us the necessary denominator for calculating market share percentages.
+
+3. **Finally, we compare payment methods and value differences (Final `SELECT`)**: We `CROSS JOIN` the aggregated payment data with the global baseline. By dividing the payment type's revenue by the grand total, we compute the `revenue_share_pct`. Additionally, we format the `avg_transaction_value` (ATV) and use a `CASE` statement to classify the transaction profiles, specifically highlighting the differing use cases of 'Credit Card' (High Convenience / Installment Potential) versus 'Boleto' (Cash-based / Single Payment).
+
+
+
+
+<details>
+<summary>Show SQL Code</summary>
+
+```sql
+with payment_distribution as (
+    -- step 1: aggregate metrics at the payment type level
+    select 
+        payment_type,
+        count(*) as transaction_count,
+        sum(payment_value) as total_revenue,
+        avg(payment_value) as avg_transaction_value
+    from 
+        payments
+    group by 
+        payment_type
+),
+
+global_metrics as (
+    -- step 2: get platform-wide totals for percentage calculations
+    select 
+        sum(total_revenue) as grand_total_revenue
+    from 
+        payment_distribution
+)
+
+-- final output: comparing payment methods and identifying value differences
+select 
+    pd.payment_type,
+    pd.transaction_count,
+    cast(pd.total_revenue as decimal(15,2)) as revenue_contribution,
+    -- revenue share percentage
+    cast(100.0 * pd.total_revenue / gm.grand_total_revenue as decimal(5,2)) as revenue_share_pct,
+    -- average transaction value (atv)
+    cast(pd.avg_transaction_value as decimal(10,2)) as atv,
+    -- comparison logic specifically for credit card vs boleto
+    case 
+        when pd.payment_type = 'credit_card' then 'High Convenience / Installment Potential'
+        when pd.payment_type = 'boleto' then 'Cash-based / Single Payment'
+        else 'Alternative Method'
+    end as payment_profile
+from 
+    payment_distribution pd
+cross join 
+    global_metrics gm
+order by 
+    revenue_contribution desc;
+```
+
+</details>
+
+
+
+
+
+**Results:**
+
+|payment_type|transaction_count|revenue_contribution|revenue_share_pct|atv|payment_profile|
+|------------|-----------------|--------------------|-----------------|---|---------------|
+|credit_card|76795|12542084.19|78.34|163.32|High Convenience / Installment Potential|
+|boleto|19784|2869361.27|17.92|145.03|Cash-based / Single Payment|
+|voucher|5775|379436.87|2.37|65.70|Alternative Method|
+|debit_card|1529|217989.79|1.36|142.57|Alternative Method|
+|not_defined|3|0.00|0.00|0.00|Alternative Method|
+
+
+
+
+
+# Installment Correlation and High-Ticket Analysis
+
+> 21. Is there a positive correlation between the number of installments chosen (`payment_installments`) and  the total order value? Specifically, what percentage of high-ticket orders (\>R\$500) are purchased using 5+ installments?"
+
+**Solution:**
+
+Solution Steps for Payment Method and Installment Analysis
+
+1. **Firstly, we compare payment method performance (Part 1)**: We aggregate the `transaction_count`, `total_revenue`, and `avg_transaction_value` grouped by `payment_type`. By cross-joining this with a global revenue total, we calculate the `revenue_share_pct`, allowing us to compare the financial weight of credit cards versus cash-based methods like Boleto.
+
+2. **Secondly, we correlate installment counts with order value (Part 2 - `installment_stats` CTE)**: We isolate 'credit_card' transactions—since they are the primary source of installments—and group them by the number of `payment_installments`. We calculate the average payment value for each count to see if customers purchasing expensive items tend to choose higher installment numbers.
+
+3. **Thirdly, we isolate the high-ticket segment (Part 2 - `high_ticket_segment` CTE)**: We filter the `payments` table for orders with a value greater than R$500. We then count the total number of these orders and use a conditional sum to identify how many of them utilized 5 or more installments, effectively identifying "financing" behavior.
+
+4. **Finally, we calculate the financing penetration (Part 2 Final `SELECT`)**: We compute the `high_ticket_financing_pct` by dividing our high-installment count by the total high-ticket count. To provide a clear correlation proof, we also use subqueries to fetch and compare the average values of 1-installment versus 10-installment purchases, highlighting the trend toward higher installment counts for more expensive goods.
+
+
+
+
+<details>
+<summary>Show SQL Code</summary>
+
+```sql
+with payment_distribution as (
+    -- step 1: aggregate metrics at the payment type level
+    select 
+        payment_type,
+        count(*) as transaction_count,
+        sum(payment_value) as total_revenue,
+        avg(payment_value) as avg_transaction_value
+    from 
+        payments
+    group by 
+        payment_type
+),
+
+global_metrics as (
+    -- step 2: get platform-wide totals for percentage calculations
+    select 
+        sum(total_revenue) as grand_total_revenue
+    from 
+        payment_distribution
+)
+
+-- output 1: comparing payment methods and identifying value differences
+select 
+    pd.payment_type,
+    pd.transaction_count,
+    cast(pd.total_revenue as decimal(15,2)) as revenue_contribution,
+    cast(100.0 * pd.total_revenue / gm.grand_total_revenue as decimal(5,2)) as revenue_share_pct,
+    cast(pd.avg_transaction_value as decimal(10,2)) as atv
+from 
+    payment_distribution pd
+cross join 
+    global_metrics gm
+order by 
+    revenue_contribution desc;
+
+/* PART 2: Installment Correlation & High-Ticket Analysis
+    Objective: 
+        1. Analyze if higher installment counts correlate with higher order values.
+        2. Calculate the % of high-ticket orders (>R$500) using 5+ installments.
+*/
+
+with installment_stats as (
+    -- step 1: calculate average value per installment count
+    select 
+        payment_installments,
+        count(*) as order_count,
+        avg(payment_value) as avg_payment_value
+    from 
+        payments
+    where 
+        payment_type = 'credit_card' -- installments primarily apply to credit cards
+        and payment_installments > 0
+    group by 
+        payment_installments
+),
+
+high_ticket_segment as (
+    -- step 2: isolate high-ticket orders and check installment counts
+    select 
+        count(*) as total_high_ticket_orders,
+        sum(case when payment_installments >= 5 then 1 else 0 end) as high_installment_count
+    from 
+        payments
+    where 
+        payment_value > 500
+        and payment_type = 'credit_card'
+)
+
+-- output 2: identifying the "financing" behavior of high-value customers
+select 
+    h.total_high_ticket_orders,
+    h.high_installment_count,
+    -- percentage of high-ticket users who "finance" via 5+ installments
+    cast(100.0 * h.high_installment_count / h.total_high_ticket_orders as decimal(5,2)) as high_ticket_financing_pct,
+    -- referencing the average value for 1 installment vs 10 installments for context
+    (select cast(avg_payment_value as decimal(10,2)) from installment_stats where payment_installments = 1) as avg_val_1_inst,
+    (select cast(avg_payment_value as decimal(10,2)) from installment_stats where payment_installments = 10) as avg_val_10_inst
+from 
+    high_ticket_segment h;
+```
+
+
+**Results 1:**
+
+|payment_type|transaction_count|revenue_contribution|revenue_share_pct|atv|
+|------------|-----------------|--------------------|-----------------|---|
+|credit_card|76795|12542084.19|78.34|163.32|
+|boleto|19784|2869361.27|17.92|145.03|
+|voucher|5775|379436.87|2.37|65.70|
+|debit_card|1529|217989.79|1.36|142.57|
+|not_defined|3|0.00|0.00|0.00|
+
+
+**Results 2:**
+
+|total_high_ticket_orders|high_installment_count|high_ticket_financing_pct|avg_val_1_inst|avg_val_10_inst|
+|------------------------|----------------------|-------------------------|--------------|---------------|
+|3488|2637|75.60|95.87|415.09|
+
+
+
+
+
+
+# Regional Payment Preferences & Boleto Penetration
+
+> 22. How does payment preference vary by region (`customer_state`)? Are there specific states where "Boleto' usage is isproportionately high compared to the national average, indicating a lower penetration of credit cards?
+
+**Solution:**
+
+Solution Steps for Payment Method, Installment, and Regional Analysis
+
+1. **Firstly, we compare payment method performance (Part 1)**: We aggregate the `transaction_count`, `total_revenue`, and `avg_transaction_value` grouped by `payment_type`. By cross-joining this with a global revenue total, we calculate the `revenue_share_pct`, allowing us to compare the financial weight of credit cards versus cash-based methods like Boleto.
+
+2. **Secondly, we correlate installment counts with order value (Part 2 - `installment_stats` CTE)**: We isolate 'credit_card' transactions—since they are the primary source of installments—and group them by the number of `payment_installments`. We calculate the average payment value for each count to see if customers purchasing expensive items tend to choose higher installment numbers.
+
+3. **Thirdly, we isolate the high-ticket segment (Part 2 - `high_ticket_segment` CTE)**: We filter the `payments` table for orders with a value greater than R$500. We then count the total number of these orders and use a conditional sum to identify how many of them utilized 5 or more installments, effectively identifying "financing" behavior.
+
+4. **Fourthly, we calculate the financing penetration (Part 2 Final `SELECT`)**: We compute the `high_ticket_financing_pct` by dividing our high-installment count by the total high-ticket count. To provide a clear correlation proof, we also use subqueries to fetch and compare the average values of 1-installment versus 10-installment purchases.
+
+5. **Fifthly, we aggregate payment preferences by state (Part 3 - `state_payment_counts` CTE)**: We join the `payments`, `orders`, and `customers` tables to count the volume of each payment type within every `customer_state`. We specifically isolate the counts for 'boleto' and 'credit_card' to prepare for regional penetration analysis.
+
+6. **Finally, we identify regional outliers and Boleto penetration (Part 3 Final `SELECT`)**: We calculate the `state_boleto_pct` for each state and compare it to a `national_avg_boleto_pct` generated via a window function. By calculating the `percentage_point_diff`, we categorize states into profiles like 'High Boleto Usage (Low Credit Penetration)' or 'High Credit Usage (Digital/Banked Hub)' based on their deviation from the national norm.
+
+
+<details>
+<summary>Show SQL Code</summary>
+
+```sql
+
+/* PART 1: Payment Method & Transaction Value Analysis
+    Objective: 
+        1. Analyze the distribution of revenue across payment types.
+        2. Compare average transaction value (atv) between credit card and boleto users.
+*/
+
+with payment_distribution as (
+    -- step 1: aggregate metrics at the payment type level
+    select 
+        payment_type,
+        count(*) as transaction_count,
+        sum(payment_value) as total_revenue,
+        avg(payment_value) as avg_transaction_value
+    from 
+        payments
+    group by 
+        payment_type
+),
+
+global_metrics as (
+    -- step 2: get platform-wide totals for percentage calculations
+    select 
+        sum(total_revenue) as grand_total_revenue
+    from 
+        payment_distribution
+)
+
+-- output 1: comparing payment methods and identifying value differences
+select 
+    pd.payment_type,
+    pd.transaction_count,
+    cast(pd.total_revenue as decimal(15,2)) as revenue_contribution,
+    cast(100.0 * pd.total_revenue / gm.grand_total_revenue as decimal(5,2)) as revenue_share_pct,
+    cast(pd.avg_transaction_value as decimal(10,2)) as atv
+from 
+    payment_distribution pd
+cross join 
+    global_metrics gm
+order by 
+    revenue_contribution desc;
+
+
+/* PART 2: Installment Correlation & High-Ticket Analysis
+    Objective: 
+        1. Analyze if higher installment counts correlate with higher order values.
+        2. Calculate the % of high-ticket orders (>R$500) using 5+ installments.
+*/
+
+with installment_stats as (
+    -- step 1: calculate average value per installment count
+    select 
+        payment_installments,
+        count(*) as order_count,
+        avg(payment_value) as avg_payment_value
+    from 
+        payments
+    where 
+        payment_type = 'credit_card' -- installments primarily apply to credit cards
+        and payment_installments > 0
+    group by 
+        payment_installments
+),
+
+high_ticket_segment as (
+    -- step 2: isolate high-ticket orders and check installment counts
+    select 
+        count(*) as total_high_ticket_orders,
+        sum(case when payment_installments >= 5 then 1 else 0 end) as high_installment_count
+    from 
+        payments
+    where 
+        payment_value > 500
+        and payment_type = 'credit_card'
+)
+
+-- output 2: identifying the "financing" behavior of high-value customers
+select 
+    h.total_high_ticket_orders,
+    h.high_installment_count,
+    -- percentage of high-ticket users who "finance" via 5+ installments
+    cast(100.0 * h.high_installment_count / h.total_high_ticket_orders as decimal(5,2)) as high_ticket_financing_pct,
+    -- referencing the average value for 1 installment vs 10 installments for context
+    (select cast(avg_payment_value as decimal(10,2)) from installment_stats where payment_installments = 1) as avg_val_1_inst,
+    (select cast(avg_payment_value as decimal(10,2)) from installment_stats where payment_installments = 10) as avg_val_10_inst
+from 
+    high_ticket_segment h;
+
+
+/* PART 3: Regional Payment Preferences & Boleto Penetration
+    Objective: 
+        1. Determine how payment preferences vary by customer state.
+        2. Identify states where Boleto usage is significantly higher than the national average.
+*/
+
+with state_payment_counts as (
+    -- step 1: count payment types per state
+    select 
+        c.customer_state,
+        count(p.payment_type) as total_payments,
+        sum(case when p.payment_type = 'boleto' then 1 else 0 end) as boleto_count,
+        sum(case when p.payment_type = 'credit_card' then 1 else 0 end) as credit_card_count
+    from 
+        payments p
+    inner join 
+        orders o on p.order_id = o.order_id
+    inner join 
+        customers c on o.customer_id = c.customer_id
+    group by 
+        c.customer_state
+),
+
+state_boleto_share as (
+    -- step 2: calculate state-level boleto share and the national benchmark
+    select 
+        customer_state,
+        total_payments,
+        cast(100.0 * boleto_count / total_payments as decimal(5,2)) as state_boleto_pct,
+        -- national benchmark using window function
+        avg(100.0 * boleto_count / total_payments) over () as national_avg_boleto_pct
+    from 
+        state_payment_counts
+)
+
+-- output 3: identifying regional outliers in payment behavior
+select 
+    customer_state,
+    total_payments,
+    state_boleto_pct,
+    cast(national_avg_boleto_pct as decimal(5,2)) as national_avg_pct,
+    -- deviation from national norm
+    cast(state_boleto_pct - national_avg_boleto_pct as decimal(5,2)) as percentage_point_diff,
+    case 
+        when state_boleto_pct > national_avg_boleto_pct + 5 then 'High Boleto Usage (Low Credit Penetration)'
+        when state_boleto_pct < national_avg_boleto_pct - 5 then 'High Credit Usage (Digital/Banked Hub)'
+        else 'Standard Regional Mix'
+    end as regional_payment_profile
+from 
+    state_boleto_share
+order by 
+    state_boleto_pct desc;
+```
+
+</details>
+
+**Results 1:**
+
+|payment_type|transaction_count|revenue_contribution|revenue_share_pct|atv|
+|------------|-----------------|--------------------|-----------------|---|
+|credit_card|76795|12542084.19|78.34|163.32|
+|boleto|19784|2869361.27|17.92|145.03|
+|voucher|5775|379436.87|2.37|65.70|
+|debit_card|1529|217989.79|1.36|142.57|
+|not_defined|3|0.00|0.00|0.00|
+
+
+
+**Results 2:**
+
+|total_high_ticket_orders|high_installment_count|high_ticket_financing_pct|avg_val_1_inst|avg_val_10_inst|
+|------------------------|----------------------|-------------------------|--------------|---------------|
+|3488|2637|75.60|95.87|415.09|
+
+
+
+**Results 3:**
+
+|customer_state|total_payments|state_boleto_pct|national_avg_pct|percentage_point_diff|regional_payment_profile|
+|--------------|--------------|----------------|----------------|---------------------|------------------------|
+|AP|70|28.57|20.35|8.22|High Boleto Usage (Low Credit Penetration)|
+|RR|46|28.26|20.35|7.91|High Boleto Usage (Low Credit Penetration)|
+|MA|767|26.47|20.35|6.12|High Boleto Usage (Low Credit Penetration)|
+|TO|301|25.25|20.35|4.90|Standard Regional Mix|
+|MT|958|24.84|20.35|4.49|Standard Regional Mix|
+|RO|261|24.52|20.35|4.17|Standard Regional Mix|
+|RS|5668|23.98|20.35|3.63|Standard Regional Mix|
+|MS|736|23.78|20.35|3.43|Standard Regional Mix|
+|SC|3754|22.38|20.35|2.03|Standard Regional Mix|
+|PA|1011|21.27|20.35|0.92|Standard Regional Mix|
+|GO|2112|21.26|20.35|0.91|Standard Regional Mix|
+|PR|5262|21.25|20.35|0.90|Standard Regional Mix|
+|SE|361|20.78|20.35|0.43|Standard Regional Mix|
+|ES|2107|19.13|20.35|-1.22|Standard Regional Mix|
+|AC|84|19.05|20.35|-1.30|Standard Regional Mix|
+|MG|12102|19.04|20.35|-1.31|Standard Regional Mix|
+|SP|43622|18.81|20.35|-1.54|Standard Regional Mix|
+|DF|2204|17.97|20.35|-2.38|Standard Regional Mix|
+|PI|524|17.94|20.35|-2.41|Standard Regional Mix|
+|BA|3610|17.01|20.35|-3.34|Standard Regional Mix|
+|PB|570|16.32|20.35|-4.03|Standard Regional Mix|
+|PE|1728|16.03|20.35|-4.32|Standard Regional Mix|
+|RJ|13527|15.99|20.35|-4.36|Standard Regional Mix|
+|AL|427|15.93|20.35|-4.42|Standard Regional Mix|
+|RN|522|15.33|20.35|-5.02|High Credit Usage (Digital/Banked Hub)|
+|CE|1398|14.66|20.35|-5.69|High Credit Usage (Digital/Banked Hub)|
+|AM|154|13.64|20.35|-6.71|High Credit Usage (Digital/Banked Hub)|
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

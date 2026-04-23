@@ -1,0 +1,1370 @@
+---
+title: "Customer Review and Satisfaction Analysis"
+---
+
+
+
+# Introduction 
+
+
+
+
+# Delivery Delay & Customer Satisfaction Analysis
+
+
+> 23. What is the quantitative correlation between **Delivery Delay** (Actual Delivery Date - Estimated Delivery Date) and the **Average Review Score**? Specifically, at what 'delay threshold' (e.g., +1 day, +3 days) does the average customer rating strictly drop below 3 stars?
+
+**Solution:**
+
+Analytical Methodology for Delivery Delay and Sentiment Correlation
+
+1. **Quantification of Logistical Latency (`order_delay_metrics` CTE)**: The initial phase of the analysis involves calculating the temporal variance between the `order_estimated_delivery_date` and the `order_delivered_customer_date`. By performing an inner join between the `orders` and `order_reviews` datasets, we isolate the `delay_days`—where positive integers signify late deliveries—and associate them directly with the corresponding customer `review_score`.
+
+2. **Aggregation of Sentiment Baselines (`aggregated_scores` CTE)**: To evaluate the impact of fulfillment delays on customer perception, the data is aggregated at the `delay_days` level. This step computes the arithmetic mean of review scores and total transaction volumes for each specific interval, establishing the "On-Time" benchmark required to measure the rate of sentiment degradation.
+
+3. **Identification of the 'Satisfaction Cliff' (Final Query)**: The final logic categorizes results into hierarchical satisfaction tiers via a `CASE` statement. We distinguish between 'Tolerable' delays (where the average score remains $\geq 3.0$) and 'Critical' delays (where scores fall below the $3.0$ threshold). Furthermore, a percentage variance from the "On-Time" benchmark is calculated to quantify the financial and reputational risk associated with extended latencies.
+
+4. **Statistical Significance and Boundary Control**: To maintain the integrity of the findings and prevent outliers from skewing the commercial insights, the output is restricted to intervals with a `volume > 5`. The temporal scope is further constrained to a range of $-10$ to $+30$ days to focus the business intelligence on the most statistically significant and actionable delivery scenarios.
+
+
+
+<details>
+<summary>SQL SQL Code</summary>
+
+```sql
+
+/* delivery satisfaction threshold analysis
+    objective: identify the "cliff" where delivery delays result in failing satisfaction scores (< 3 stars)
+    logic: 
+      1. calculate 'delay_days' as the delta between actual and estimated delivery.
+      2. aggregate average review scores for every day of delay.
+      3. identify the first day where the average rating strictly falls below 3.0.
+    granularity: delay_days
+*/
+
+with order_delay_metrics as (
+    -- step 1: calculate the delay for every delivered order with a review
+    select 
+        o.order_id,
+        -- delay: positive = late, 0 = on time, negative = early
+        datediff(day, o.order_estimated_delivery_date, o.order_delivered_customer_date) as delay_days,
+        r.review_score
+    from 
+        orders o
+    inner join 
+        order_reviews r on o.order_id = r.order_id
+    where 
+        o.order_status = 'delivered'
+        and o.order_delivered_customer_date is not null
+        and o.order_estimated_delivery_date is not null
+),
+
+aggregated_scores as (
+    -- step 2: find average score and volume per delay day
+    select 
+        delay_days,
+        count(order_id) as volume,
+        avg(review_score * 1.0) as avg_review_score
+    from 
+        order_delay_metrics
+    group by 
+        delay_days
+)
+
+-- final output: categorizing the impact of delays on sentiment
+select 
+    delay_days,
+    volume as order_volume,
+    cast(avg_review_score as decimal(10,2)) as avg_rating,
+    
+    -- identifying the threshold status
+    case 
+        when delay_days < 0 then 'Early (Bonus Rating)'
+        when delay_days = 0 then 'On-Time (High Satisfaction)'
+        when delay_days > 0 and avg_review_score >= 3.0 then 'Late (Tolerable)'
+        when delay_days > 0 and avg_review_score < 3.0 then 'Critical Delay (Satisfaction Cliff)'
+        else 'Standard'
+    end as satisfaction_tier,
+    
+    -- calculating the percentage drop from the "On-Time" benchmark
+    cast(100.0 * (avg_review_score - (select avg_review_score from aggregated_scores where delay_days = 0)) 
+        / (select avg_review_score from aggregated_scores where delay_days = 0) as decimal(10,2)) as pct_drop_from_ontime
+from 
+    aggregated_scores
+where 
+    volume > 5 -- filter for statistical relevance
+    and delay_days between -10 and 30 -- focusing on the most relevant window
+order by 
+    delay_days asc;
+```
+
+</details>
+
+
+**Results:** 
+
+|delay_days|order_volume|avg_rating|satisfaction_tier|pct_drop_from_ontime|
+|----------|------------|----------|-----------------|--------------------|
+|-10|4652|4.33|Early (Bonus Rating)|7.47|
+|-9|4632|4.29|Early (Bonus Rating)|6.44|
+|-8|4818|4.26|Early (Bonus Rating)|5.53|
+|-7|4841|4.26|Early (Bonus Rating)|5.55|
+|-6|3616|4.25|Early (Bonus Rating)|5.26|
+|-5|2221|4.19|Early (Bonus Rating)|3.96|
+|-4|1910|4.15|Early (Bonus Rating)|2.80|
+|-3|1726|4.12|Early (Bonus Rating)|2.16|
+|-2|1548|4.12|Early (Bonus Rating)|2.23|
+|-1|1457|4.15|Early (Bonus Rating)|2.97|
+|0|1291|4.03|On-Time (High Satisfaction)|0.00|
+|1|823|3.73|Late (Tolerable)|-7.51|
+|2|537|3.18|Late (Tolerable)|-21.28|
+|3|496|2.68|Critical Delay (Satisfaction Cliff)|-33.47|
+|4|437|2.49|Critical Delay (Satisfaction Cliff)|-38.16|
+|5|436|2.19|Critical Delay (Satisfaction Cliff)|-45.58|
+|6|408|1.81|Critical Delay (Satisfaction Cliff)|-55.15|
+|7|475|1.92|Critical Delay (Satisfaction Cliff)|-52.50|
+|8|332|1.72|Critical Delay (Satisfaction Cliff)|-57.36|
+|9|219|1.67|Critical Delay (Satisfaction Cliff)|-58.68|
+|10|208|1.59|Critical Delay (Satisfaction Cliff)|-60.66|
+|11|179|1.73|Critical Delay (Satisfaction Cliff)|-57.20|
+|12|155|1.66|Critical Delay (Satisfaction Cliff)|-58.73|
+|13|190|1.75|Critical Delay (Satisfaction Cliff)|-56.68|
+|14|169|1.59|Critical Delay (Satisfaction Cliff)|-60.54|
+|15|157|1.71|Critical Delay (Satisfaction Cliff)|-57.68|
+|16|95|1.68|Critical Delay (Satisfaction Cliff)|-58.24|
+|17|90|1.67|Critical Delay (Satisfaction Cliff)|-58.68|
+|18|73|1.73|Critical Delay (Satisfaction Cliff)|-57.21|
+|19|74|1.51|Critical Delay (Satisfaction Cliff)|-62.47|
+|20|87|1.66|Critical Delay (Satisfaction Cliff)|-58.96|
+|21|76|1.67|Critical Delay (Satisfaction Cliff)|-58.57|
+|22|64|1.72|Critical Delay (Satisfaction Cliff)|-57.39|
+|23|34|1.47|Critical Delay (Satisfaction Cliff)|-63.54|
+|24|53|1.53|Critical Delay (Satisfaction Cliff)|-62.11|
+|25|40|1.60|Critical Delay (Satisfaction Cliff)|-60.33|
+|26|34|1.35|Critical Delay (Satisfaction Cliff)|-66.46|
+|27|40|1.53|Critical Delay (Satisfaction Cliff)|-62.19|
+|28|46|1.61|Critical Delay (Satisfaction Cliff)|-60.11|
+|29|37|1.32|Critical Delay (Satisfaction Cliff)|-67.17|
+|30|14|1.29|Critical Delay (Satisfaction Cliff)|-68.12|
+
+
+
+# Quality vs. Logistics Matrix Analysis
+
+> 24. Can we identify product categories that consistently have **Fast Delivery** (Top 25% speed) but **Low Review Scores** (Bottom 25% rating)? Conversely, which categories have slow delivery but high scores?
+
+**Solution:**
+
+
+1. The initial phase of the analysis involves the aggregation of delivery lead times and customer satisfaction scores at the category level. By joining the `orders`, `order_items`, `products`, and `order_reviews` datasets, we calculate the arithmetic mean of the `avg_delivery_lead_time` (measuring the duration from purchase to customer delivery) and the `avg_review_score`. A `HAVING` clause is utilized to restrict the results to categories with a `total_orders > 30`, ensuring the statistical integrity of the benchmarks.
+
+2. To establish relative performance tiers, we apply the `percent_rank()` window function to both metrics. The `speed_rank` is calculated in ascending order (where 0.0 represents the fastest 1% of the platform), while the `rating_rank` is also calculated in ascending order (where 0.0 represents the lowest 1% of scores). This normalization allows for a direct comparison across diverse product lines regardless of varying volume.
+
+3. The categorical data is then segmented into a four-quadrant matrix using a conditional `CASE` statement. We specifically isolate 'Product/Catalog Issues'—defined as categories within the top 25% for speed (`speed_rank <= 0.25`) but the bottom 25% for satisfaction (`rating_rank <= 0.25`). Conversely, 'Logistics Bottlenecks' are identified as categories in the bottom 25% for speed (`speed_rank >= 0.75`) that maintain top 25% sentiment scores (`rating_rank >= 0.75`).
+
+4. The resulting classification provides actionable business intelligence for supply chain and catalog management. By identifying the 'Systemic Failure' quadrant (Slow and Hated) versus the 'Gold Standard' (Fast and Loved), stakeholders can prioritize interventions—distinguishing between the need for logistical optimization versus fundamental improvements in product quality or catalog accuracy.
+
+
+
+
+
+<details>
+<summary>SQL SQL Code</summary>
+
+```sql
+
+ /* quality vs. logistics matrix analysis
+    objective: segment categories to identify if low scores are caused by product quality or delivery speed
+    logic: 
+      1. calculate average lead time (purchase to delivery) and average review score per category.
+      2. use percent_rank() to identify categories in the top/bottom 25th percentiles.
+      3. categorize into the 4 quadrants of the quality/logistics matrix.
+    granularity: product_category_name
+*/
+
+with category_metrics as (
+    -- step 1: aggregate logistics and satisfaction metrics at the category level
+    select 
+        p.product_category_name,
+        count(o.order_id) as total_orders,
+        -- lead time speed (days)
+        avg(datediff(day, o.order_purchase_timestamp, o.order_delivered_customer_date) * 1.0) as avg_delivery_lead_time,
+        -- customer satisfaction
+        avg(r.review_score * 1.0) as avg_review_score
+    from 
+        orders o
+    inner join 
+        order_items oi on o.order_id = oi.order_id
+    inner join 
+        products p on oi.product_id = p.product_id
+    inner join 
+        order_reviews r on o.order_id = r.order_id
+    where 
+        o.order_status = 'delivered'
+        and o.order_delivered_customer_date is not null
+        and p.product_category_name is not null
+    group by 
+        p.product_category_name
+    having 
+        count(o.order_id) > 30 -- filter for statistical significance
+),
+
+category_percentiles as (
+    -- step 2: assign percentile ranks (0.0 to 1.0)
+    select 
+        *,
+        -- speed: 0.0 is fastest, 1.0 is slowest
+        speed_rank = percent_rank() over (order by avg_delivery_lead_time asc),
+        -- rating: 0.0 is lowest, 1.0 is highest
+        rating_rank = percent_rank() over (order by avg_review_score asc)
+    from 
+        category_metrics
+)
+
+-- final output: matrix segmentation
+select 
+    product_category_name,
+    total_orders,
+    cast(avg_delivery_lead_time as decimal(10,2)) as avg_lead_time_days,
+    cast(avg_review_score as decimal(10,2)) as avg_rating,
+    
+    -- step 3: segmenting into the quality/logistics quadrants
+    case 
+        -- fast delivery (top 25%) + low score (bottom 25%)
+        when speed_rank <= 0.25 and rating_rank <= 0.25 then 'Product/Catalog Issue (Fast but Hated)'
+        
+        -- slow delivery (bottom 25%) + high score (top 25%)
+        when speed_rank >= 0.75 and rating_rank >= 0.75 then 'Logistics Bottleneck (Slow but Loved)'
+        
+        -- fast delivery + high score
+        when speed_rank <= 0.25 and rating_rank >= 0.75 then 'Gold Standard (Fast & Loved)'
+        
+        -- slow delivery + low score
+        when speed_rank >= 0.75 and rating_rank <= 0.25 then 'Systemic Failure (Slow & Hated)'
+        
+        else 'Standard Performance'
+    end as matrix_segment
+from 
+    category_percentiles
+order by 
+    avg_rating asc;
+```
+
+</details>
+
+**Results:**
+
+|product_category_name|total_orders|avg_lead_time_days|avg_rating|matrix_segment|
+|---------------------|------------|------------------|----------|--------------|
+|fraldas_higiene|37|10.65|3.38|Standard Performance|
+|moveis_escritorio|1664|20.78|3.52|Systemic Failure (Slow & Hated)|
+|fashion_roupa_masculina|124|12.74|3.76|Standard Performance|
+|telefonia_fixa|253|12.60|3.76|Standard Performance|
+|audio|359|13.27|3.83|Systemic Failure (Slow & Hated)|
+|artigos_de_festas|42|9.14|3.83|Product/Catalog Issue (Fast but Hated)|
+|casa_conforto|430|13.47|3.85|Systemic Failure (Slow & Hated)|
+|moveis_colchao_e_estofado|37|14.41|3.89|Systemic Failure (Slow & Hated)|
+|cama_mesa_banho|10985|12.71|3.92|Standard Performance|
+|moveis_sala|494|13.80|3.94|Systemic Failure (Slow & Hated)|
+||1533|12.71|3.94|Standard Performance|
+|moveis_decoracao|8159|12.77|3.95|Standard Performance|
+|fashion_roupa_feminina|46|11.85|3.96|Standard Performance|
+|casa_construcao|593|13.18|3.96|Systemic Failure (Slow & Hated)|
+|construcao_ferramentas_seguranca|182|11.83|3.97|Standard Performance|
+|informatica_acessorios|7672|7.49|3.98|Product/Catalog Issue (Fast but Hated)|
+|telefonia|4408|12.80|4.00|Standard Performance|
+|moveis_cozinha_area_de_servico_jantar_e_jardim|272|11.83|4.03|Standard Performance|
+|fashion_underwear_e_moda_praia|126|13.56|4.05|Standard Performance|
+|climatizacao|284|12.13|4.05|Standard Performance|
+|eletronicos|2711|12.79|4.07|Standard Performance|
+|artigos_de_natal|143|14.48|4.07|Standard Performance|
+|relogios_presentes|5825|-2.33|4.07|Standard Performance|
+|market_place|303|12.09|4.07|Standard Performance|
+|bebes|2967|12.36|4.08|Standard Performance|
+|ferramentas_jardim|4254|13.59|4.08|Standard Performance|
+|artes|195|11.21|4.08|Standard Performance|
+|construcao_ferramentas_iluminacao|293|9.51|4.09|Standard Performance|
+|agro_industria_e_comercio|206|11.58|4.09|Standard Performance|
+|construcao_ferramentas_construcao|913|10.57|4.09|Standard Performance|
+|sinalizacao_e_seguranca|196|10.31|4.09|Standard Performance|
+|utilidades_domesticas|6780|10.86|4.11|Standard Performance|
+|automotivo|4117|1.63|4.12|Standard Performance|
+|tablets_impressao_imagem|81|12.80|4.12|Standard Performance|
+|construcao_ferramentas_jardim|234|11.84|4.12|Standard Performance|
+|bebidas|365|10.35|4.13|Standard Performance|
+|industria_comercio_e_negocios|263|-154.02|4.13|Standard Performance|
+|consoles_games|1080|13.51|4.14|Standard Performance|
+|eletrodomesticos_2|232|13.80|4.16|Standard Performance|
+|esporte_lazer|8436|6.97|4.17|Standard Performance|
+|dvds_blu_ray|61|12.85|4.18|Standard Performance|
+|beleza_saude|9456|11.88|4.19|Standard Performance|
+|fashion_bolsas_e_acessorios|1994|11.03|4.19|Standard Performance|
+|cool_stuff|3698|12.29|4.19|Standard Performance|
+|brinquedos|4007|0.76|4.21|Standard Performance|
+|musica|38|11.55|4.21|Standard Performance|
+|perfumaria|3344|11.71|4.22|Standard Performance|
+|pet_shop|1917|11.13|4.22|Standard Performance|
+|pcs|196|13.25|4.22|Logistics Bottleneck (Slow but Loved)|
+|instrumentos_musicais|646|12.93|4.22|Logistics Bottleneck (Slow but Loved)|
+|eletroportateis|657|10.72|4.23|Standard Performance|
+|eletrodomesticos|789|11.18|4.23|Standard Performance|
+|papelaria|2459|12.66|4.24|Standard Performance|
+|moveis_quarto|103|13.17|4.25|Logistics Bottleneck (Slow but Loved)|
+|alimentos|487|9.52|4.26|Gold Standard (Fast & Loved)|
+|fashion_calcados|256|15.44|4.29|Logistics Bottleneck (Slow but Loved)|
+|cine_foto|71|10.42|4.30|Gold Standard (Fast & Loved)|
+|malas_acessorios|1073|10.60|4.35|Standard Performance|
+|alimentos_bebidas|271|10.78|4.37|Standard Performance|
+|livros_tecnicos|264|10.58|4.39|Gold Standard (Fast & Loved)|
+|flores|31|10.81|4.42|Standard Performance|
+|portateis_casa_forno_e_cafe|73|9.79|4.44|Gold Standard (Fast & Loved)|
+|construcao_ferramentas_ferramentas|99|11.71|4.44|Standard Performance|
+|livros_importados|57|7.96|4.51|Gold Standard (Fast & Loved)|
+|livros_interesse_geral|533|-69.70|4.51|Gold Standard (Fast & Loved)|
+
+
+
+
+
+
+
+
+# Customer Review Deep-Dive Analysis
+
+> 25. What is the distribution of review scores across different product categories? Specifically, which categories have the highest percentage of 1-star reviews, and can we identify any common issues or themes in the negative feedback for these categories?
+
+**Solution:**
+
+
+1. The analysis commences by establishing a direct linkage between customer reviews and their corresponding product categories (`category_reviews` CTE). By performing inner joins across the `order_reviews`, `order_items`, and `products` datasets, and subsequently applying a left join to the English translation table, we accurately map each review to a standardized category name. A `DISTINCT` clause is strategically implemented to prevent the artificial inflation of review counts in instances where multiple identical items are purchased within a single transaction.
+
+2. Following the data integration, the methodology proceeds to aggregate the review score distributions at the category level (`category_stats` CTE). Utilizing conditional summation logic, the system computes the absolute frequency of each specific star rating—from one to five—alongside the total review volume for the category. A `COALESCE` function is applied to ensure that any products missing categorical metadata are grouped into an 'unknown_category' rather than systematically omitted from the dataset.
+
+3. In the final phase, the absolute frequencies are mathematically converted into proportional metrics to facilitate equitable comparative analysis across diverse product lines. The query calculates the exact percentage of one-star (`pct_one_star`) and five-star reviews. To ensure the analytical findings are statistically robust and not disproportionately skewed by low-volume anomalies, a strict threshold is enforced, restricting the output strictly to categories possessing a minimum of 50 total reviews. The results are ordered descendingly based on the one-star percentage, effectively isolating the product lines responsible for driving the highest proportion of negative customer sentiment on the platform.
+
+
+
+<details>
+<summary>SQL SQL Code</summary>
+
+```sql
+with category_reviews as (
+    -- step 1: link reviews to categories.
+    -- we use distinct to prevent overcounting reviews if a customer bought 3 of the EXACT same item in one order.
+    -- however, if an order has multiple different categories, the review score applies to both.
+    select distinct
+        r.review_id,
+        r.order_id,
+        r.review_score,
+        t.product_category_name_english as category_name
+    from 
+        order_reviews r
+    inner join 
+        order_items oi on r.order_id = oi.order_id
+    inner join 
+        products p on oi.product_id = p.product_id
+    left join 
+        product_category_name_translation t on p.product_category_name = t.product_category_name
+    where 
+        r.review_score is not null
+),
+
+category_stats as (
+    -- step 2: aggregate the counts for each star rating per category
+    select 
+        coalesce(category_name, 'unknown_category') as category,
+        count(review_id) as total_reviews,
+        sum(case when review_score = 1 then 1 else 0 end) as one_star_reviews,
+        sum(case when review_score = 2 then 1 else 0 end) as two_star_reviews,
+        sum(case when review_score = 3 then 1 else 0 end) as three_star_reviews,
+        sum(case when review_score = 4 then 1 else 0 end) as four_star_reviews,
+        sum(case when review_score = 5 then 1 else 0 end) as five_star_reviews
+    from 
+        category_reviews
+    group by 
+        coalesce(category_name, 'unknown_category')
+)
+
+-- final output: calculate percentages and rank by the highest rate of 1-star reviews
+select 
+    category,
+    total_reviews,
+    one_star_reviews,
+    cast((one_star_reviews * 100.0 / total_reviews) as decimal(5,2)) as pct_one_star,
+    cast((five_star_reviews * 100.0 / total_reviews) as decimal(5,2)) as pct_five_star
+from 
+    category_stats
+where 
+    total_reviews >= 50 -- filtering out obscure categories with too few reviews to be statistically relevant
+order by 
+    pct_one_star desc;
+```
+
+</details>
+
+
+
+**Results:**
+
+|category|total_reviews|one_star_reviews|pct_one_star|pct_five_star|
+|--------|-------------|----------------|------------|-------------|
+|fashion_male_clothing|111|26|23.42|52.25|
+|construction_tools_safety|166|30|18.07|51.81|
+|office_furniture|1268|227|17.90|39.59|
+|audio|348|58|16.67|53.16|
+|unknown_category|1470|242|16.46|53.74|
+|dvds_blu_ray|58|9|15.52|60.34|
+|fixed_telephony|215|33|15.35|51.16|
+|home_confort|398|61|15.33|53.02|
+|air_conditioning|249|34|13.65|57.03|
+|furniture_decor|6457|831|12.87|55.85|
+|bed_bath_table|9432|1201|12.73|53.28|
+|computers_accessories|6702|851|12.70|55.60|
+|baby|2869|360|12.55|57.09|
+|furniture_bedroom|96|12|12.50|61.46|
+|art|200|25|12.50|56.00|
+|construction_tools_construction|744|89|11.96|57.80|
+|computers|178|21|11.80|60.67|
+|kitchen_dining_laundry_garden_furniture|247|29|11.74|54.25|
+|watches_gifts|5586|655|11.73|57.30|
+|fashion_underwear_beach|120|14|11.67|49.17|
+|telephony|4173|486|11.65|52.96|
+|agro_industry_and_commerce|182|21|11.54|50.55|
+|home_construction|488|56|11.48|51.64|
+|consoles_games|1053|120|11.40|56.60|
+|books_imported|53|6|11.32|73.58|
+|auto|3895|438|11.25|57.02|
+|market_place|278|31|11.15|52.52|
+|christmas_supplies|126|14|11.11|51.59|
+|drinks|297|32|10.77|58.92|
+|electronics|2532|271|10.70|56.24|
+|small_appliances|628|67|10.67|61.46|
+|cine_photo|66|7|10.61|69.70|
+|sports_leisure|7721|810|10.49|60.58|
+|perfumery|3165|332|10.49|63.92|
+|furniture_living_room|420|44|10.48|54.29|
+|garden_tools|3506|367|10.47|58.84|
+|home_appliances|799|82|10.26|59.32|
+|costruction_tools_garden|196|20|10.20|62.76|
+|health_beauty|8826|899|10.19|61.51|
+|toys|3861|393|10.18|61.98|
+|signaling_and_security|138|14|10.14|56.52|
+|housewares|5865|590|10.06|59.18|
+|musical_instruments|623|60|9.63|60.67|
+|cool_stuff|3609|340|9.42|59.46|
+|small_appliances_home_oven_and_coffee|75|7|9.33|65.33|
+|food|445|41|9.21|64.72|
+|fashion_bags_accessories|1870|170|9.09|59.52|
+|home_appliances_2|234|21|8.97|55.56|
+|industry_commerce_and_business|234|21|8.97|59.40|
+|pet_shop|1703|152|8.93|63.12|
+|fashion_shoes|239|21|8.79|62.76|
+|stationery|2302|198|8.60|62.42|
+|costruction_tools_tools|94|8|8.51|69.15|
+|construction_tools_lights|242|19|7.85|54.55|
+|books_technical|259|19|7.34|71.43|
+|books_general_interest|508|36|7.09|73.23|
+|luggage_accessories|1030|70|6.80|65.15|
+|tablets_printing_image|77|4|5.19|53.25|
+|food_drink|228|10|4.39|64.91|
+
+
+
+
+# Review Volume vs. Score Polarization Analysis
+
+> 26. Is there a correlation between the number of reviews a product receives and its average review score? Specifically, do products with a higher volume of reviews tend to have more polarized ratings (more 1-star and 5-star reviews) compared to products with fewer reviews?
+
+
+
+<details>
+<summary>SQL SQL Code</summary>
+
+```sql
+with product_reviews as (
+    -- step 1: link reviews to specific products.
+    -- we use distinct to prevent overcounting reviews if a customer bought multiple of the EXACT same item in one order.
+    select distinct
+        r.review_id,
+        r.order_id,
+        oi.product_id,
+        r.review_score
+    from 
+        order_reviews r
+    inner join 
+        order_items oi on r.order_id = oi.order_id
+    where 
+        r.review_score is not null
+),
+
+product_stats as (
+    -- step 2: aggregate the review counts and score distributions per product
+    select 
+        product_id,
+        count(review_id) as total_reviews,
+        avg(review_score * 1.0) as avg_review_score,
+        sum(case when review_score = 1 then 1 else 0 end) as count_1_star,
+        sum(case when review_score = 5 then 1 else 0 end) as count_5_star
+    from 
+        product_reviews
+    group by 
+        product_id
+),
+
+volume_buckets as (
+    -- step 3: segment products into review volume buckets
+    select 
+        product_id,
+        total_reviews,
+        avg_review_score,
+        count_1_star,
+        count_5_star,
+        case 
+            when total_reviews between 1 and 10 then '1-10 Reviews (Low)'
+            when total_reviews between 11 and 50 then '11-50 Reviews (Medium)'
+            when total_reviews between 51 and 100 then '51-100 Reviews (High)'
+            else '100+ Reviews (Very High)'
+        end as volume_bucket,
+        case 
+            when total_reviews between 1 and 10 then 1
+            when total_reviews between 11 and 50 then 2
+            when total_reviews between 51 and 100 then 3
+            else 4
+        end as bucket_order
+    from 
+        product_stats
+)
+
+-- final output: aggregate the metrics by bucket to analyze correlation and polarization
+select 
+    volume_bucket,
+    count(product_id) as number_of_products,
+    sum(total_reviews) as total_reviews_in_bucket,
+    cast(avg(avg_review_score) as decimal(5,2)) as avg_score_in_bucket,
+    cast((sum(count_1_star) * 100.0 / sum(total_reviews)) as decimal(5,2)) as pct_1_star,
+    cast((sum(count_5_star) * 100.0 / sum(total_reviews)) as decimal(5,2)) as pct_5_star,
+    -- measuring polarization by combining extreme scores
+    cast(((sum(count_1_star) + sum(count_5_star)) * 100.0 / sum(total_reviews)) as decimal(5,2)) as pct_polarized 
+from 
+    volume_buckets
+group by 
+    volume_bucket, 
+    bucket_order
+order by 
+    bucket_order;
+```
+
+</details>
+
+
+**Results:**
+
+|volume_bucket|number_of_products|total_reviews_in_bucket|avg_score_in_bucket|pct_1_star|pct_5_star|pct_polarized|
+|-------------|------------------|-----------------------|-------------------|----------|----------|-------------|
+|1-10 Reviews (Low)|31331|61151|4.05|12.07|57.77|69.84|
+|11-50 Reviews (Medium)|1315|25711|4.09|11.07|57.19|68.25|
+|51-100 Reviews (High)|93|6449|4.12|10.51|57.99|68.51|
+|100+ Reviews (Very High)|50|8919|4.05|11.28|56.54|67.82|
+
+
+
+# Seller Performance Analysis
+
+
+> 27. Can we identify specific sellers or products that are responsible for a disproportionate number of 1-star reviews? Specifically, which sellers have the highest percentage of their orders resulting in 1-star reviews, and what common issues are cited in these reviews?
+
+**Solution:**
+
+- To analyze review polarization, customer reviews should first be linked back to the actual products. This must be done in the first CTE by joining the order reviews table with the order items table. A distinct select should be used here because sometimes a customer buys multiple units of the exact same item in one order, but only one review is left for the whole transaction. The distinct keyword will ensure that the single review is not accidentally overcounted for the product.
+
+- Next, the data should be grouped by the product ID to pull baseline metrics for each individual item. The total number of reviews and the overall average score must be calculated. In the same step, a simple case statement will be used to count exactly how many one-star and five-star reviews each product received. This will isolate the extreme ratings needed for the analysis.
+
+- Then, those product-level metrics should be used to assign each product into a specific bucket based on its review volume, such as low, medium, or high. A bucket order column with simple numbers must also be added so the final output will be sorted logically from the lowest volume to the highest, rather than being sorted alphabetically by the bucket name.
+
+- Finally, all the data must be rolled up by those volume buckets in the main query. The share of one-star and five-star reviews should be calculated against the total reviews in each bucket to get the final percentages. The one-star and five-star percentages will then be added together into a polarized percentage metric. This metric will be used to see if highly reviewed products actually trigger more extreme reactions compared to items that only have a handful of reviews.
+
+
+
+
+<details>
+<summary>SQL SQL Code</summary>
+
+```sql
+with seller_reviews as (
+    -- step 1: link reviews to specific sellers.
+    -- we use distinct to prevent overcounting reviews if a customer bought multiple items from the same seller in one order.
+    select distinct
+        oi.seller_id,
+        r.review_id,
+        r.order_id,
+        r.review_score
+    from 
+        order_reviews r
+    inner join 
+        order_items oi on r.order_id = oi.order_id
+    where 
+        r.review_score is not null
+),
+
+seller_stats as (
+    -- step 2: aggregate the total reviews and 1-star reviews per seller
+    select 
+        seller_id,
+        count(review_id) as total_reviews,
+        sum(case when review_score = 1 then 1 else 0 end) as count_1_star,
+        avg(review_score * 1.0) as avg_review_score
+    from 
+        seller_reviews
+    group by 
+        seller_id
+)
+
+-- final output: calculate the percentage of 1-star reviews and identify the worst offenders
+select 
+    seller_id,
+    total_reviews,
+    count_1_star,
+    cast((count_1_star * 100.0 / total_reviews) as decimal(5,2)) as pct_1_star,
+    cast(avg_review_score as decimal(5,2)) as overall_avg_score
+from 
+    seller_stats
+where 
+    total_reviews >= 30 -- threshold: filtering out sellers with very few reviews to ensure statistical significance
+order by 
+    pct_1_star desc,
+    total_reviews desc;
+```
+
+</details>
+
+
+
+**Results:**
+
+1ca7077d890b907f89be8c954a02686a	114	61	53.51	2.33
+54965bbe3e4f07ae045b90b0b8541f52	74	30	40.54	3.00
+2eb70248d66e0e3ef83659f71b244378	199	80	40.20	2.69
+dc8798cbf453b7e0f98745e396cc5616	42	15	35.71	3.07
+2a1348e9addc1af5aaa619b1a3679d6b	51	18	35.29	3.12
+a49928bcdf77c55c6d6e05e09a9b4ca5	98	34	34.69	3.01
+ad781527c93d00d89a11eecd9dcad7c1	44	15	34.09	3.07
+bbad7e518d7af88a0897397ffdca1979	68	23	33.82	3.16
+972d0f9cf61b499a4812cf0bfa3ad3c4	79	26	32.91	3.03
+c60b801f2d52c7f7f91de00870882a75	41	13	31.71	3.32
+602044f2c16190c2c6e45eb35c2e21cb	51	16	31.37	3.14
+8444e55c1f13cd5c179851e5ca5ebd00	99	31	31.31	3.26
+835f0f7810c76831d6c7d24c7a646d4d	44	13	29.55	3.34
+710e3548e02bc1d2831dfc4f1b5b14d4	135	39	28.89	3.36
+6fd52c528dcb38be2eea044946b811f8	66	18	27.27	3.39
+82e0a475a88cc9595229d8029273f045	44	12	27.27	3.52
+88460e8ebdecbfecb5f9601833981930	253	68	26.88	3.43
+b2479f944e1b90cf8a5de1bbfde284d6	105	28	26.67	3.41
+cac4c8e7b1ca6252d8f20b2fc1a2e4af	75	20	26.67	3.53
+0b35c634521043bf4b47e21547b99ab5	50	13	26.00	3.36
+18a349e75d307f4b4cc646a691ed4216	120	31	25.83	3.44
+070d165398b553f3b4b851c216b8a358	31	8	25.81	3.32
+ede0c03645598cdfc63ca8237acbe73d	44	11	25.00	3.52
+2089a6d640999f9b9141ac719b2af596	44	11	25.00	3.73
+a7f13822ceb966b076af67121f87b063	74	18	24.32	3.34
+f46490624488d3ff7ce78613913a7711	83	20	24.10	3.66
+ef990a83bbea832f36ebe81376335aa8	43	10	23.26	3.63
+3c7c4a49ec3c6550809089c6a2ca9370	142	33	23.24	3.64
+5058e8c1e82653974541e83690655b4a	62	14	22.58	3.24
+5f2684dab12e59f83bef73ae57724e45	68	15	22.06	3.81
+ea67327e24487bdfac5fbfa37ea124df	32	7	21.88	3.53
+b17b679f4f5ce2e03ce6968c62648246	55	12	21.82	3.71
+66dc1b1632bd6a3e508510c5b3492107	37	8	21.62	3.57
+712e6ed8aa4aa1fa65dab41fed5737e4	79	17	21.52	3.39
+45ba18c210d42734ec52c0c1c574e9ee	38	8	21.05	3.87
+229c3efbfb0ea2058de4ccdfbc3d784a	120	25	20.83	3.63
+95f83f51203c626648c875dd41874c7f	53	11	20.75	3.62
+1835b56ce799e6a4dc4eddc053f04066	422	87	20.62	3.64
+f7ccf836d21b2fb1de37564105216cc1	68	14	20.59	3.81
+e96498ed8daaa3e9c23f7a62da76591c	34	7	20.59	3.94
+d3f39f05462b79a4562d35893a28f159	34	7	20.59	3.65
+8e6d7754bc7e0f22c96d255ebda59eba	88	18	20.45	3.61
+891071be6ba827b591264c90c2ae8a63	93	19	20.43	3.78
+897060da8b9a21f655304d50fd935913	317	64	20.19	3.62
+71039d19d4303bf9054d69e9a9236699	35	7	20.00	3.80
+40d54b51e962dbe09cabbcfd33298dee	30	6	20.00	4.00
+7c67e1448b00f6e969d365cea6b010ab	982	196	19.96	3.49
+6973a06f484aacf400ece213dbf3d946	96	19	19.79	3.59
+6b3bd31ad8fcda4b2635ec9f3ff2ecdf	36	7	19.44	4.00
+3c03b12bab54d8b37d79d914bfdb1aa0	36	7	19.44	3.83
+36a968b544695394e4e9d7572688598f	155	30	19.35	3.66
+e8b3a3a38279a82f0e5d006d5e5b7d2c	88	17	19.32	3.81
+2a261b5b644fa05f4f2700eb93544f2c	52	10	19.23	3.83
+3fd1e727ba94cfe122d165e176ce7967	37	7	18.92	3.78
+63b464dbf392c7b80d12d932fa7cafed	37	7	18.92	3.78
+431af27f296bc6519d890aa5a05fdb11	117	22	18.80	3.79
+850913d59ce317156b00f3705f1c3edb	32	6	18.75	3.44
+fffd5413c0700ac820c7069d66d98c89	59	11	18.64	3.85
+6039e27294dc75811c0d8a39069f52c0	65	12	18.46	3.71
+0bf0150d5b9d60d9cd2906003332f085	38	7	18.42	3.79
+e2aee0892199b1d92530e371abd825bf	38	7	18.42	3.79
+05f51e13da97139648b8125c31e5f51b	60	11	18.33	4.07
+522620dcb18a6b31cd7bdf73665113a9	170	31	18.24	3.89
+c9aafcd0621b2207c10e32c649cada4d	44	8	18.18	4.02
+2d50d6282f8aa2257819a77bfaa0efe0	44	8	18.18	3.70
+b839e41795b7f3ad94cc2014a52f6796	33	6	18.18	4.09
+5b179e9e8cc7ab6fd113a46ca584da81	33	6	18.18	3.67
+d5ba419e26d246a0719437cf37d9b46d	33	6	18.18	3.91
+04308b1ee57b6625f47df1d56f00eedf	94	17	18.09	3.88
+165fc07beebdcb6190fba8a06db2a449	50	9	18.00	3.80
+cee48807215b30a12ca2ca10ffb5f250	39	7	17.95	3.77
+d20b021d3efdf267a402c402a48ea64b	90	16	17.78	3.70
+75d34ebb1bd0bd7dde40dd507b8169c3	62	11	17.74	3.74
+f3da5b2ff499efb8d4a6d371d175d7dd	79	14	17.72	3.82
+48162d548f5b1b11b9d29d1e01f75a61	68	12	17.65	3.90
+7040e82f899a04d1b434b795a43b4617	210	37	17.62	3.60
+4992e76a42cb3aad7a7047e0d3d7e729	57	10	17.54	3.91
+81f89e42267213cb94da7ddc301651da	46	8	17.39	3.67
+834f8533b2ecb6598dd004ff3de7203a	46	8	17.39	3.85
+966cb4760537b1404caedd472cc610a5	75	13	17.33	3.85
+5343d0649eca2a983820bfe93fc4d17e	70	12	17.14	3.83
+dd533b429f380718b70ad9922c294bae	41	7	17.07	3.78
+db2956745b3a8e9f3785c99f34b5d25e	47	8	17.02	3.77
+751bdc4d83a466c7206cd42e8f426b03	53	9	16.98	3.75
+e5a3438891c0bfdb9394643f95273d8e	224	38	16.96	3.91
+d05ae8f7a5bd1d2a690a44cd079e4e27	77	13	16.88	3.86
+44073f8b7e41514de3b7815dd0237f4f	143	24	16.78	3.76
+f84a00e60c73a49e7e851c9bdca3a5bb	90	15	16.67	3.83
+bf84056e679dbe9c69929847a40e338f	36	6	16.67	3.75
+6ec1a01e866584bb679eb9b098345919	30	5	16.67	4.13
+4ebdc7e6cd6102a022dadc49156d4ea8	30	5	16.67	3.83
+5656537e588803a555b8eb41f07a944b	175	29	16.57	3.87
+855668e0971d4dfd7bef1b6a4133b41b	309	51	16.50	3.78
+609e1a9a6c2539919b8205cf7c4e6ff0	85	14	16.47	3.81
+4a3ccda38b2129705f3fb522db62ca31	67	11	16.42	3.88
+dc317f341ab0e22f39acbd9dbf9b4a1f	55	9	16.36	4.15
+6f892e20a171e98efe17fdb971ff319b	43	7	16.28	3.93
+59b22a78efb79a4797979612b885db36	124	20	16.13	3.98
+ea566164622c6b439516ab18062c42cd	50	8	16.00	3.78
+d1c281d3ae149232351cd8c8cc885f0d	219	35	15.98	3.81
+23613d49c3ac2bd302259e55c06c050c	69	11	15.94	3.83
+822166ed1e47908f7cfb49946d03c726	69	11	15.94	4.00
+cd06602b43d8800bd0afad514919d35c	44	7	15.91	3.68
+a2e874074c877c5a05abae80ad6e488f	44	7	15.91	3.95
+99a54764c341d5dc80b4a8fac4eba3fb	44	7	15.91	3.61
+dc4a0fc896dc34b0d5bfec8438291c80	239	38	15.90	3.75
+b4a476fbd28de64b1e347abf9089366a	32	5	15.63	3.84
+dfa0c4c6229ab200a4a1336b4d7128ff	77	12	15.58	4.00
+11bfa66332777660bd0640ee84d47006	77	12	15.58	3.88
+318f287a62ab7ac10b703ac37435a231	52	8	15.38	3.87
+ce27a3cc3c8cc1ea79d11e561e9bebb6	131	20	15.27	3.91
+f457c46070d02cadd8a68551231220dd	204	31	15.20	3.85
+276677b5d08786d5dce7c2149dcce48b	33	5	15.15	3.91
+d93919c944be9cff128f6c9cb899eacb	33	5	15.15	4.00
+4c2b230173bb36f9b240f2b8ac11786e	258	39	15.12	3.98
+c3867b4666c7d76867627c2f7fb22e21	245	37	15.10	3.91
+6860153b69cc696d5dcfe1cdaaafcf62	73	11	15.07	4.10
+d2374cbcbb3ca4ab1086534108cc3ab7	532	80	15.04	3.75
+8a32e327fe2c1b3511609d81aaf9f042	133	20	15.04	3.84
+25c5c91f63607446a97b143d2d535d31	160	24	15.00	3.80
+b14db04aa7881970e83ffa9426897925	80	12	15.00	3.71
+1ce3ae5a399804d1a87e706f8a813c3e	40	6	15.00	3.75
+4c03b9dd4c11ee2cb35c96c49efc9420	47	7	14.89	4.11
+aae3bfea055532c57fb453ed3ec80b30	47	7	14.89	3.60
+dd7ddc04e1b6c2c614352b383efe2d36	121	18	14.88	3.85
+7ad32824caee82087b3e2e5f33b1bf32	148	22	14.86	3.84
+213b25e6f54661939f11710a6fddb871	155	23	14.84	3.79
+a888faf2d1baececa6baf9c3d603ee1f	54	8	14.81	4.04
+cca3071e3e9bb7d12640c9fbe2301306	716	106	14.80	3.85
+7a241947449cc45dbfda4f9d0798d9d0	61	9	14.75	3.87
+1900267e848ceeba8fa32d80c1a5f5a8	407	60	14.74	3.84
+6fc26fe110feebd80a433e1f012a84f9	34	5	14.71	3.91
+3ab971ce71839580d2ae5b4e40fe8044	34	5	14.71	3.91
+70a12e78e608ac31179aea7f8422044b	313	46	14.70	3.80
+cfb1a033743668a192316f3c6d1d2671	150	22	14.67	3.96
+2138ccb85b11a4ec1e37afbd1c8eda1f	396	58	14.65	3.94
+2528513dd95219a6013d4d05176e391a	158	23	14.56	3.95
+6c177e38df6d3f34182b1f1d427231bf	55	8	14.55	4.04
+cd68562d3f44870c08922d380acae552	124	18	14.52	3.94
+a3e9a2c700480d9bb01fba070ba80a0e	131	19	14.50	3.98
+c826c40d7b19f62a09e2d7c5e7295ee2	352	51	14.49	4.08
+f45122a9ab94eb4f3f8953578bc0c560	187	27	14.44	3.96
+98dac6635aee4995d501a3972e047414	90	13	14.44	4.14
+8648b1e89e9b349e32d3741b30ec737e	97	14	14.43	4.10
+4a3ca9315b744ce9f8e9374361493884	1801	259	14.38	3.83
+0be8ff43f22e456b4e0371b2245e4d01	161	23	14.29	3.95
+4c18691b6037662be2df78a765d98ab5	63	9	14.29	3.87
+50c9975695009e5e6473912e83a6d1da	49	7	14.29	3.94
+abe42c5d03695b4257b5c6cbf4e6784e	49	7	14.29	3.92
+ca3bd7cd9f149df75950150d010fe4a2	71	10	14.08	3.96
+beadbee30901a7f61d031b6b686095ad	64	9	14.06	3.91
+c33847515fa6305ce6feb1e818569f13	114	16	14.04	3.85
+5dceca129747e92ff8ef7a997dc4f8ca	321	45	14.02	3.98
+09f952a5f58d2285b0372551ae8f9b01	50	7	14.00	3.84
+4e922959ae960d389249c378d1c939f5	415	58	13.98	3.95
+440dd6ab244315c632130ecfb63827b1	93	13	13.98	3.85
+e9d99831abad74458942f21e16f33f92	129	18	13.95	3.93
+e9bc59e7b60fc3063eb2290deda4cced	216	30	13.89	3.99
+99002261c568a84cce14d43fcffb43ea	36	5	13.89	3.72
+06a2c3af7b3aee5d69171b0e14f0ee87	389	54	13.88	3.99
+8160255418d5aaa7dbdc9f4c64ebda44	384	53	13.80	3.94
+1025f0e2d44d7041d6cf58b6550e0bfa	914	125	13.68	3.99
+99eaacc9e6046db1c82b163c5f84869f	66	9	13.64	3.88
+4559697a8f7e637227c2eeaed843baff	44	6	13.64	4.07
+0b90b6df587eb83608a64ea8b390cf07	169	23	13.61	4.01
+45d33f715e24d15a6ccf5c17b3a23e3c	59	8	13.56	4.02
+b94cc9f10ddc85e4ba73a6f7974e7101	37	5	13.51	4.30
+41b39e28db005d9731d9d485a83b4c38	200	27	13.50	4.06
+8b28d096634035667e8263d57ba3368c	141	19	13.48	3.97
+002100f778ceb8431b7a1020ff7ab48f	52	7	13.46	3.90
+7202e2ba20579a9bd1acb29e61fe71f6	52	7	13.46	3.87
+a673821011d0cec28146ea42f5ab767f	127	17	13.39	3.99
+b1fc4f64df5a0e8b6913ab38803c57a9	105	14	13.33	3.86
+dd2bdf855a9172734fbc3744021ae9b9	105	14	13.33	3.85
+903037660cf848a717166eb7a06d616e	45	6	13.33	3.89
+2bf6a2c1e71bbd29a4ad64e6d3c3629f	30	4	13.33	4.17
+f00e21b1e91a79653163b7fd8f293ff1	30	4	13.33	4.10
+c8b0e2b0a7095e5d8219575d5e7e1181	83	11	13.25	4.08
+3b15288545f8928d3e65a8f949a28291	106	14	13.21	3.96
+96804ea39d96eb908e7c3afdb671bb9e	38	5	13.16	4.05
+e5a38146df062edaf55c38afa99e42dc	122	16	13.11	3.97
+951e8cef368f09bb3f3d03c00ca4702c	61	8	13.11	4.08
+ff1fb4c404b2efe68b03350a8dc24122	46	6	13.04	4.00
+70c27847eca8195c983ed7e798c56743	77	10	12.99	4.23
+a416b6a846a11724393025641d4edd5e	162	21	12.96	4.15
+0c7533c71df861ec58ad7ff999ed0e8d	62	8	12.90	4.10
+fcb5ace8bcc92f75707dc0f01a27d269	62	8	12.90	3.87
+5d3bb11474a06bdc23fb9e89f1164ee0	31	4	12.90	3.90
+e06f09ec0a4aca210779cf1cfc63cf19	31	4	12.90	3.97
+3c4e0452bff7a2a788179488d3d77032	31	4	12.90	3.84
+1c68394e931a64f90ea236c5ea590300	148	19	12.84	3.92
+3df020b72d3d44b3af9d110fa3940b65	55	7	12.73	4.05
+9b013e03b2ab786505a1d3b5c0756754	173	22	12.72	4.16
+f80edd2c5aaa505cc4b0a3b219abf4b8	118	15	12.71	4.08
+a17f621c590ea0fab3d5d883e1630ec6	63	8	12.70	4.06
+b92e3c8f9738272ff7c59e111e108d7c	63	8	12.70	4.17
+7d13fca15225358621be4086e1eb0964	561	71	12.66	4.02
+7ddcbb64b5bc1ef36ca8c151f6ec77df	332	42	12.65	3.95
+9c0e69c7bf2619675bbadf47b43f655a	159	20	12.58	4.05
+adbc26658d6c7b4b6219f9d934598091	88	11	12.50	4.13
+d673a59aac7a70d8b01e6902bf090a11	80	10	12.50	3.93
+056b4ada5bbc2c50cc7842547dda6b51	64	8	12.50	4.17
+56642bcb79900e777d68e91915cb4267	48	6	12.50	4.06
+b56906f7fd1696e043f1bcce164c487b	40	5	12.50	4.00
+bacb1f0ed56ad24198f5810d2b3fe9a5	40	5	12.50	4.08
+ed4acab38528488b65a9a9c603ff024a	32	4	12.50	3.72
+20cb7c2fde3e5bf10f0bbe7394e1c6a9	32	4	12.50	4.00
+232a6014e7b10cba61c6c2b2ea6bb4b0	32	4	12.50	4.16
+6560211a19b47992c3666cc44a7e94c0	1844	230	12.47	3.94
+c31eff8334d6b3047ed34bebd4d62c36	121	15	12.40	3.85
+aaed1309374718fdd995ee4c58c9dfcd	105	13	12.38	4.07
+634964b17796e64304cadf1ad3050fb7	267	33	12.36	4.04
+bd23da7354813347129d751591d1a6e2	89	11	12.36	4.02
+9674754b5a0cb32b638cec001178f799	89	11	12.36	4.08
+48436dade18ac8b2bce089ec2a041202	138	17	12.32	4.01
+76d5af76d0271110f9af36c92573f765	130	16	12.31	4.12
+a420f60ff1aa9acc80d0e42959f2b313	65	8	12.31	3.95
+00fc707aaaad2d31347cf883cd2dfe10	106	13	12.26	4.05
+8e6cc767478edae941d9bd9eb778d77a	106	13	12.26	3.94
+8b9d6eec4a7eb7d0f9d579ce0b38324d	49	6	12.24	4.00
+001cca7ae9ae17fb1caed9dfb1094831	197	24	12.18	3.98
+92eb0f42c21942b6552362b9b114707d	338	41	12.13	3.99
+ce248b21cb2adc36282ede306b7660e5	66	8	12.12	4.20
+93dc87703c046b603023e75222018b45	33	4	12.12	3.97
+2c9e548be18521d1c43cde1c582c6de8	124	15	12.10	4.11
+688756f717c462a206ad854c5027a64a	83	10	12.05	3.86
+a6fe7de3d16f6149ffe280349a8535a0	50	6	12.00	3.98
+b2ba3715d723d245138f291a6fe42594	334	40	11.98	4.10
+ebd2d60905fb58271facef5596b620d3	84	10	11.90	4.15
+1da366cade6d8276e7d8beea7af5d4bf	42	5	11.90	3.93
+daeb5653dd96c1b11860f72209795012	42	5	11.90	4.05
+8f2ce03f928b567e3d56181ae20ae952	152	18	11.84	4.11
+8b321bb669392f5163d04c59e235e066	939	111	11.82	4.07
+2e90cb1677d35cfe24eef47d441b7c87	127	15	11.81	4.12
+d91fb3b7d041e83b64a00a3edfb37e4f	560	66	11.79	4.10
+db4350fd57ae30082dec7acbaacc17f9	136	16	11.76	4.14
+b1a81260566c1bac3114a6d124413f27	51	6	11.76	4.27
+23d7c96d4a1160db1c726b248601b25a	51	6	11.76	3.80
+01cf7e3d21494c41fb86034f2e714fa1	60	7	11.67	4.15
+7aa4334be125fcdd2ba64b3180029f14	215	25	11.63	4.10
+b18dc380845b24038cfc48006478f099	43	5	11.63	4.14
+31344c16881c08a8a72c6d2eb29918c1	43	5	11.63	4.35
+3d8fa2f5b647373c8620330c4e077a9f	43	5	11.63	4.09
+e63e8bfa530fb16910dd6956e592bb81	43	5	11.63	4.26
+cc419e0650a3c5ba77189a1882b7556a	1740	202	11.61	4.08
+218d46b86c1881d022bce9c68a7d4b15	388	45	11.60	4.15
+729f06993dac8e860d4f02d7088ca48a	95	11	11.58	4.17
+34056b8b55c1775a22af2331670a799c	78	9	11.54	4.00
+ce7d1888639e6fb06b2749cbfdac1ff7	78	9	11.54	4.17
+2e1c9f22be269ef4643f826c9e650a52	165	19	11.52	4.17
+ef506c96320abeedfb894c34db06f478	322	37	11.49	3.93
+4e17c65a516f69d023a2ae78b84f28d6	61	7	11.48	4.23
+ec8879960bd2221d5c32f8e12f7da711	35	4	11.43	4.31
+ea8482cd71df3c1969d7b9473ff13abc	1141	130	11.39	4.00
+b32be1695eb7ec5f10f72d9610a12527	44	5	11.36	4.07
+58f1a6197ed863543e0136bdedb3fce2	44	5	11.36	4.18
+f789d2c4f2c2eb38fc4373e7a4b35264	44	5	11.36	4.16
+f214d28e8d8e3ef068748498ccc2f813	53	6	11.32	4.15
+06579cb253ecd5a3a12a9e6eb6bf8f47	62	7	11.29	4.08
+46dc3b2cc0980fb8ec44634e21d2718e	515	58	11.26	4.19
+1f50f920176fa81dab994f9023523100	1404	158	11.25	4.13
+0dd184061fb0eaa7ca37932c68ab91c5	160	18	11.25	4.03
+77530e9772f57a62c906e1c21538ab82	321	36	11.21	4.11
+b499c00f28f4b7069ff6550af8c1348a	153	17	11.11	4.12
+f5a590cf36251cf1162ea35bef76fe84	117	13	11.11	4.23
+06e5eefc71ec47ae763c5c6f8db7064f	90	10	11.11	3.92
+30a2f535bb48308f991d0b9ad4a8c4bb	72	8	11.11	4.29
+750303a20e9c56b2a6bc45cdce0b897d	54	6	11.11	4.24
+26d8a1c7c75d513045798992ead43aa2	36	4	11.11	4.31
+e8f6dc8e6a1dcde89d20e3995c8d90b3	36	4	11.11	3.92
+f84fa566034f5e8e880a07ec624c56af	91	10	10.99	4.22
+6d66611d7c44cc30ce351abc49a68421	164	18	10.98	3.95
+1838dd9b8977065acf51d95e0053ea7a	64	7	10.94	4.27
+0adac9fbd9a2b63cccaac4f8756c1ca8	110	12	10.91	4.05
+062ce95fa2ad4dfaedfc79260130565f	55	6	10.91	4.04
+7e3f87d16fb353f408d467e74fbd8014	92	10	10.87	4.13
+432c37c9dfba871172ec162e20118b8c	46	5	10.87	4.11
+391fc6631aebcf3004804e51b40bcf1e	534	58	10.86	4.03
+95e03ca3d4146e4011985981aeb959b9	175	19	10.86	4.01
+813348c996469b40f2e028d5429d3495	175	19	10.86	4.06
+4e7c18b98d84e05cbae3ff0ff03846c2	83	9	10.84	4.18
+4d6d651bd7684af3fffabd5f08d12e5a	370	40	10.81	4.20
+1336efc61c316ddf92c899eb817f7cae	74	8	10.81	4.00
+9e6229250fedbe05838fef417b74e7fb	74	8	10.81	3.89
+76d64c4aca3a7baf218bf93ef7fa768d	65	7	10.77	4.23
+f27e33c6d29b5138fa9967bcd445b6d5	93	10	10.75	4.10
+4869f7a5dfa277a7dca6462dcf3b52b2	1124	120	10.68	4.13
+5d0363b33554b373851fc1622e4d5f3c	94	10	10.64	4.04
+ceaec5548eefc6e23e6607c5435102e7	199	21	10.55	4.15
+0176f73cc1195f367f7b32db1e5b3aa8	38	4	10.53	4.08
+669ae81880e08f269a64487cfb287169	162	17	10.49	4.22
+4830e40640734fc1c52cd21127c341d4	211	22	10.43	4.16
+0691148aee60ca47977c187804f935ae	48	5	10.42	4.19
+7178f9f4dd81dcef02f62acdf8151e01	203	21	10.34	4.04
+0df3984f9dfb3d49ac6366acbd3bbb85	87	9	10.34	4.34
+7ea5bfa6c340f58f8e71fc1f0412b0d6	97	10	10.31	4.12
+f0b47fbbc6dee9aafe415a6e33051b3f	68	7	10.29	4.22
+620c87c171fb2a6dd6e8bb4dec959fc6	739	76	10.28	4.25
+17e34d8224d27a541263c4c64b11a56b	253	26	10.28	4.19
+0cbcee27c791afa0cdcb08587a2013a8	39	4	10.26	3.85
+75fbb52eda0cbc24f479d3b2fbfa8d3e	39	4	10.26	4.36
+138dbe45fc62f1e244378131a6801526	49	5	10.20	4.08
+2a5b78b41cd05baeac8df54c6606b92c	49	5	10.20	4.33
+7681ef142fd2c19048da7430856b5588	59	6	10.17	4.19
+3078096983cf766a32a06257648502d1	59	6	10.17	4.20
+6a8b085f816a1f75f92dbac6eb545f8f	128	13	10.16	4.11
+7e93a43ef30c4f03f38b393420bc753a	335	34	10.15	4.21
+79ebd9a61bac3eaf882805ed4ecfa12a	138	14	10.14	4.04
+5a8e7d5003a1f221f9e1d6e411de7c23	138	14	10.14	4.14
+16090f2ca825584b5a147ab24aa30c86	400	40	10.00	4.06
+1d8dbc4f32378d715c717c1c1fc57bae	90	9	10.00	4.02
+e59aa562b9f8076dd550fcddf0e73491	70	7	10.00	4.21
+048c2757535328e0d7dac690ad3c0aae	50	5	10.00	4.18
+0d85bbda9889ce1f7e63778d24f346eb	50	5	10.00	4.20
+ad420dd0c4f92f8af951ac24b86d0cf5	40	4	10.00	4.13
+1b938a7ec6ac5061a66a3766e0e75f90	30	3	10.00	4.30
+3c487ae8f8d7542beff5788e2e0aea83	30	3	10.00	4.20
+86ccac0b835037332a596a33b6949ee1	181	18	9.94	4.19
+cbd996ad3c1b7dc71fd0e5f5df9087e2	161	16	9.94	4.15
+1e8b33f18b4f7598d87f5cbee2282cc2	121	12	9.92	4.37
+f262cbc1c910c83959f849465454ddd3	192	19	9.90	4.15
+0c8380b62e38e8a1e6adbeba7eb9688c	182	18	9.89	4.05
+b33e7c55446eabf8fe1a42d037ac7d6d	152	15	9.87	4.16
+1da3aeb70d7989d1e6d9b0e887f97c23	265	26	9.81	4.15
+7d76b645482be4a332374e8223836592	174	17	9.77	3.96
+7dc8c42cc750eeafea6c85712ffee9bf	41	4	9.76	4.20
+c847e075301870dd144a116762eaff9a	41	4	9.76	4.17
+17a053fcb14bd219540cbde0df490be0	124	12	9.68	4.23
+01fd077212124329bac32490e8ef80d9	31	3	9.68	4.16
+2745f798279e0ed033addcc1474776d7	31	3	9.68	3.97
+72c5da29406b4234927b81855e7b64f6	31	3	9.68	4.13
+66e0557ecc2b4dbea057e93f215f68d8	31	3	9.68	3.94
+78c99c6dff4eeae5be99bf635ed21e3f	31	3	9.68	4.42
+2a7dc43cecabf23403078e2188437d1d	52	5	9.62	4.10
+cb3dd9ce66268c7a3ca7241ac70ab58c	52	5	9.62	4.17
+1127b7f2594683f2510f1c2c834a486b	115	11	9.57	4.10
+8a432f4e5b471f8da497d7dc517666e2	94	9	9.57	4.19
+53243585a1d6dc2643021fd1853d8905	356	34	9.55	4.13
+b76dba6c951ab00dc4edf0a1aa88037e	157	15	9.55	4.18
+9add47bf45ce8e8c7db6b9cf670b1e09	42	4	9.52	4.17
+d66c305afaec317ebee552073a674429	42	4	9.52	4.31
+53e4c6e0f4312d4d2107a8c9cddf45cd	474	45	9.49	4.09
+e9779976487b77c6d4ac45f75ec7afe9	654	62	9.48	4.22
+701938c450705b8ae65fc923b70f35c7	74	7	9.46	4.01
+e26901d5ab434ce92fd9b5c256820a4e	202	19	9.41	4.12
+17ca9b9e9b9ef8fdb529001b49ebb50f	117	11	9.40	4.05
+7142540dd4c91e2237acb7e911c4eba2	320	30	9.38	4.03
+c9c7905cffc4ef9ff9f113554423e671	128	12	9.38	4.15
+3db66a856d18a9cba7c9241fc5221c50	96	9	9.38	4.18
+4917cee8d902e13428c3ec4b1ca6f315	32	3	9.38	4.16
+33576ec5412fb5905d876f12f33bfde6	32	3	9.38	4.09
+9baf5cb77970f539089d09a38bcec5c3	32	3	9.38	4.31
+5c6d4016c2a288f074fa0848a2b653d2	32	3	9.38	4.06
+8bd0f31cf0a614c658f6763bd02dea69	32	3	9.38	4.28
+b4ffb71f0cb1b1c3d63fad021ecf93e1	150	14	9.33	4.23
+b39d7fe263ef469605dbb32608aee0af	43	4	9.30	3.88
+e067ad2c1c0b48758eb1b5228bcf7a68	54	5	9.26	4.15
+fa1a9dec3a9940c072684a46728bf1fc	54	5	9.26	4.11
+2a84855fd20af891be03bc5924d2b453	163	15	9.20	4.25
+f3b80352b986ab4d1057a4b724be19d0	87	8	9.20	4.17
+aac29b1b99776be73c3049939652091d	98	9	9.18	4.10
+de23c3b98a88888289c6f5cc1209054a	164	15	9.15	4.26
+8f119a0aee85c0c8fc534629734e94fd	77	7	9.09	4.25
+b335c59ab742f751a85db9c411a86739	33	3	9.09	3.85
+dfc5fb7259bb2b599ca565e6e9448f0f	33	3	9.09	4.12
+f7ba60f8c3f99e7ee4042fdef03b70c4	221	20	9.05	4.21
+670c26e0f1bf8d0576271d5cfaec6d2b	78	7	8.97	4.27
+7e1fb0a3ebfb01ffb3a7dae98bf3238d	157	14	8.92	4.16
+afe0067131b73e40875c9b6c10bd2e21	45	4	8.89	4.20
+1554a68530182680ad5c8b042c3ab563	248	22	8.87	4.32
+6b243f80ed07b10f0e8aa0f21a205f3c	79	7	8.86	4.27
+6a0cbc8af2e8abd1bdfb777943d174c6	34	3	8.82	4.06
+5160d23075764e18e07c1f4a87fad743	34	3	8.82	4.38
+a1043bafd471dff536d0c462352beb48	715	63	8.81	4.22
+259f7b5e6e482c230e5bfaa670b6bb8f	138	12	8.70	4.30
+bfd27a966d91cfaafdb25d076585f0da	115	10	8.70	4.28
+381c83fdca332ea6afd896da20bf6e4a	46	4	8.70	4.39
+382229d1e840115ffe3dbf5ff460e417	46	4	8.70	4.22
+3bb548e3cb7f70f28e3f11ee9dce0e59	46	4	8.70	4.20
+3d871de0142ce09b7081e2b9d1733cb1	1070	93	8.69	4.15
+3bdff180c7e1f6551a643b99c265a120	58	5	8.62	4.09
+fa1c13f2614d7b5c4749cbc52fecda94	581	50	8.61	4.34
+da8622b14eb17ae2831f4ac5b9dab84a	1325	114	8.60	4.18
+ccc4bbb5f32a6ab2b7066a4130f114e3	186	16	8.60	4.28
+dd55f1bb788714a40e7954c3be6df745	35	3	8.57	3.74
+870d0118f7a9d85960f29ad89d5d989a	47	4	8.51	4.09
+9b00ed88b7fdb95d6ff76e27c1b52d16	47	4	8.51	4.47
+fdb9095204a334cd8872252ffec6f2db	47	4	8.51	4.17
+e62b2d6ac10570a035a30bafcf01d263	59	5	8.47	3.97
+81a1104df0f08b59c68aa5b03cfe398e	71	6	8.45	4.27
+955fee9216a65b617aa5c0531780ce60	1279	107	8.37	4.16
+f4aba7c0bca51484c30ab7bdc34bcdd1	108	9	8.33	3.94
+dbb9b48c841a0e39e21f98e1a6b2ec3e	108	9	8.33	4.27
+3be634553519fb6536a03e1358e9fdc7	84	7	8.33	3.95
+05d2173d43ea568aa0540eba70d2ca76	60	5	8.33	4.18
+d650b663c3b5f6fb392b6326366efa9a	60	5	8.33	4.20
+bba74270a87732727b5a3b4fd9ac1c39	36	3	8.33	3.97
+530ec6109d11eaaf87999465c6afee01	97	8	8.25	4.24
+80e6699fe29150b372a0c8a1ebf7dcc8	97	8	8.25	4.28
+0432ead42b6c8a0bdf68154add917fdf	85	7	8.24	4.46
+900ba814c251a692506d7834c1218441	85	7	8.24	4.19
+f7720c4fa8e3aba4546301ab80ea1f1b	61	5	8.20	4.20
+6edacfd9f9074789dad6d62ba7950b9c	208	17	8.17	4.36
+8581055ce74af1daba164fdbd55a40de	392	32	8.16	4.26
+efcd8d2104f1a05d028af7bad20d974b	49	4	8.16	4.18
+00ee68308b45bc5e2660cd833c3f81cc	135	11	8.15	4.30
+9f505651f4a6abe901a56cdc21508025	395	32	8.10	4.34
+d94a40fd42351c259927028d163af842	99	8	8.08	4.18
+ececbfcff9804a2d6b40f589df8eef2b	99	8	8.08	4.12
+004c9cd9d87a3c30c522c48c4fc07416	161	13	8.07	4.14
+058fd0aa2bfdb2274e05e1ae971dabb6	62	5	8.06	4.39
+8d956fec2e4337affcb520f56fd8cbfd	212	17	8.02	4.20
+1b4c3a6f53068f0b6944d2d005c9fc89	113	9	7.96	4.22
+7008613ea464bad5cb9b83456e1e6a8f	126	10	7.94	4.26
+59fb871bf6f4522a87ba567b42dafecf	126	10	7.94	4.24
+5b8154610ebb21fb90eb587365e673df	38	3	7.89	4.18
+520b493b57809f446cb0a233bb3e25c7	64	5	7.81	4.30
+640e21a7d01df7614a3b4923e990d40c	116	9	7.76	4.30
+de722cd6dad950a92b7d4f82673f8833	337	26	7.72	4.29
+c70c1b0d8ca86052f45a432a38b73958	259	20	7.72	4.36
+8e8a7ce9f2f970dc00e2acf6f6e199f6	65	5	7.69	3.98
+2b3e4a2a3ea8e01938cabda2a3e5cc79	52	4	7.69	4.37
+0db783cfcd3b73998abc6e10e59a102f	131	10	7.63	4.21
+128639473a139ac0f3e5f5ade55873a5	527	40	7.59	4.19
+fe2032dab1a61af8794248c8196565c9	290	22	7.59	4.38
+0241d4d5d36f10f80c644447315af0bd	239	18	7.53	4.33
+54a1852d1b8f10312c55e906355666ee	200	15	7.50	4.33
+1c129092bf23f28a5930387c980c0dfc	200	15	7.50	4.24
+d12c926d74ceff0a90a21184466ce161	80	6	7.50	4.31
+b1ac6ea7895bc3dd6f0f6f4abbdd2821	40	3	7.50	4.35
+20d83f3ef0e6925fd74bfd59170babf7	40	3	7.50	4.40
+85d9eb9ddc5d00ca9336a2219c97bb13	509	38	7.47	4.18
+066a6914e1ebf3ea95a216c73a986b91	67	5	7.46	4.09
+8cbac7e12637ed9cffa18c7875207478	67	5	7.46	4.12
+9d5a9018aee56acb367ba9c3f05d1d6a	67	5	7.46	4.42
+7a67c85e85bb2ce8582c35f2203ad736	1155	86	7.45	4.24
+537eb890efff034a88679788b647c564	161	12	7.45	4.22
+f8db351d8c4c4c22c6835c19a46f01b0	665	49	7.37	4.24
+e333046ce6517bd8bb510291d44f0130	68	5	7.35	4.34
+94144541854e298c2d976cb893b81343	68	5	7.35	4.21
+fd386aa7bed2af3c7035c65506c9b4a3	69	5	7.25	4.35
+1b8356dabde1d35e17cef975c3f82730	56	4	7.14	4.16
+1d4587203296c8f4ad134dc286fa6db0	42	3	7.14	4.29
+b561927807645834b59ef0d16ba55a24	85	6	7.06	4.34
+7d456afc660226829370f3173d14520c	57	4	7.02	4.37
+562fc2f2c2863ab7e79a9e4388a58a14	258	18	6.98	4.22
+aafe36600ce604f205b86b5084d3d767	129	9	6.98	4.40
+e0a366315b1b726b6c7832d664c0f530	43	3	6.98	4.30
+3f995f07c49d0d55a99d5c54957f7d81	43	3	6.98	4.21
+bd0389da23d89b726abf911cccc54596	87	6	6.90	4.17
+406822777a0b9eb5c50e442dd4cd3ec5	44	3	6.82	4.30
+582d4f8675b945722eda7c0cb61ba4c7	59	4	6.78	4.15
+5cf13accae3222c70a9cac40818ae839	148	10	6.76	4.45
+6d803cb79cc31c41c4c789a75933b3c7	60	4	6.67	4.25
+c6bda72e4dbf5c5866b13cb1810c6d03	60	4	6.67	4.38
+c8b3445d737de6befde0c88ede534a5e	30	2	6.67	4.43
+e38db885400cd35c71dfd162f2c1dbcf	30	2	6.67	4.47
+b2ac621f0d0322434d04a12b078b9369	30	2	6.67	4.40
+edb1ef5e36e0c8cd84eb3c9b003e486d	166	11	6.63	4.42
+5f1dc28029d2c244352a68107ec2b542	61	4	6.56	4.43
+05ff92fedb5be47920fea08e501238b9	61	4	6.56	4.20
+d98eec89afa3380e14463da2aabaea72	168	11	6.55	4.33
+8c16d1f32a54d92897cc437244442e1b	107	7	6.54	4.36
+612170e34b97004b3ba37eae81836b4c	107	7	6.54	4.43
+850f4f8af5ea87287ac68de36e29107f	184	12	6.52	4.29
+dee656f0f566ed1aa85bd137c943f08f	92	6	6.52	4.37
+6b90f847357d8981edd79a1eb1bf0acb	46	3	6.52	4.37
+25e6ffe976bd75618accfe16cefcbd0d	108	7	6.48	4.41
+7b07b3c7487f0ea825fc6df75abd658b	93	6	6.45	4.35
+9616352088dcf83a7c06637f4ebf1c80	93	6	6.45	4.30
+96493fab2fbb13a14d0c0e8772eef5c3	62	4	6.45	4.06
+91f848e9f4be368f4318775aac733370	62	4	6.45	4.29
+715bbd5ba4e6b74cb0d2f29eb45058b0	62	4	6.45	4.47
+b6d44737c043328708f6749c2dbe50bd	62	4	6.45	4.47
+7b0df942f46435babab05d49b744b2c4	31	2	6.45	4.39
+4e06067cc08b3f41d837768d392c3ee3	31	2	6.45	4.13
+e8b4225284fbb02d16f200513f1f395d	31	2	6.45	4.19
+b74d1c09cb380e1d03a6f859c6f4224b	31	2	6.45	4.26
+0ebd97a106433a45a4aebe57c1799778	31	2	6.45	4.48
+f67efa3f0b6761102a7f8c6b7b571f5d	31	2	6.45	4.48
+dbc22125167c298ef99da25668e1011f	406	26	6.40	4.27
+c3cfdc648177fdbbbb35635a37472c53	283	18	6.36	4.47
+cce6ab8d1682639fe45ab70234f1665f	63	4	6.35	4.41
+01fdefa7697d26ad920e9e0346d4bd1b	128	8	6.25	4.35
+b372ee768ed69e46ca8cdbd267aa7a38	64	4	6.25	4.44
+4c498c7345e89aebad651544829beca0	48	3	6.25	4.29
+6481e96574816ead57975da2c0f6d80d	32	2	6.25	4.19
+f62d7bb4a613ec758a03342d46b580b2	32	2	6.25	4.38
+3340ef1913fb70d28420f6ceb685c339	32	2	6.25	4.38
+37515688008a7a40ac93e3b2e4ab203f	226	14	6.19	4.09
+6c7d50c24b3ccd2fd83b44d8bb34e073	113	7	6.19	4.39
+ef0ace09169ac090589d85746e3e036f	130	8	6.15	4.37
+8ae520247981aa06bc94abddf5f46d34	65	4	6.15	4.45
+1caf283236cd69af44cbc09a0a1e7d32	33	2	6.06	4.61
+974cf2cb8f4b7add98709c30df02fe10	33	2	6.06	4.06
+cc5a78bbad32776dc4e3af205218368c	33	2	6.06	4.45
+7722b1df1b0e383e000397b2c11e3e19	133	8	6.02	4.23
+8bb48dc19fccaa8613b6229bf7f452a2	83	5	6.02	4.42
+ba143b05f0110f0dc71ad71b4466ce92	84	5	5.95	4.42
+4371b634e0efc0e22b09b52907d9d469	101	6	5.94	4.45
+cb8bcce248bb1fb274ba762d8b971456	68	4	5.88	4.25
+33ac3e28642ab8bda860a2f693000e78	34	2	5.88	4.21
+b90e891671cffd9557f33a97dc523645	34	2	5.88	4.32
+37be5a7c751166fbc5f8ccba4119e043	273	16	5.86	4.30
+42b729f859728f5079499127a9c2ef37	103	6	5.83	4.47
+624f4ece8da4aafb77699233d480f8ef	52	3	5.77	4.25
+33a6f4b1e7cdc205511e76ba1b6e0186	105	6	5.71	4.41
+e49c26c3edfa46d227d5121a6b6e4d37	35	2	5.71	4.46
+6338ea67c41078a46ad99cc009654956	35	2	5.71	4.60
+11305281b50fff20ae8bb473f8e11876	35	2	5.71	4.31
+42bde9fef835393bb8a8849cb6b7f245	35	2	5.71	4.26
+65febd49fd28ec955651299159b1f527	35	2	5.71	4.31
+9646c3513289980f17226a2fc4720dbd	71	4	5.63	4.35
+527801b552d0077ffd170872eb49683b	89	5	5.62	4.47
+70eea00b476a314817cefde4aad4f89a	107	6	5.61	4.38
+a3a38f4affed601eb87a97788c949667	251	14	5.58	4.39
+d6b1ce66b035a475f00c017792ff9769	90	5	5.56	4.28
+827f8f69dfa529c561901c4f2e0f332f	90	5	5.56	4.28
+d9a84e1403de8da0c3aa531d6d108ba6	54	3	5.56	4.52
+32b8764b4ef628b53608fc34011fcc13	36	2	5.56	4.19
+5cbbd5a299cab112b7bf23862255e43e	36	2	5.56	4.28
+240b9776d844d37535668549a396af32	36	2	5.56	4.28
+325f3178fb58e2a9778334621eecdbf9	36	2	5.56	4.44
+4b9750c8ad28220fe6702d4ecb7c898f	218	12	5.50	4.36
+0ea22c1cfbdc755f86b9b54b39c16043	239	13	5.44	4.40
+718539d38d07dd351c76db862760e2e2	37	2	5.41	4.43
+14d7985702e72162bbf13b6beb74ab2b	37	2	5.41	4.32
+ff063b022a9a0aab91bad2c9088760b7	93	5	5.38	4.31
+17f51e7198701186712e53a39c564617	56	3	5.36	4.34
+1a3df491d1c4f1589fc2b934ada68bf2	169	9	5.33	4.18
+7f7b8245c336066a1f9933c359f11d77	38	2	5.26	4.55
+ba90964cff9b9e0e6f32b23b82465f7b	38	2	5.26	4.42
+c864036feaab8c1659f65ea4faebe1da	58	3	5.17	4.57
+1eade46fba20122dc4aefb379f8c636b	58	3	5.17	4.43
+5a93f3ab0ef4c84ed5e1b5dbf23978bc	39	2	5.13	4.69
+0bae85eb84b9fb3bd773911e89288d54	137	7	5.11	4.27
+c003204e1ab016dfa150abc119207b24	196	10	5.10	4.45
+5c243662ce92d84573bfaff24c3e3700	98	5	5.10	4.14
+d1b65fc7debc3361ea86b5f14c68d2e2	40	2	5.00	4.55
+83deb69e889cf80f82be1dc6d5f2d486	40	2	5.00	4.33
+d57e18d5f73c7ccb7f7339b61166898d	61	3	4.92	4.43
+fa40cc5b934574b62717c68f3d678b6d	306	15	4.90	4.46
+87142160b41353c4e5fca2360caf6f92	307	15	4.89	4.41
+080102cd0a76b09e0dcf55fcacc60e05	124	6	4.84	4.48
+cab85505710c7cb9b720bceb52b01cee	207	10	4.83	4.28
+eeb6de78f79159600292e314a77cbd18	83	4	4.82	4.45
+aba1721a889e04decc910aa13b768ef4	83	4	4.82	4.45
+7299e27ed73d2ad986de7f7c77d919fa	338	16	4.73	4.42
+02f623a8eb246f3c5f7c2f96462654e6	43	2	4.65	4.56
+febab0275244b9a49a623f0bd613ca2f	109	5	4.59	4.38
+289cdb325fb7e7f891c38608bf9e0962	110	5	4.55	4.57
+b8bc237ba3788b23da09c0f1f3a3288c	44	2	4.55	4.32
+f680f85bee2d253556ac91be391d2c82	45	2	4.44	4.33
+c66dccfb3f109511246da627dd5a2498	45	2	4.44	4.49
+abcd2cb37d46c2c8fb1bf071c859fc5b	45	2	4.44	4.24
+fc906263ca5083d09dce42fe02247800	115	5	4.35	4.36
+d50d79cb34e38265a8649c383dcffd48	69	3	4.35	4.25
+9de4643a8dbde634fe55621059d92273	72	3	4.17	4.53
+0ef83d7d83ed97cd2a0049ac8be5f88a	48	2	4.17	4.17
+4da0e408c99d2fdc2126dc9fce518060	48	2	4.17	4.46
+9d4db00d65d7760644ac0c14edb5fd86	97	4	4.12	4.52
+25cf099de44674fde97473224f9d59ab	49	2	4.08	4.33
+729b2d09b2a0bdab221076327f13d050	49	2	4.08	4.49
+994f04b3718c2bab35c2adfa8afecd2a	49	2	4.08	4.24
+08633c14ef2db992c11f840f04fad4cd	74	3	4.05	4.36
+282f23a9769b2690c5dda22e316f9941	99	4	4.04	4.33
+66922902710d126a0e7d26b0e3805106	150	6	4.00	4.47
+516e7738bd8f735ac19a010ee5450d8d	76	3	3.95	4.57
+1f9ab4708f3056ede07124aad39a2554	77	3	3.90	4.08
+d921b68bf747894be13a97ae52b0f386	77	3	3.90	4.56
+e24fc9fcd865784fb25705606fe3dfe7	52	2	3.85	4.17
+1bb2bdb95f4841f1bba2c0d2cd83d3c9	81	3	3.70	4.64
+a5cba26a62b8b4d0145b68b841e62e7f	54	2	3.70	4.52
+2dee2ce60de9709b1a24083217181a1f	54	2	3.70	4.43
+8a130737016f838139d31878787a39c9	56	2	3.57	4.45
+02f5837340d7eb4f653d676c7256523a	30	1	3.33	4.83
+6061155addc1e54b4cfb51c1c2a32ad8	30	1	3.33	4.67
+116ccb1a1604bc88e4d234a8c23f33de	61	2	3.28	4.64
+aced59e9b31ef866a94f9e7f29d8d418	62	2	3.23	4.42
+cd6efc47efaabf134f8bdb654e10b4f1	31	1	3.23	4.48
+57e632711dec9ec14ca7546769483e7e	63	2	3.17	4.40
+d566c37fa119d5e66c4e9052e83ee4ea	64	2	3.13	4.69
+834f3294fba9f932f56edc879193f925	66	2	3.03	4.55
+643214e62b870443ccbe55ab29a4dccf	66	2	3.03	4.41
+5b925e1d006e9476d738aa200751b73b	66	2	3.03	4.61
+0ffa40d54288e4f3499b8780dd0f144f	33	1	3.03	4.48
+d13e50eaa47b4cbe9eb81465865d8cfc	67	2	2.99	4.82
+ac3508719a1d8f5b7614b798f70af136	101	3	2.97	4.60
+12b9676b00f60f3b700e83af21824c0e	135	4	2.96	4.51
+a3dd39f583bc80bd8c5901c95878921e	35	1	2.86	4.60
+fde0cc9ea29c8ccfc0a2c22256a58c71	35	1	2.86	4.49
+f181738b150df1f37cb0bd72e705b193	36	1	2.78	4.47
+113e3a788b935f48aad63e1c41dac1bd	38	1	2.63	4.32
+55a5b51f93f2b70ea513f5a047b0262a	39	1	2.56	4.46
+d23019c84ffae2d5ef2270367b8605fc	39	1	2.56	4.41
+744dac408745240a2c2528fb1b6028f3	79	2	2.53	4.57
+3f3486b61f45078d4f31ee5e43d8c5bb	40	1	2.50	4.33
+6df688df543f90e9b38f4319e75a9d88	40	1	2.50	4.58
+23c38debaffe4a25a30fdbd9b586a13f	41	1	2.44	4.32
+43f8c9950d11ecd03a0304a49e010da6	41	1	2.44	4.56
+c013e57c075a06e5b5c48ee03c525719	42	1	2.38	4.24
+0ed6ce5d87fd9c69eaacaeb778d67235	42	1	2.38	4.40
+dbd66278cbfe1aa1000f90a217ca4695	85	2	2.35	4.51
+33a17d60c64393351ebf1ef860f4e0f2	43	1	2.33	4.63
+bccf933e006e9b94a6184af782963e77	44	1	2.27	4.52
+c68fb906c8f4b4b946d8386bfa6e5467	44	1	2.27	4.52
+b410bdd36d5db7a65dcd42b7ead933b8	44	1	2.27	4.66
+2ff97219cb8622eaf3cd89b7d9c09824	89	2	2.25	4.53
+83e197e95a1bbabc8c75e883ed016c47	47	1	2.13	4.81
+3504c0cb71d7fa48d967e0e4c94d59d9	53	1	1.89	4.42
+d9bd94811c3338dceb4181f3dbc0c73e	54	1	1.85	4.80
+cc63f0dd2acba93ffed4fe9f8e0321fa	55	1	1.82	4.09
+376a891762bbdecbc02b4b6adec3fdda	57	1	1.75	4.67
+e882b2a25a10b9c057cc49695f222c19	59	1	1.69	4.59
+709e16e2b25c7474d980076c6bfc4806	60	1	1.67	4.52
+6cd68b3ed6d59aaa9fece558ad360c0a	149	2	1.34	4.46
+080199a181c46c657dc5aa235411be3b	78	1	1.28	4.62
+725c32fa80c2faacc4fc88450d27314e	87	1	1.15	4.52
+0509040ea3fe50071181bbc359eb7738	87	1	1.15	4.48
+acce39e832338debb07b02385cde5967	44	0	0.00	4.48
+5f3ae9136c875522250f8184f253413a	42	0	0.00	4.64
+34d1ca11b242c0fee2c834ae8d788566	39	0	0.00	4.33
+594f9aaa48e5bf431f011ddc5669b0d5	37	0	0.00	4.59
+31561f325664a8a7aba4c8d0c3a9b3db	36	0	0.00	4.64
+3586b8580d9c917874e053a1bb37b5ff	36	0	0.00	4.42
+bf3c6d2a28b2b5501e6c15448982dcc9	35	0	0.00	4.60
+bd4889b5e9133b35b66e42a8665cea5c	35	0	0.00	4.40
+48efc9d94a9834137efd9ea76b065a38	33	0	0.00	5.00
+fad44952713764836814be105382aee5	32	0	0.00	4.28
+18e694e0e48ed6f7aa3f24aade5fd697	31	0	0.00	4.68
+0bb738e4d789e63e2267697c42d35a2d	30	0	0.00	4.60
+
+
+
+
+# Customer Review Impact
+
+> 28. What is the effect of customer review answers on the average review score? Specifically, do products that receive responses to customer reviews (e.g., seller replies) tend to have higher average review scores compared to products that do not receive any responses? Also the average response time to customer reviews and its correlation with review scores?
+
+
+**Solution:**
+
+- To analyze the effect of response times on review scores, the gap between when a review was created and when it was answered must first be calculated. This should be done in the first CTE by calculating the difference in hours between the creation date and the answer timestamp from the order reviews table. The data must also be filtered to only include records where a review score actually exists.
+
+- Next, those calculated response times should be segmented into logical buckets to help spot trends. A case statement must be used to categorize each response as fast, medium, slow, or very slow, based on the number of hours it took to reply. A specific category for reviews that never received a response must also be included to serve as a baseline for comparison.
+
+- Finally, the metrics must be aggregated based on these newly created response speed categories in the main query. The total number of reviews, the average response time, and the overall average review score should be calculated for each bucket. The distribution of extreme scores must also be captured by calculating the percentage of one-star and five-star reviews within each category. This final output will be used to determine if faster responses actually correlate with higher overall customer satisfaction and fewer negative ratings.
+
+
+
+<details>
+<summary>Show SQL Code</summary>
+
+
+```sql
+with review_response_times as (
+    -- step 1: calculate the time it took for the customer to answer the review survey
+    select 
+        review_id,
+        review_score,
+        review_creation_date,
+        review_answer_timestamp,
+        -- calculating response time in hours to measure the gap
+        datediff(hour, review_creation_date, review_answer_timestamp) as response_time_hours
+    from 
+        order_reviews
+    where 
+        review_score is not null
+),
+
+response_buckets as (
+    -- step 2: segment the response times into logical buckets to spot trends
+    select 
+        review_id,
+        review_score,
+        response_time_hours,
+        case 
+            when review_answer_timestamp is null then 'No Response Recorded'
+            when response_time_hours <= 24 then '1. Fast (Under 24 Hours)'
+            when response_time_hours <= 72 then '2. Medium (1 - 3 Days)'
+            when response_time_hours <= 168 then '3. Slow (3 - 7 Days)'
+            else '4. Very Slow (Over 1 Week)'
+        end as response_speed_category
+    from 
+        review_response_times
+)
+
+-- final output: aggregate the scores based on how quickly the survey was answered
+select 
+    response_speed_category,
+    count(review_id) as total_reviews,
+    cast(avg(response_time_hours * 1.0) as decimal(10,2)) as avg_response_time_hours,
+    cast(avg(review_score * 1.0) as decimal(5,2)) as avg_review_score,
+    -- getting the distribution of extreme scores for correlation analysis
+    cast((sum(case when review_score = 1 then 1 else 0 end) * 100.0 / count(review_id)) as decimal(5,2)) as pct_1_star,
+    cast((sum(case when review_score = 5 then 1 else 0 end) * 100.0 / count(review_id)) as decimal(5,2)) as pct_5_star
+from 
+    response_buckets
+group by 
+    response_speed_category
+order by 
+    response_speed_category;
+```
+
+</details>
+
+
+**Results:**
+
+|response_speed_category|total_reviews|avg_response_time_hours|avg_review_score|pct_1_star|pct_5_star|
+|-----------------------|-------------|-----------------------|----------------|----------|----------|
+|1. Fast (Under 24 Hours)|28072|18.90|3.94|15.76|56.19|
+|2. Medium (1 - 3 Days)|44618|46.06|4.16|9.53|59.16|
+|3. Slow (3 - 7 Days)|21683|100.95|4.13|9.68|57.33|
+|4. Very Slow (Over 1 Week)|4851|551.43|4.02|13.38|56.26|
+
+
+
+
+
+
+
+
+
+
+
+

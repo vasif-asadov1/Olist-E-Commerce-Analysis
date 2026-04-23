@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Data Ingestion and Cleaning – Vasif | Olist E-Commerce Analysis</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-acf12a64177840b8d86f2d4f01b2e9fb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-948e61940ef19b6a40d753e4856fbf86.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Vasif | Olist E-Commerce Analysis</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Olist Data Analysis</a></li><li class="breadcrumb-item"><a href="./01_data_normalization.html">Data Ingestion and Cleaning</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Olist Data Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Olist E-Commerce Sales Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_data_normalization.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Data Ingestion and Cleaning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_business_questions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Business Questions for Olist E-Commerce Sales Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_customer_retention.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Customer Behavior and Retention Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_orders_sales_performance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Orders and Sales Performance Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_delivery_logistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Delivery and Logistics Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_seller_performance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Seller Performance Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_payments_and_risk.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Payments and Risk Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08_customer_reviews.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Customer Review and Satisfaction Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09_time_series.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Time Series Analysis</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#data-ingestion" id="toc-data-ingestion" class="nav-link active" data-scroll-target="#data-ingestion">Data Ingestion</a>
+  <ul class="collapse">
+  <li><a href="#create-database" id="toc-create-database" class="nav-link" data-scroll-target="#create-database">Create Database</a></li>
+  <li><a href="#import-data" id="toc-import-data" class="nav-link" data-scroll-target="#import-data">Import Data</a></li>
+  </ul></li>
+  <li><a href="#data-cleaning" id="toc-data-cleaning" class="nav-link" data-scroll-target="#data-cleaning">Data Cleaning</a>
+  <ul class="collapse">
+  <li><a href="#compact-readable-table-names" id="toc-compact-readable-table-names" class="nav-link" data-scroll-target="#compact-readable-table-names">Compact Readable Table Names</a></li>
+  <li><a href="#data-type-and-length-adjustments" id="toc-data-type-and-length-adjustments" class="nav-link" data-scroll-target="#data-type-and-length-adjustments">Data Type and Length Adjustments</a></li>
+  </ul></li>
+  <li><a href="#star-schema-modelling" id="toc-star-schema-modelling" class="nav-link" data-scroll-target="#star-schema-modelling">Star Schema Modelling</a>
+  <ul class="collapse">
+  <li><a href="#primary-keys" id="toc-primary-keys" class="nav-link" data-scroll-target="#primary-keys">Primary Keys</a></li>
+  <li><a href="#foreign-keys" id="toc-foreign-keys" class="nav-link" data-scroll-target="#foreign-keys">Foreign Keys</a></li>
+  <li><a href="#index-assignment-for-performance-optimization" id="toc-index-assignment-for-performance-optimization" class="nav-link" data-scroll-target="#index-assignment-for-performance-optimization">Index Assignment for Performance Optimization</a></li>
+  <li><a href="#explicit-date-table" id="toc-explicit-date-table" class="nav-link" data-scroll-target="#explicit-date-table">Explicit Date Table</a></li>
+  <li><a href="#star-schema-design" id="toc-star-schema-design" class="nav-link" data-scroll-target="#star-schema-design">Star Schema Design</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Olist Data Analysis</a></li><li class="breadcrumb-item"><a href="./01_data_normalization.html">Data Ingestion and Cleaning</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Data Ingestion and Cleaning</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="data-ingestion" class="level1">
+<h1>Data Ingestion</h1>
+<p>The first step in our analysis process is to import the data into our analysis environment. We will be using SQL Server as our database management system, and we will import the data from the provided CSV files into a new database called <code>Olist-E-Commerce</code>. We can create the database and import data both using SQL scripts and graphical user interface (GUI) tools. I am using DBeaver as my SQL client, which provides a user-friendly interface for managing databases and importing data. For simpllicity, I will use Dbeaver GUI to create database and import the csv files into the database.</p>
+<section id="create-database" class="level2">
+<h2 class="anchored" data-anchor-id="create-database">Create Database</h2>
+<ul>
+<li>After connecting to the SQL Server instance using DBeaver, right click on the ‘master’ database and select ‘Create New Database’. Name the database <code>Olist-E-Commerce</code> and click ‘OK’ to create the database.</li>
+<li>Click to <em>Refresh</em> the database list to see the newly created database.</li>
+</ul>
+</section>
+<section id="import-data" class="level2">
+<h2 class="anchored" data-anchor-id="import-data">Import Data</h2>
+<ul>
+<li>Right click on the <code>Olist-E-Commerce</code> database and select ‘Import Data’.</li>
+<li>In the import wizard, select ‘CSV’ as the data source and click ‘Next’.</li>
+<li>Click ‘Browse’ to select the CSV file you want to import. Select the first CSV file (e.g., <code>olist_customers_dataset.csv</code>) and click ‘Next’.</li>
+<li>In the next step, you can review the data and make any necessary adjustments to the import settings (e.g., delimiter, text qualifier, etc.). Click ‘Next’ to proceed.</li>
+<li>In the next step, you can choose the target table and specify the mapping between the CSV columns and the database columns. You can also choose to create a new table or append the data to an existing table. Click ‘Next’ to proceed.</li>
+<li>In the final step, review the import summary and click ‘Finish’ to start the import process. Repeat these steps for each of the CSV files provided in the dataset.</li>
+</ul>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When you import the <code>olist_order_reviews_dataset.csv</code> you may encounter with error since that table have <code>comment message</code> column that contains text data with special characters. To handle this issue, the better way is to change the data types of all columns to either <code>text</code> or <code>varchar(max)</code> before importing the data. This will allow you to import the data without any issues related to special characters in the text data. We can further change the data types of the columns to more appropriate types after the data has been imported into the database.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="data-cleaning" class="level1">
+<h1>Data Cleaning</h1>
+<section id="compact-readable-table-names" class="level2">
+<h2 class="anchored" data-anchor-id="compact-readable-table-names">Compact Readable Table Names</h2>
+<p>Initial data cleaning steps consist of checking data types, handling each feature for missing values and dropping unnecessary columns. This step will prepare the data for building clean star schema and conducting analysis.</p>
+<p>Firstly, we should change the names of tables to more compact and explanatory names. So, I did the following changes to the table names:</p>
+<ol type="1">
+<li><code>olist_customers_dataset</code> to <code>customers</code></li>
+<li><code>olist_geolocation_dataset</code> to <code>geolocation</code></li>
+<li><code>olist_order_items_dataset</code> to <code>order_items</code></li>
+<li><code>olist_order_payments_dataset</code> to <code>order_payments</code></li>
+<li><code>olist_order_reviews_dataset</code> to <code>order_reviews</code></li>
+<li><code>olist_orders_dataset</code> to <code>orders</code></li>
+<li><code>olist_products_dataset</code> to <code>products</code></li>
+<li><code>olist_sellers_dataset</code> to <code>sellers</code></li>
+<li><code>product_category_name_translation</code></li>
+</ol>
+<p>Table name changes can be done either by using SQL script or GUI method. I used GUI method in DBeaver but by using the following SQL script, you can change the table names easily:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">EXEC</span> sp_rename <span class="st">'olist_customers_dataset'</span>, <span class="st">'customers'</span>;</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">EXEC</span> sp_rename <span class="st">'olist_geolocation_dataset'</span>, <span class="st">'geolocation'</span>;</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">EXEC</span> sp_rename <span class="st">'olist_order_items_dataset'</span>, <span class="st">'order_items'</span>;</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">EXEC</span> sp_rename <span class="st">'olist_order_payments_dataset'</span>, <span class="st">'order_payments'</span>;</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">EXEC</span> sp_rename <span class="st">'olist_order_reviews_dataset'</span>, <span class="st">'order_reviews'</span>;</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">EXEC</span> sp_rename <span class="st">'olist_orders_dataset'</span>, <span class="st">'orders'</span>;</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">EXEC</span> sp_rename <span class="st">'olist_products_dataset'</span>, <span class="st">'products'</span>;</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">EXEC</span> sp_rename <span class="st">'olist_sellers_dataset'</span>, <span class="st">'sellers'</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="data-type-and-length-adjustments" class="level2">
+<h2 class="anchored" data-anchor-id="data-type-and-length-adjustments">Data Type and Length Adjustments</h2>
+<p>During the import process, some columns may have been assigned incorrect data types or lengths. We should check all the tables and columns to ensure that they have the appropriate data types and lengths for the data they contain.</p>
+<p><strong>Customers Table:</strong> This table should have the following data types and lengths for each column:</p>
+<ul>
+<li><code>customer_id</code>: <code>nvarchar(100)</code> - This column contains identifiers for customers but it is not unique. For each transaction, all customers are assigned different <code>customer_id</code> values, even if they are the same customer. Therefore, same customer may have multiple <strong>customer_id</strong> values. A length of 100 characters should be sufficient to accommodate all customer IDs. This column will be used only to build relationships between the <strong>orders</strong> table.</li>
+<li><code>customer_unique_id</code>: <code>nvarchar(100)</code> - This column contains unique identifiers for each customer. Unlike the <strong>customer_id</strong> column, the <strong>customer_unique_id</strong> column contains unique values for each customer, which can be used to identify customers across different transactions. So, this column will be used to obtain retention and customer lifetime value metrics. A length of 100 characters should be sufficient to accommodate all unique customer IDs.</li>
+<li><code>customer_zip_code_prefix</code>: <code>int</code> - All zip codes in the dataset are integer values, therefore, data type must be <strong>int</strong>. This column contains the zip code prefix for each customer and will be used to establish relationships with the <strong>geolocation</strong> table.</li>
+<li><code>customer_city</code>: <code>nvarchar(100)</code> - This column contains the city where each customer is located.</li>
+<li><code>customer_state</code>: <code>nvarchar(100)</code> - This column contains the state where each customer is located.</li>
+</ul>
+<p><strong>Geolocation Table:</strong> This table should have the following data types and lengths for each column:</p>
+<ul>
+<li><code>geolocation_zip_code_prefix</code>: <code>int</code> - This column contains the zip code prefix for each geolocation entry. All zip codes in the dataset are integer values, therefore, data type must be <strong>int</strong>.</li>
+<li><code>geolocation_lat</code>: <code>float</code> - This column contains the latitude for each geolocation entry.</li>
+<li><code>geolocation_lng</code>: <code>float</code> - This column contains the longitude for each geolocation entry.</li>
+<li><code>geolocation_city</code>: <code>nvarchar(100)</code> - This column contains the city for each geolocation entry.</li>
+<li><code>geolocation_state</code>: <code>nvarchar(100)</code> - This column contains the state for each geolocation entry.</li>
+</ul>
+<p><strong>Orders Table:</strong> This table should have the following data types and lengths for each column:</p>
+<ul>
+<li><code>order_id</code>: <code>nvarchar(100)</code> - This column contains the unique identifier for each order.</li>
+<li><code>customer_id</code>: <code>nvarchar(100)</code> - This column contains the identifier for the customer who placed the order. This is different for all transactions, even for the same customer.</li>
+<li><code>order_status</code>: <code>nvarchar(100)</code> - This column contains the status of the order (e.g., delivered, shipped, etc.).</li>
+<li><code>order_purchase_timestamp</code>: <code>datetime</code> - This column contains the timestamp when the order was purchased.</li>
+<li><code>order_approved_at</code>: <code>datetime</code> - This column contains the timestamp when the order was approved.</li>
+<li><code>order_delivered_carrier_date</code>: <code>datetime</code> - This column contains the timestamp when the order was delivered by the carrier.</li>
+<li><code>order_delivered_customer_date</code>: <code>datetime</code> - This column contains the timestamp when the order was delivered to the customer.</li>
+<li><code>order_estimated_delivery_date</code>: <code>datetime</code> - This column contains the estimated delivery date for the order.</li>
+</ul>
+<p><strong>Order Items Table:</strong> This table should have the following data types and lengths for each column:</p>
+<ul>
+<li><code>order_id</code>: <code>nvarchar(100)</code> - This column contains the identifier for the order to which the item belongs.</li>
+<li><code>order_item_id</code>: <code>int</code> - This column contains the identifier for each item within an order.</li>
+<li><code>product_id</code>: <code>nvarchar(100)</code> - This column contains the identifier for the product being ordered.</li>
+<li><code>seller_id</code>: <code>nvarchar(100)</code> - This column contains the identifier for the seller of the product.</li>
+<li><code>shipping_limit_date</code>: <code>datetime</code> - This column contains the timestamp for the shipping limit date of the item.</li>
+<li><code>price</code>: <code>float</code> - This column contains the price of the item..</li>
+<li><code>freight_value</code>: <code>float</code> - This column contains the freight value for the item.</li>
+</ul>
+<p><strong>Order Payments Table:</strong> This table should have the following data types and lengths for each column:</p>
+<ul>
+<li><code>order_id</code>: <code>nvarchar(100)</code> - This column contains the identifier for the order to which the payment belongs.</li>
+<li><code>payment_sequential</code>: <code>int</code> - This column contains the sequential number of the payment for the order.</li>
+<li><code>payment_type</code>: <code>nvarchar(100)</code> - This column contains the type of payment (e.g., credit card, boleto, etc.). A length of 100 characters should be sufficient to accommodate all payment type values.</li>
+<li><code>payment_installments</code>: <code>int</code> - This column contains the number of installments for the payment.</li>
+<li><code>payment_value</code>: <code>float</code> - This column contains the value of the payment.</li>
+</ul>
+<p><strong>Order Reviews Table:</strong> This table should have the following data types and lengths for each column:</p>
+<ul>
+<li><code>review_id</code>: <code>nvarchar(100)</code> - This column contains the unique identifier for each review.</li>
+<li><code>order_id</code>: <code>nvarchar(100)</code> - This column contains the identifier for the order to which the review belongs.</li>
+<li><code>review_score</code>: <code>int</code> - This column contains the score given in the review (e.g., 1 to 5).</li>
+<li><code>review_creation_date</code>: <code>datetime</code> - This column contains the timestamp for when the review was created.</li>
+<li><code>review_answer_timestamp</code>: <code>datetime</code> - This column contains the timestamp for when the review was answered.</li>
+</ul>
+<p><strong>Products Table:</strong> This table should have the following data types and lengths for each column:</p>
+<ul>
+<li><code>product_id</code>: <code>nvarchar(100)</code> - This column contains the unique identifier for each product.</li>
+<li><code>product_category_name</code>: <code>nvarchar(100)</code> - This column contains the category name for each product.</li>
+<li><code>product_name_length</code>: <code>int</code> - This column contains the length of the product name.</li>
+<li><code>product_description_length</code>: <code>int</code> - This column contains the length of the product description.</li>
+<li><code>product_photos_qty</code>: <code>int</code> - This column contains the quantity of photos for the product.</li>
+<li><code>product_weight_g</code>: <code>float</code> - This column contains the weight of the product in grams.</li>
+<li><code>product_length_cm</code>: <code>float</code> - This column contains the length of the product in centimeters.</li>
+<li><code>product_height_cm</code>: <code>float</code> - This column contains the height of the product in centimeters.</li>
+<li><code>product_width_cm</code>: <code>float</code> - This column contains the width of the product in centimeters.</li>
+</ul>
+<p><strong>Sellers Table:</strong> This table should have the following data types and lengths for each column:</p>
+<ul>
+<li><code>seller_id</code>: <code>nvarchar(100)</code> - This column contains the unique identifier for each seller.</li>
+<li><code>seller_zip_code_prefix</code>: <code>nvarchar(20)</code> - This column contains the zip code prefix for each seller.</li>
+<li><code>seller_city</code>: <code>nvarchar(100)</code> - This column contains the city where each seller is located.</li>
+<li><code>seller_state</code>: <code>nvarchar(100)</code> - This column contains the state where each seller is located.</li>
+</ul>
+<p>**Product Category Name Translation Table:* This table should have the following data types and lengths for each column: - <code>product_category_name</code>: <code>nvarchar(200)</code> - This column contains the category name for each product in Portuguese. - <code>product_category_name_english</code>: <code>nvarchar(200)</code> - This column contains the category name for each product in English.</p>
+<p>All of these conversions can be done using the following SQL script:</p>
+<details>
+<summary>
+SQL Script
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> customers <span class="kw">alter</span> <span class="kw">column</span> customer_id <span class="dt">nvarchar</span>(<span class="dv">100</span>) <span class="kw">not</span> <span class="kw">null</span>; </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> customers <span class="kw">alter</span> <span class="kw">column</span> customer_unique_id <span class="dt">nvarchar</span>(<span class="dv">100</span>) <span class="kw">not</span> <span class="kw">null</span>;</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> customers <span class="kw">alter</span> <span class="kw">column</span> customer_zip_code_prefix  <span class="dt">int</span>;</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> customers <span class="kw">alter</span> <span class="kw">column</span> customer_city <span class="dt">nvarchar</span>(<span class="dv">100</span>);</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> customers <span class="kw">alter</span> <span class="kw">column</span> customer_state <span class="dt">nvarchar</span>(<span class="dv">100</span>);</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">-- GEOLOCATION TABLE DATA TYPES</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> geolocation <span class="kw">alter</span> <span class="kw">column</span> geolocation_zip_code_prefix <span class="dt">int</span>;</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> geolocation <span class="kw">alter</span> <span class="kw">column</span> geolocation_lat <span class="dt">float</span>;</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> geolocation <span class="kw">alter</span> <span class="kw">column</span> geolocation_lng <span class="dt">float</span>;</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> geolocation <span class="kw">alter</span> <span class="kw">column</span> geolocation_city <span class="dt">nvarchar</span>(<span class="dv">100</span>);</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> geolocation <span class="kw">alter</span> <span class="kw">column</span> geolocation_state <span class="dt">nvarchar</span>(<span class="dv">100</span>);</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">-- ORDERS TABLE DATA TYPES</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> orders <span class="kw">alter</span> <span class="kw">column</span> order_id <span class="dt">nvarchar</span>(<span class="dv">100</span>) <span class="kw">not</span> <span class="kw">null</span>;</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> orders <span class="kw">alter</span> <span class="kw">column</span> customer_id <span class="dt">nvarchar</span>(<span class="dv">100</span>) <span class="kw">not</span> <span class="kw">null</span>;</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> orders <span class="kw">alter</span> <span class="kw">column</span> order_status <span class="dt">nvarchar</span>(<span class="dv">100</span>);</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> orders <span class="kw">alter</span> <span class="kw">column</span> order_purchase_timestamp datetime;</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> orders <span class="kw">alter</span> <span class="kw">column</span> order_approved_at datetime;</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> orders <span class="kw">alter</span> <span class="kw">column</span> order_delivered_carrier_date datetime;</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> orders <span class="kw">alter</span> <span class="kw">column</span> order_delivered_customer_date datetime;</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> orders <span class="kw">alter</span> <span class="kw">column</span> order_estimated_delivery_date datetime;</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">-- ORDER ITEMS TABLE DATA TYPES</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_items <span class="kw">alter</span> <span class="kw">column</span> order_id <span class="dt">nvarchar</span>(<span class="dv">100</span>) <span class="kw">not</span> <span class="kw">null</span>;</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_items <span class="kw">alter</span> <span class="kw">column</span> order_item_id <span class="dt">int</span> <span class="kw">not</span> <span class="kw">null</span>;</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_items <span class="kw">alter</span> <span class="kw">column</span> product_id <span class="dt">nvarchar</span>(<span class="dv">100</span>) <span class="kw">not</span> <span class="kw">null</span>;</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_items <span class="kw">alter</span> <span class="kw">column</span> seller_id <span class="dt">nvarchar</span>(<span class="dv">100</span>) <span class="kw">not</span> <span class="kw">null</span>;</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_items <span class="kw">alter</span> <span class="kw">column</span> shipping_limit_date datetime;</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_items <span class="kw">alter</span> <span class="kw">column</span> price <span class="dt">float</span>;</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_items <span class="kw">alter</span> <span class="kw">column</span> freight_value <span class="dt">float</span>;</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co">-- PAYMENTS TABLE DATA TYPES</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> payments <span class="kw">alter</span> <span class="kw">column</span> order_id <span class="dt">nvarchar</span>(<span class="dv">100</span>) <span class="kw">not</span> <span class="kw">null</span>;</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> payments <span class="kw">alter</span> <span class="kw">column</span> payment_sequential <span class="dt">int</span>;</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> payments <span class="kw">alter</span> <span class="kw">column</span> payment_type <span class="dt">nvarchar</span>(<span class="dv">100</span>);</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> payments <span class="kw">alter</span> <span class="kw">column</span> payment_installments <span class="dt">int</span>;</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> payments <span class="kw">alter</span> <span class="kw">column</span> payment_value <span class="dt">float</span>;</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="co">-- PRODUCTS TABLE DATA TYPES</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> products <span class="kw">alter</span> <span class="kw">column</span> product_id <span class="dt">nvarchar</span>(<span class="dv">100</span>) <span class="kw">not</span> <span class="kw">null</span>;</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> products <span class="kw">alter</span> <span class="kw">column</span> product_category_name <span class="dt">nvarchar</span>(<span class="dv">100</span>);</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> products <span class="kw">alter</span> <span class="kw">column</span> product_name_lenght <span class="dt">int</span>;</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> products <span class="kw">alter</span> <span class="kw">column</span> product_description_lenght <span class="dt">int</span>;</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> products <span class="kw">alter</span> <span class="kw">column</span> product_photos_qty <span class="dt">int</span>;</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> products <span class="kw">alter</span> <span class="kw">column</span> product_weight_g <span class="dt">float</span>;</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> products <span class="kw">alter</span> <span class="kw">column</span> product_length_cm <span class="dt">float</span>;</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> products <span class="kw">alter</span> <span class="kw">column</span> product_height_cm <span class="dt">float</span>;</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> products <span class="kw">alter</span> <span class="kw">column</span> product_width_cm <span class="dt">float</span>;</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="co">-- SELLERS TABLE DATA TYPES</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> sellers <span class="kw">alter</span> <span class="kw">column</span> seller_id <span class="dt">nvarchar</span>(<span class="dv">100</span>) <span class="kw">not</span> <span class="kw">null</span>;</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> sellers <span class="kw">alter</span> <span class="kw">column</span> seller_zip_code_prefix <span class="dt">int</span>;</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> sellers <span class="kw">alter</span> <span class="kw">column</span> seller_city <span class="dt">nvarchar</span>(<span class="dv">100</span>);</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> sellers <span class="kw">alter</span> <span class="kw">column</span> seller_state <span class="dt">nvarchar</span>(<span class="dv">100</span>);    </span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a><span class="co">-- ORDER REVIEWS TABLE DATA TYPES</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_reviews <span class="kw">alter</span> <span class="kw">column</span> review_id <span class="dt">nvarchar</span>(<span class="dv">100</span>);</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_reviews <span class="kw">alter</span> <span class="kw">column</span> order_id <span class="dt">nvarchar</span>(<span class="dv">100</span>);</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_reviews <span class="kw">alter</span> <span class="kw">column</span> review_score <span class="dt">int</span>;</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_reviews <span class="kw">alter</span> <span class="kw">column</span> review_comment_title text; </span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_reviews <span class="kw">alter</span> <span class="kw">column</span> review_comment_message text;</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_reviews <span class="kw">alter</span> <span class="kw">column</span> review_creation_date datetime;</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_reviews <span class="kw">alter</span> <span class="kw">column</span> review_answer_timestamp datetime;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</section>
+</section>
+<section id="star-schema-modelling" class="level1">
+<h1>Star Schema Modelling</h1>
+<section id="primary-keys" class="level2">
+<h2 class="anchored" data-anchor-id="primary-keys">Primary Keys</h2>
+<p>Before building the star schema, we should also identify the primary keys for each table. Primary keys are unique identifiers for each record in a table and are essential for establishing relationships between tables in a star schema.</p>
+<p>We can identify the primary keys for each table as follows:</p>
+<ol type="1">
+<li><strong>Customers Table:</strong> - <code>customer_id</code>.</li>
+<li><strong>Geolocation Table:</strong> - no unique identifier for geolocation entries, so we will not have a primary key for this table.</li>
+<li><strong>Orders Table:</strong> - <code>order_id</code>.</li>
+<li><strong>Order Items Table:</strong> - composite primary key consisting of <code>order_id</code> and <code>order_item_id</code>.</li>
+<li><strong>Order Payments Table:</strong> - composite primary key consisting of <code>order_id</code> and <code>payment_sequential</code>.</li>
+<li><strong>Order Reviews Table:</strong> - composite primary key consisting of <code>review_id</code> and <code>order_id</code>. Because there can be multiple reviews for the same order, we will use a composite primary key to ensure that each review is uniquely identified by both the <code>review_id</code> and the <code>order_id</code>.</li>
+<li><strong>Products Table:</strong> - <code>product_id</code>.</li>
+<li><strong>Sellers Table:</strong> - <code>seller_id</code>.</li>
+</ol>
+<p>We can assign the primary keys to the tables using the following SQL script:</p>
+<details>
+<summary>
+SQL Script
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- customers table</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> customers <span class="kw">add</span> <span class="kw">constraint</span> PK_Customers <span class="kw">primary</span> <span class="kw">key</span> (customer_id);</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">-- orders table</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> orders <span class="kw">add</span> <span class="kw">constraint</span> PK_Orders <span class="kw">primary</span> <span class="kw">key</span> (order_id);</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">-- order_items table</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_items <span class="kw">add</span> <span class="kw">constraint</span> PK_Order_Items <span class="kw">primary</span> <span class="kw">key</span> (order_id, order_item_id);</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">-- order_reviews table</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_reviews <span class="kw">add</span> <span class="kw">constraint</span> PK_Order_Reviews <span class="kw">primary</span> <span class="kw">key</span> (order_id, review_id);</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">-- payments table</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> payments <span class="kw">add</span> <span class="kw">constraint</span> PK_Payments <span class="kw">primary</span> <span class="kw">key</span> (order_id, payment_sequential);</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">-- products table</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> products <span class="kw">add</span> <span class="kw">constraint</span> PK_Products <span class="kw">primary</span> <span class="kw">key</span> (product_id);</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">-- sellers table </span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> sellers <span class="kw">add</span> <span class="kw">constraint</span> PK_Seller <span class="kw">primary</span> <span class="kw">key</span> (seller_id);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</section>
+<section id="foreign-keys" class="level2">
+<h2 class="anchored" data-anchor-id="foreign-keys">Foreign Keys</h2>
+<p>After identifying the primary keys for each table, we can establish relationships between the tables by creating foreign key constraints. Foreign keys are used to link records in one table to records in another table based on the primary key and foreign key relationships.</p>
+<p>We can identify the foreign key relationships between the tables as follows:</p>
+<ol type="1">
+<li><strong>Customers Table:</strong> This is dimension table and does not have any foreign key relationships with other tables.</li>
+<li><strong>Geolocation Table:</strong> This is also dimension table and does not have foreign key relationships with other tables.</li>
+<li><strong>Orders Table:</strong> This is the fact table and has the following foreign key relationships:
+<ul>
+<li><code>customer_id</code> is a foreign key that references <em>Customers</em> table.</li>
+</ul></li>
+<li><strong>Order Items Table:</strong> This is a fact table and has the following foreign key relationships:
+<ul>
+<li><code>order_id</code> is a foreign key that references <em>Orders</em> table.</li>
+<li><code>product_id</code> is a foreign key that references <em>Products</em> table.</li>
+<li><code>seller_id</code> is a foreign key that references <em>Sellers</em> table.</li>
+</ul></li>
+<li><strong>Order Payments Table:</strong> This is a fact table and has the following foreign key relationships:
+<ul>
+<li><code>order_id</code> is a foreign key that references <em>Orders</em> table.</li>
+</ul></li>
+<li><strong>Order Reviews Table:</strong> This is a fact table and has the following foreign key relationships:
+<ul>
+<li><code>order_id</code> is a foreign key that references <em>Orders</em> table.</li>
+</ul></li>
+<li><strong>Products Table:</strong> This is a dimension table and does not have any foreign key relationships with other tables.</li>
+<li><strong>Sellers Table:</strong> This is a dimension table and does not have any foreign key relationships with other tables.</li>
+</ol>
+<p>We can create the foreign key constraints using the following SQL script:</p>
+<details>
+<summary>
+SQL Script
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- orders table foreign key constraint</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> orders <span class="kw">add</span> <span class="kw">constraint</span> FK_Orders_Customers <span class="kw">foreign</span> <span class="kw">key</span> (customer_id) <span class="kw">references</span> customers(customer_id);</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">-- order_items table foreign key constraints</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_items <span class="kw">add</span> <span class="kw">constraint</span> FK_Order_Items_Orders <span class="kw">foreign</span> <span class="kw">key</span> (order_id) <span class="kw">references</span> orders(order_id);</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_items <span class="kw">add</span> <span class="kw">constraint</span> FK_Order_Items_Products <span class="kw">foreign</span> <span class="kw">key</span> (product_id) <span class="kw">references</span> products(product_id);</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_items <span class="kw">add</span> <span class="kw">constraint</span> FK_Order_Items_Sellers <span class="kw">foreign</span> <span class="kw">key</span> (seller_id) <span class="kw">references</span> sellers(seller_id);</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">-- order_payments table foreign key constraint</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> payments <span class="kw">add</span> <span class="kw">constraint</span> FK_Payments_Orders <span class="kw">foreign</span> <span class="kw">key</span> (order_id) <span class="kw">references</span> orders(order_id);</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">-- order_reviews table foreign key constraint</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_reviews <span class="kw">add</span> <span class="kw">constraint</span> FK_Order_Reviews_Orders <span class="kw">foreign</span> <span class="kw">key</span> (order_id) <span class="kw">references</span> orders(order_id);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p>After creating the primary and foreign key constraints, to ensure that the relationships between the tables are properly established, we can use the following SQL script to check the foreign key constraints:</p>
+<details>
+<summary>
+SQL Script
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    fk.name <span class="kw">as</span> foreign_key_name,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    object_name(fk.parent_object_id) <span class="kw">as</span> child_table,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    c1.name <span class="kw">as</span> child_column,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    object_name(fk.referenced_object_id) <span class="kw">as</span> parent_table,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    c2.name <span class="kw">as</span> parent_column</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> sys.foreign_keys fk</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="kw">join</span> sys.foreign_key_columns fkc</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">on</span> fk.object_id <span class="op">=</span> fkc.constraint_object_id</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="kw">join</span> sys.<span class="kw">columns</span> c1</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">on</span> c1.object_id <span class="op">=</span> fkc.parent_object_id</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a> <span class="kw">and</span> c1.column_id <span class="op">=</span> fkc.parent_column_id</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="kw">join</span> sys.<span class="kw">columns</span> c2</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">on</span> c2.object_id <span class="op">=</span> fkc.referenced_object_id</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a> <span class="kw">and</span> c2.column_id <span class="op">=</span> fkc.referenced_column_id</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="kw">order</span> <span class="kw">by</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    child_table, foreign_key_name;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p>The above SQL script should return the following results:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>foreign_key_name</th>
+<th>child_table</th>
+<th>child_column</th>
+<th>parent_table</th>
+<th>parent_column</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>FK_Order_Items_Orders</td>
+<td>order_items</td>
+<td>order_id</td>
+<td>orders</td>
+<td>order_id</td>
+</tr>
+<tr class="even">
+<td>FK_Order_Items_Products</td>
+<td>order_items</td>
+<td>product_id</td>
+<td>products</td>
+<td>product_id</td>
+</tr>
+<tr class="odd">
+<td>FK_Order_Items_Sellers</td>
+<td>order_items</td>
+<td>seller_id</td>
+<td>sellers</td>
+<td>seller_id</td>
+</tr>
+<tr class="even">
+<td>FK_Order_Reviews_Orders</td>
+<td>order_reviews</td>
+<td>order_id</td>
+<td>orders</td>
+<td>order_id</td>
+</tr>
+<tr class="odd">
+<td>FK_Orders_Customers</td>
+<td>orders</td>
+<td>customer_id</td>
+<td>customers</td>
+<td>customer_id</td>
+</tr>
+<tr class="even">
+<td>FK_Payments_Orders</td>
+<td>payments</td>
+<td>order_id</td>
+<td>orders</td>
+<td>order_id</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="index-assignment-for-performance-optimization" class="level2">
+<h2 class="anchored" data-anchor-id="index-assignment-for-performance-optimization">Index Assignment for Performance Optimization</h2>
+<p>Assigning indexes is crucial for optimizing query performance in a star schema. Indexes allow the database engine to quickly locate and retrieve data based on the indexed columns, which can significantly improve query performance, especially for large datasets. However, during the assignment of indexes, we should consider the trade-off between query performance and storage space. Additional and unused indexes can consume storage space and may also slow down data modification operations (e.g., INSERT, UPDATE, DELETE) since the indexes need to be updated whenever the data changes. Therefore, it is important to carefully select the columns for indexing based on the query patterns and the most frequently used columns in the analysis.</p>
+<p>The best approach is to assign indexes to the primary key columns and foreign key columns, as these are commonly used in join operations and filtering conditions in queries. Additionally, we can also consider indexing other columns that are frequently used in WHERE clauses or as part of the analysis.</p>
+<p>We can assign indexes to the tables using the following SQL script:</p>
+<details>
+<summary>
+SQL Script
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- index on orders(customer_id)</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">index</span> IX_orders_customer_id <span class="kw">on</span> orders(customer_id); </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">-- index on order_items(order_id)</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">index</span> IX_order_items_order_id <span class="kw">on</span> order_items(order_id); </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">-- index on order_items(product_id)</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">index</span> IX_order_items_product_id <span class="kw">on</span> order_items(product_id); </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">-- index on order_items(seller_id)</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">index</span> IX_order_items_seller_id <span class="kw">on</span> order_items(seller_id); </span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">-- index on payments(order_id)</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">index</span> IX_payments_order_id <span class="kw">on</span> payments(order_id); </span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">-- index on order_reviews(order_id)</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">index</span> IX_order_reviews_order_id <span class="kw">on</span> order_reviews(order_id); </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p>After assigning the indexes, we can check the execution plans of our queries to ensure that the indexes are being utilized effectively and that query performance is optimized. We can also monitor the performance of our queries and make adjustments to the indexes as needed based on the query patterns and performance metrics.</p>
+</section>
+<section id="explicit-date-table" class="level2">
+<h2 class="anchored" data-anchor-id="explicit-date-table">Explicit Date Table</h2>
+<p>To support time-based analysis, we should create an explicit date table in our database. A date table is a dimension table that contains a record for each date in a specified range, along with various attributes related to the date (e.g., year, month, day, quarter, etc.). This allows us to easily perform time-based analysis and filtering in our queries and visualizations.</p>
+<p>We should create a date table that covers the range of dates present in our orders data, which includes the order purchase timestamps. The date table should include attributes such as year, month, day, quarter, and any other relevant time-based attributes that can support our analysis.</p>
+<p>Firstly, define the minimum and maximum dates in the database using the following SQL script:</p>
+<details>
+<summary>
+SQL Script
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- define the minimum and maximum dates </span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="fu">min</span>(shipping_limit_date) <span class="kw">from</span> order_items; <span class="co">-- 2016-09-19</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="fu">max</span>(shipping_limit_date) <span class="kw">from</span> order_items; <span class="co">-- 2020-04-09</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">UPDATE</span> orders</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="kw">SET</span> order_approved_at <span class="op">=</span> <span class="kw">NULL</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> order_approved_at <span class="op">&lt;</span> <span class="st">'2000-01-01'</span>;</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">min</span>(order_approved_at) <span class="kw">as</span> min_order_approved, </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">min</span>(order_purchase_timestamp) <span class="kw">as</span> min_order_purchased, </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">max</span>(order_estimated_delivery_date) <span class="kw">as</span> max_estimated_delivery, </span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">max</span>(order_delivered_customer_date) <span class="kw">as</span> max_delivered_customer</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> orders;</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">-- max: 2018-11-12 00:00:00.0000000;  min: 2016-09-04 21:15:19.0000000</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">min</span>(review_creation_date),</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">max</span>(review_answer_timestamp)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> order_reviews;</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co">-- so, min date :2016-01-01</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co">-- max date: 2020-04-30</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p>After finding the minimum and maximum dates, we can create a date table that covers the range of dates from <code>2016-01-01</code> to <code>2020-04-30</code>. We can use the following SQL script to create the date table:</p>
+<details>
+<summary>
+SQL Script
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- create date table</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">DECLARE</span> @start_date <span class="dt">date</span> <span class="op">=</span> <span class="st">'2016-01-01'</span>; <span class="co">-- define the start date</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">DECLARE</span> @end_date <span class="dt">date</span> <span class="op">=</span> <span class="st">'2020-04-30'</span>; <span class="co">-- define the end date</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="kw">SET</span> DATEFIRST <span class="dv">1</span>;  <span class="co">-- set Monday as the first day of the week</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> <span class="cf">IF</span> <span class="kw">EXISTS</span> dbo.Calendar;</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">table</span> dbo.Calendar(</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    datekey <span class="dt">int</span> <span class="kw">not</span> <span class="kw">null</span> <span class="kw">primary</span> <span class="kw">key</span>, </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    full_date datetime2 <span class="kw">not</span> <span class="kw">null</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    [<span class="dt">year</span>] <span class="dt">int</span> <span class="kw">not</span> <span class="kw">null</span>,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    semester <span class="dt">int</span> <span class="kw">not</span> <span class="kw">null</span>, </span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    [quarter] <span class="dt">int</span> <span class="kw">not</span> <span class="kw">null</span>,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    month_number <span class="dt">int</span> <span class="kw">not</span> <span class="kw">null</span>, </span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    month_name <span class="dt">varchar</span>(<span class="dv">10</span>) <span class="kw">not</span> <span class="kw">null</span>,</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    week_of_year <span class="dt">int</span> <span class="kw">not</span> <span class="kw">null</span>, </span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    week_of_month <span class="dt">int</span> <span class="kw">not</span> <span class="kw">null</span>,</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    day_name <span class="dt">varchar</span>(<span class="dv">10</span>) <span class="kw">not</span>  <span class="kw">null</span>, </span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    day_of_week <span class="dt">int</span> <span class="kw">not</span>  <span class="kw">null</span>,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    day_of_month <span class="dt">int</span> <span class="kw">not</span> <span class="kw">null</span>, </span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    day_of_year <span class="dt">int</span> <span class="kw">not</span> <span class="kw">null</span>,</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    is_weekend bit <span class="kw">not</span> <span class="kw">null</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>); <span class="co">-- create a date table with the specified columns and data types</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="kw">DECLARE</span> @d <span class="dt">date</span> <span class="op">=</span> <span class="st">'2016-01-01'</span>; </span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="cf">WHILE</span> @d <span class="op">&lt;=</span> @end_date <span class="co">-- loop through each date from the start date to the end date</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="cf">BEGIN</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">INSERT</span> <span class="kw">INTO</span> dbo.Calendar(</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>        datekey, full_date, [<span class="dt">year</span>], semester, [quarter],</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>        month_number, month_name, week_of_year, week_of_month,</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>        day_name, day_of_week, day_of_month, day_of_year, is_weekend</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    ) <span class="co">-- insert a record for each date with the corresponding attributes</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">VALUES</span> (</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>        <span class="fu">convert</span>(<span class="dt">int</span>, format(@d, <span class="st">'yyyyMMdd'</span>)),</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cast</span>(@d <span class="kw">as</span> datetime2),</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>        <span class="dt">year</span>(@d),</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">case</span> <span class="cf">when</span> <span class="dt">month</span>(@d) <span class="op">&lt;=</span> <span class="dv">6</span> <span class="cf">then</span> <span class="dv">1</span> <span class="cf">else</span> <span class="dv">2</span> <span class="cf">end</span>, </span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>        datepart(quarter, @d),</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>        <span class="dt">month</span>(@d), </span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>        datename(<span class="dt">month</span>, @d), </span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>        datepart(week, @d), </span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>        datediff(week, DATEFROMPARTS(<span class="dt">year</span>(@d), <span class="dt">month</span>(@d), <span class="dv">1</span>), @d) <span class="op">+</span> <span class="dv">1</span>, </span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>        datename(weekday, @d), </span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>        datepart(weekday, @d), </span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>        <span class="dt">day</span>(@d), </span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>        datepart(DAYOFYEAR, @d),</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>        <span class="cf">case</span> <span class="cf">when</span> DATEPART(weekday, @d) <span class="kw">in</span> (<span class="dv">6</span>,<span class="dv">7</span>) <span class="cf">then</span> <span class="dv">1</span> <span class="cf">else</span> <span class="dv">0</span> <span class="cf">end</span></span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>    ); <span class="co">-- calculate the date attributes and insert them into the date table</span></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>    <span class="kw">set</span> @d <span class="op">=</span> DATEADD(<span class="dt">day</span>, <span class="dv">1</span>, @d); <span class="co">-- move to the next date</span></span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</section>
+<section id="star-schema-design" class="level2">
+<h2 class="anchored" data-anchor-id="star-schema-design">Star Schema Design</h2>
+<p>After creating the date table, we can establish relationships between the date table and the fact tables (e.g., orders, order_items, order_reviews) based on the relevant date columns (e.g., order_purchase_timestamp, shipping_limit_date, review_creation_date, etc.). This will allow us to easily perform time-based analysis and filtering in our queries and visualizations. We can also create indexes on the date columns in the fact tables to further optimize query performance when joining with the date table.</p>
+<p>Firstly, we should create datekey columns in the tables that have date columns.</p>
+<details>
+<summary>
+SQL Script
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- add datekey columns to the orders table</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> orders <span class="kw">add</span> order_purchase_datekey <span class="dt">int</span>;</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> orders <span class="kw">add</span> order_approved_datekey <span class="dt">int</span>;</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> orders <span class="kw">add</span> order_delivered_carrier_datekey <span class="dt">int</span>;</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> orders <span class="kw">add</span> order_delivered_customer_datekey <span class="dt">int</span>;</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> orders <span class="kw">add</span> order_estimated_delivery_datekey <span class="dt">int</span>;</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">-- add datekey column to the order_items table</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_items <span class="kw">add</span> shipping_limit_datekey <span class="dt">int</span>; </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">-- add datekey columns to the order_reviews table</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_reviews <span class="kw">add</span> review_creation_datekey <span class="dt">int</span>;</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_reviews <span class="kw">add</span> review_answer_timestamp_datekey <span class="dt">int</span>;</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">-- update the datekey columns in the orders table</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="kw">update</span> orders</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="kw">set</span> order_purchase_datekey <span class="op">=</span> <span class="fu">convert</span>(<span class="dt">int</span>, format(order_purchase_timestamp, <span class="st">'yyyyMMdd'</span>)),</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    order_approved_datekey <span class="op">=</span> <span class="fu">convert</span>(<span class="dt">int</span>, format(order_approved_at, <span class="st">'yyyyMMdd'</span>)),</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    order_delivered_carrier_datekey <span class="op">=</span> <span class="fu">convert</span>(<span class="dt">int</span>, format(order_delivered_carrier_date, <span class="st">'yyyyMMdd'</span>)),</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    order_delivered_customer_datekey <span class="op">=</span> <span class="fu">convert</span>(<span class="dt">int</span>, format(order_delivered_customer_date, <span class="st">'yyyyMMdd'</span>)),</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    order_estimated_delivery_datekey <span class="op">=</span> <span class="fu">convert</span>(<span class="dt">int</span>, format(order_estimated_delivery_date, <span class="st">'yyyyMMdd'</span>));</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">-- update the datekey column in the order_items table</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="kw">update</span> order_items</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="kw">set</span> shipping_limit_datekey <span class="op">=</span> <span class="fu">convert</span>(<span class="dt">int</span>, format(shipping_limit_date, <span class="st">'yyyyMMdd'</span>));</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="co">-- update the datekey columns in the order_reviews table</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="kw">update</span> order_reviews</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="kw">set</span> review_creation_datekey <span class="op">=</span> <span class="fu">convert</span>(<span class="dt">int</span>, format(review_creation_date, <span class="st">'yyyyMMdd'</span>)),</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    review_answer_timestamp_datekey <span class="op">=</span> <span class="fu">convert</span>(<span class="dt">int</span>, format(review_answer_timestamp, <span class="st">'yyyyMMdd'</span>));</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p>After creating the datekey columns and populating them with the corresponding date values, we can establish foreign key relationships between the date table and the fact tables based on the datekey columns. This will allow us to easily perform time-based analysis and filtering in our queries and visualizations.</p>
+<details>
+<summary>
+SQL Script
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- establish foreign key relationships between the date table and the orders table</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> orders <span class="kw">add</span> <span class="kw">constraint</span> FK_Orders_Purchase_Date <span class="kw">foreign</span> <span class="kw">key</span> (order_purchase_datekey) <span class="kw">references</span> Calendar(datekey);</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> orders <span class="kw">add</span> <span class="kw">constraint</span> FK_Orders_Approved_Date <span class="kw">foreign</span> <span class="kw">key</span> (order_approved_datekey) <span class="kw">references</span> Calendar(datekey);</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> orders <span class="kw">add</span> <span class="kw">constraint</span> FK_Orders_Delivered_Carrier_Date <span class="kw">foreign</span> <span class="kw">key</span> (order_delivered_carrier_datekey) <span class="kw">references</span> Calendar(datekey);</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> orders <span class="kw">add</span> <span class="kw">constraint</span> FK_Orders_Delivered_Customer_Date <span class="kw">foreign</span> <span class="kw">key</span> (order_delivered_customer_datekey) <span class="kw">references</span> Calendar(datekey);</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> orders <span class="kw">add</span> <span class="kw">constraint</span> FK_Orders_Estimated_Delivery_Date <span class="kw">foreign</span> <span class="kw">key</span> (order_estimated_delivery_datekey) <span class="kw">references</span> Calendar(datekey);</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">-- establish foreign key relationship between the date table and the order_items table</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_items <span class="kw">add</span> <span class="kw">constraint</span> FK_Order_Items_Shipping_Limit_Date <span class="kw">foreign</span> <span class="kw">key</span> (shipping_limit_datekey) <span class="kw">references</span> Calendar(datekey);</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">-- establish foreign key relationships between the date table and the order_reviews table</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_reviews <span class="kw">add</span> <span class="kw">constraint</span> FK_Order_Reviews_Creation_Date <span class="kw">foreign</span> <span class="kw">key</span> (review_creation_datekey) <span class="kw">references</span> Calendar(datekey);</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> order_reviews <span class="kw">add</span> <span class="kw">constraint</span> FK_Order_Reviews_Answer_Timestamp <span class="kw">foreign</span> <span class="kw">key</span> (review_answer_timestamp_datekey) <span class="kw">references</span> Calendar(datekey);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p>After completing all foreign key - primary key pairing process, we can finally visualize our star schema diagram using the DBeaver. By clicking the following link you can download the pdf version of diagram for clear visualization. I am putting the image version here.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/olist_diagram.png" class="img-fluid figure-img"></p>
+<figcaption>Olist E-Commerce Star Schema</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>In this section we have completed the following tasks:</p>
+<ol type="1">
+<li>Imported the data from the provided CSV files into a new database called <code>Olist-E-Commerce</code> using DBeaver GUI.</li>
+<li>Performed data cleaning by changing the names of tables to more compact and explanatory names, adjusting data types and lengths for each column.</li>
+<li>Identified the <strong>primary keys</strong> for each table.</li>
+<li>Established <strong>foreign key relationships</strong> between the tables based on the primary key and foreign key relationships.</li>
+<li>Assigned <strong>indexes</strong> to the primary key columns and foreign key columns to optimize query performance.</li>
+<li>Created an <strong>explicit date table</strong> to support time-based analysis and established relationships between the date table and the fact tables based on the relevant date columns.</li>
+<li>Designed a <strong>star schema</strong> for the Olist E-Commerce dataset, which includes the fact tables (orders, order_items, order_reviews) and dimension tables (customers, geolocation, products, sellers, calendar).</li>
+<li>Generated a star schema diagram to visualize the relationships between the tables in the database.</li>
+</ol>
+<p>In the next section, we will generate real world analytical business questions by emphasizing the business context and the effect of the results on the decision making process. In the further sections, we will solve each questions one by one using SQL queries and explain each step of the analysis process.</p>
+</section>
+<section id="references" class="level1">
+<h1>References</h1>
+<ol type="1">
+<li>SQL Script of this section:</li>
+<li>Database Diagram (pdf version):</li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

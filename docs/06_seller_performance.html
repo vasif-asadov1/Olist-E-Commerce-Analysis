@@ -1,0 +1,2680 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Seller Performance Analysis – Vasif | Olist E-Commerce Analysis</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-acf12a64177840b8d86f2d4f01b2e9fb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-948e61940ef19b6a40d753e4856fbf86.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Vasif | Olist E-Commerce Analysis</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Olist Data Analysis</a></li><li class="breadcrumb-item"><a href="./06_seller_performance.html">Seller Performance Analysis</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Olist Data Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Olist E-Commerce Sales Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_data_normalization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Ingestion and Cleaning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_business_questions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Business Questions for Olist E-Commerce Sales Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_customer_retention.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Customer Behavior and Retention Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_orders_sales_performance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Orders and Sales Performance Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_delivery_logistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Delivery and Logistics Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_seller_performance.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Seller Performance Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_payments_and_risk.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Payments and Risk Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08_customer_reviews.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Customer Review and Satisfaction Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09_time_series.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Time Series Analysis</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#order-fulfillment-efficiency" id="toc-order-fulfillment-efficiency" class="nav-link" data-scroll-target="#order-fulfillment-efficiency">Order Fulfillment Efficiency</a></li>
+  <li><a href="#pareto-analysis-for-sellers" id="toc-pareto-analysis-for-sellers" class="nav-link" data-scroll-target="#pareto-analysis-for-sellers">Pareto Analysis for Sellers</a></li>
+  <li><a href="#seller-churn-analysis" id="toc-seller-churn-analysis" class="nav-link" data-scroll-target="#seller-churn-analysis">Seller Churn Analysis</a></li>
+  <li><a href="#identifying-underperforming-sellers" id="toc-identifying-underperforming-sellers" class="nav-link" data-scroll-target="#identifying-underperforming-sellers">Identifying Underperforming Sellers</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Olist Data Analysis</a></li><li class="breadcrumb-item"><a href="./06_seller_performance.html">Seller Performance Analysis</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Seller Performance Analysis</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+</section>
+<section id="order-fulfillment-efficiency" class="level1">
+<h1>Order Fulfillment Efficiency</h1>
+<blockquote class="blockquote">
+<ol start="16" type="1">
+<li>What is the average time gap between <code>order_approved_at</code> and <code>order_delivered_carrier_date</code> for each seller? Who are the ‘Bottom 10%’ of sellers who consistently take the longest to hand over packaged orders to the logistics partner?</li>
+</ol>
+</blockquote>
+<p><strong>Solution:</strong></p>
+<ol type="1">
+<li><p><strong>Firstly, we calculate the dispatch time per order (<code>seller_lead_times</code> CTE)</strong>: We join the <code>orders</code> and <code>order_items</code> tables to calculate the exact <code>dispatch_hours</code> for each order by finding the difference between <code>order_approved_at</code> and <code>order_delivered_carrier_date</code>. We use minutes divided by 60.0 to safely prevent integer overflow errors, and filter out ‘canceled’ or ‘unavailable’ orders.</p></li>
+<li><p><strong>Secondly, we aggregate and filter seller performance (<code>seller_performance_summary</code> CTE)</strong>: Grouping by <code>seller_id</code>, we calculate the <code>avg_dispatch_hours</code> and the total number of orders fulfilled. Crucially, we filter out negative time values (potential data entry errors) and use a <code>HAVING</code> clause to only include sellers with at least 5 orders, ensuring our averages are statistically relevant.</p></li>
+<li><p><strong>Thirdly, we segment sellers into deciles (<code>seller_efficiency_ranks</code> CTE)</strong>: We use the <code>ntile(10)</code> window function ordered by <code>avg_dispatch_hours desc</code>. This divides the sellers into 10 equal buckets, placing the absolute slowest 10% of sellers into bucket 1.</p></li>
+<li><p><strong>Finally, we isolate the worst offenders (Final <code>SELECT</code>)</strong>: We filter the results to only include <code>efficiency_decile = 1</code> (the bottom 10%). We format the output to show both the average dispatch hours and days, highlighting the sellers who consistently take the longest to hand over packages to the logistics partner.</p></li>
+</ol>
+<details>
+<summary>
+Show SQL Code
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> seller_lead_times <span class="kw">as</span> (</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 1: calculate hours between approval and carrier handover</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- FIX: Changed 'second' to 'minute' to prevent integer overflow from data anomalies</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        oi.seller_id,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        o.order_id,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        dispatch_hours <span class="op">=</span> datediff(<span class="kw">minute</span>, o.order_approved_at, o.order_delivered_carrier_date) <span class="op">/</span> <span class="fl">60.0</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        orders o</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        order_items oi <span class="kw">on</span> o.order_id <span class="op">=</span> oi.order_id</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        o.order_status <span class="kw">not</span> <span class="kw">in</span> (<span class="st">'canceled'</span>, <span class="st">'unavailable'</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="kw">and</span> o.order_approved_at <span class="kw">is</span> <span class="kw">not</span> <span class="kw">null</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        <span class="kw">and</span> o.order_delivered_carrier_date <span class="kw">is</span> <span class="kw">not</span> <span class="kw">null</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>seller_performance_summary <span class="kw">as</span> (</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 2: aggregate averages per seller</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        seller_id,</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        <span class="fu">count</span>(<span class="kw">distinct</span> order_id) <span class="kw">as</span> total_orders_fulfilled,</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        <span class="fu">avg</span>(dispatch_hours) <span class="kw">as</span> avg_dispatch_hours</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>        seller_lead_times</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        dispatch_hours <span class="op">&gt;=</span> <span class="dv">0</span> <span class="co">-- filtering out potential data entry errors</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>        seller_id</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">having</span> </span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>        <span class="fu">count</span>(<span class="kw">distinct</span> order_id) <span class="op">&gt;=</span> <span class="dv">5</span> <span class="co">-- filtering for sellers with enough history to be statistically relevant</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>seller_efficiency_ranks <span class="kw">as</span> (</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 3: segment sellers into deciles based on speed</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- ntile(10) with order by desc puts the slowest 10% into bucket 1</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span>,</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>        efficiency_decile <span class="op">=</span> <span class="fu">ntile</span>(<span class="dv">10</span>) <span class="kw">over</span> (<span class="kw">order</span> <span class="kw">by</span> avg_dispatch_hours <span class="kw">desc</span>)</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>        seller_performance_summary</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="co">-- final output: isolating the "bottom 10%" slowest sellers</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> </span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    seller_id,</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    total_orders_fulfilled,</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(avg_dispatch_hours <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_dispatch_hours,</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(avg_dispatch_hours <span class="op">/</span> <span class="fl">24.0</span> <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_dispatch_days</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> </span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    seller_efficiency_ranks</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> </span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>    efficiency_decile <span class="op">=</span> <span class="dv">1</span> <span class="co">-- selecting the slowest decile</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="kw">order</span> <span class="kw">by</span> </span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>    avg_dispatch_hours <span class="kw">desc</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p><strong>Results:</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>seller_id</th>
+<th>total_orders_fulfilled</th>
+<th>avg_dispatch_hours</th>
+<th>avg_dispatch_days</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ecccfa2bb93b34a3bf033cc5d1dcdc69</td>
+<td>14</td>
+<td>622.66</td>
+<td>25.94</td>
+</tr>
+<tr class="even">
+<td>6cf476a4ca74498db55cbccdaa9dcfb6</td>
+<td>5</td>
+<td>537.57</td>
+<td>22.40</td>
+</tr>
+<tr class="odd">
+<td>5d378b73ab7dd6f0418d743e5dcb0bd1</td>
+<td>7</td>
+<td>520.27</td>
+<td>21.68</td>
+</tr>
+<tr class="even">
+<td>fa74b2f3287d296e9fbd2cc80f2d1cf1</td>
+<td>5</td>
+<td>431.49</td>
+<td>17.98</td>
+</tr>
+<tr class="odd">
+<td>66e0557ecc2b4dbea057e93f215f68d8</td>
+<td>30</td>
+<td>430.22</td>
+<td>17.93</td>
+</tr>
+<tr class="even">
+<td>4b1eaadf791bdbbad8c4a35b65236d52</td>
+<td>5</td>
+<td>427.52</td>
+<td>17.81</td>
+</tr>
+<tr class="odd">
+<td>6ee85be3693ed79a8e80718743d80655</td>
+<td>5</td>
+<td>406.15</td>
+<td>16.92</td>
+</tr>
+<tr class="even">
+<td>ed859002ad59dbf8cf3602696a6c3000</td>
+<td>7</td>
+<td>401.96</td>
+<td>16.75</td>
+</tr>
+<tr class="odd">
+<td>54965bbe3e4f07ae045b90b0b8541f52</td>
+<td>73</td>
+<td>401.74</td>
+<td>16.74</td>
+</tr>
+<tr class="even">
+<td>cf8ab1616079e2793aa29d524df01bb1</td>
+<td>6</td>
+<td>375.38</td>
+<td>15.64</td>
+</tr>
+<tr class="odd">
+<td>5058e8c1e82653974541e83690655b4a</td>
+<td>62</td>
+<td>368.89</td>
+<td>15.37</td>
+</tr>
+<tr class="even">
+<td>c990d6cf976a5718aaedc539f383ab88</td>
+<td>9</td>
+<td>364.59</td>
+<td>15.19</td>
+</tr>
+<tr class="odd">
+<td>b5abf4f36adc043117b4fca82c22984c</td>
+<td>8</td>
+<td>360.96</td>
+<td>15.04</td>
+</tr>
+<tr class="even">
+<td>633ecdf879b94b5337cca303328e4a25</td>
+<td>6</td>
+<td>360.05</td>
+<td>15.00</td>
+</tr>
+<tr class="odd">
+<td>7fc87cc3e89b3d1d5cabdca32f8485aa</td>
+<td>14</td>
+<td>353.33</td>
+<td>14.72</td>
+</tr>
+<tr class="even">
+<td>38874e327ce94d11390b96eb42d61928</td>
+<td>6</td>
+<td>347.97</td>
+<td>14.50</td>
+</tr>
+<tr class="odd">
+<td>817f85dbb65aa3e70831d90fe75cdf89</td>
+<td>11</td>
+<td>345.08</td>
+<td>14.38</td>
+</tr>
+<tr class="even">
+<td>b1b3948701c5c72445495bd161b83a4c</td>
+<td>15</td>
+<td>338.28</td>
+<td>14.10</td>
+</tr>
+<tr class="odd">
+<td>6fd52c528dcb38be2eea044946b811f8</td>
+<td>67</td>
+<td>331.49</td>
+<td>13.81</td>
+</tr>
+<tr class="even">
+<td>8bd0e3abda539b9479c4b44a691be1ec</td>
+<td>6</td>
+<td>330.62</td>
+<td>13.78</td>
+</tr>
+<tr class="odd">
+<td>822b63912576852aea9a8436d72317b7</td>
+<td>6</td>
+<td>311.81</td>
+<td>12.99</td>
+</tr>
+<tr class="even">
+<td>538caafddff204241cecbf3a02e6b3cf</td>
+<td>8</td>
+<td>310.68</td>
+<td>12.95</td>
+</tr>
+<tr class="odd">
+<td>8603f0038fe0e52fedd3382d266723de</td>
+<td>10</td>
+<td>303.20</td>
+<td>12.63</td>
+</tr>
+<tr class="even">
+<td>c42fd8e4d47dfb18ce5222f2dd7752f9</td>
+<td>7</td>
+<td>300.21</td>
+<td>12.51</td>
+</tr>
+<tr class="odd">
+<td>8d46553a36e68f95350a200c12f8f2e2</td>
+<td>9</td>
+<td>290.26</td>
+<td>12.09</td>
+</tr>
+<tr class="even">
+<td>95b293867b5862941c9cd74f756a3c68</td>
+<td>9</td>
+<td>289.23</td>
+<td>12.05</td>
+</tr>
+<tr class="odd">
+<td>6d988d6174a2c27441597174f8905515</td>
+<td>19</td>
+<td>288.83</td>
+<td>12.03</td>
+</tr>
+<tr class="even">
+<td>17f51e7198701186712e53a39c564617</td>
+<td>56</td>
+<td>281.81</td>
+<td>11.74</td>
+</tr>
+<tr class="odd">
+<td>adcf50477d6a1f5d91bb9d54c4903cb5</td>
+<td>18</td>
+<td>281.75</td>
+<td>11.74</td>
+</tr>
+<tr class="even">
+<td>b19f3ca2ea475913750f25a5c37c8d8f</td>
+<td>19</td>
+<td>279.30</td>
+<td>11.64</td>
+</tr>
+<tr class="odd">
+<td>7c67e1448b00f6e969d365cea6b010ab</td>
+<td>980</td>
+<td>278.39</td>
+<td>11.60</td>
+</tr>
+<tr class="even">
+<td>cee48807215b30a12ca2ca10ffb5f250</td>
+<td>39</td>
+<td>273.07</td>
+<td>11.38</td>
+</tr>
+<tr class="odd">
+<td>d32e3909cfb714fb2a6cb092c85b9c5f</td>
+<td>10</td>
+<td>269.76</td>
+<td>11.24</td>
+</tr>
+<tr class="even">
+<td>8444e55c1f13cd5c179851e5ca5ebd00</td>
+<td>93</td>
+<td>262.63</td>
+<td>10.94</td>
+</tr>
+<tr class="odd">
+<td>973f21788dfab357250f69a8dcb7ddee</td>
+<td>9</td>
+<td>262.33</td>
+<td>10.93</td>
+</tr>
+<tr class="even">
+<td>ad781527c93d00d89a11eecd9dcad7c1</td>
+<td>39</td>
+<td>261.46</td>
+<td>10.89</td>
+</tr>
+<tr class="odd">
+<td>ea6b12bf9ffe2bac34602ec631d97a47</td>
+<td>9</td>
+<td>259.74</td>
+<td>10.82</td>
+</tr>
+<tr class="even">
+<td>d71d863e5ef30d94e440c11be17dcd8f</td>
+<td>23</td>
+<td>259.41</td>
+<td>10.81</td>
+</tr>
+<tr class="odd">
+<td>312ba1d77e9c332ef21f9598b7f64cd7</td>
+<td>7</td>
+<td>258.87</td>
+<td>10.79</td>
+</tr>
+<tr class="even">
+<td>4cf490a58259286ada5ba8525ba9e84a</td>
+<td>8</td>
+<td>257.20</td>
+<td>10.72</td>
+</tr>
+<tr class="odd">
+<td>a7f13822ceb966b076af67121f87b063</td>
+<td>75</td>
+<td>256.97</td>
+<td>10.71</td>
+</tr>
+<tr class="even">
+<td>f1ed6bd0a9b11b581f16c851c6a5a527</td>
+<td>17</td>
+<td>256.92</td>
+<td>10.70</td>
+</tr>
+<tr class="odd">
+<td>a2e874074c877c5a05abae80ad6e488f</td>
+<td>40</td>
+<td>255.92</td>
+<td>10.66</td>
+</tr>
+<tr class="even">
+<td>2eb70248d66e0e3ef83659f71b244378</td>
+<td>188</td>
+<td>253.07</td>
+<td>10.54</td>
+</tr>
+<tr class="odd">
+<td>20b54c376b794ed028df09a3cd88e8dc</td>
+<td>7</td>
+<td>243.37</td>
+<td>10.14</td>
+</tr>
+<tr class="even">
+<td>579891617139df7d8671d373f0669622</td>
+<td>7</td>
+<td>243.31</td>
+<td>10.14</td>
+</tr>
+<tr class="odd">
+<td>a425f92c199eb576938df686728acd20</td>
+<td>16</td>
+<td>242.70</td>
+<td>10.11</td>
+</tr>
+<tr class="even">
+<td>b55638ad525e906c698fa2ce742c1742</td>
+<td>11</td>
+<td>239.22</td>
+<td>9.97</td>
+</tr>
+<tr class="odd">
+<td>1b8b75e227c9a9c100d0c210fb6176ce</td>
+<td>17</td>
+<td>236.98</td>
+<td>9.87</td>
+</tr>
+<tr class="even">
+<td>02d35243ea2e497335cd0f076b45675d</td>
+<td>14</td>
+<td>234.78</td>
+<td>9.78</td>
+</tr>
+<tr class="odd">
+<td>a2fa0bdc798ee84cdb08281337cf4fb6</td>
+<td>8</td>
+<td>233.81</td>
+<td>9.74</td>
+</tr>
+<tr class="even">
+<td>3faf68a3b0af94b10bac70d86077be49</td>
+<td>7</td>
+<td>232.27</td>
+<td>9.68</td>
+</tr>
+<tr class="odd">
+<td>30c7f28fd3a5897b2c82d152bb760c17</td>
+<td>6</td>
+<td>230.73</td>
+<td>9.61</td>
+</tr>
+<tr class="even">
+<td>70b52a4cfc823994561b00bad161b4ed</td>
+<td>8</td>
+<td>228.05</td>
+<td>9.50</td>
+</tr>
+<tr class="odd">
+<td>610f72e407cdd7caaa2f8167b0163fd8</td>
+<td>15</td>
+<td>221.48</td>
+<td>9.23</td>
+</tr>
+<tr class="even">
+<td>835f0f7810c76831d6c7d24c7a646d4d</td>
+<td>42</td>
+<td>219.52</td>
+<td>9.15</td>
+</tr>
+<tr class="odd">
+<td>2089a6d640999f9b9141ac719b2af596</td>
+<td>42</td>
+<td>219.48</td>
+<td>9.14</td>
+</tr>
+<tr class="even">
+<td>054694fa03fe82cec4b7551487331d74</td>
+<td>21</td>
+<td>215.54</td>
+<td>8.98</td>
+</tr>
+<tr class="odd">
+<td>38102b031c2a15e54623d711bfc753d3</td>
+<td>9</td>
+<td>205.01</td>
+<td>8.54</td>
+</tr>
+<tr class="even">
+<td>f4c4daa86e30c7e5a553a8d518ac03a5</td>
+<td>18</td>
+<td>204.63</td>
+<td>8.53</td>
+</tr>
+<tr class="odd">
+<td>f1b93673502375d491780bb49d615dbc</td>
+<td>8</td>
+<td>199.69</td>
+<td>8.32</td>
+</tr>
+<tr class="even">
+<td>93dc87703c046b603023e75222018b45</td>
+<td>35</td>
+<td>198.00</td>
+<td>8.25</td>
+</tr>
+<tr class="odd">
+<td>ec4608a1f76453166bb312b2968aeaf4</td>
+<td>17</td>
+<td>197.64</td>
+<td>8.24</td>
+</tr>
+<tr class="even">
+<td>54219883e72aad869adfb2a54b7bfa0f</td>
+<td>5</td>
+<td>196.32</td>
+<td>8.18</td>
+</tr>
+<tr class="odd">
+<td>f76a3b1349b6df1ee875d1f3fa4340f0</td>
+<td>24</td>
+<td>194.54</td>
+<td>8.11</td>
+</tr>
+<tr class="even">
+<td>5f67c6082caacb26e431a7b17940cece</td>
+<td>13</td>
+<td>192.03</td>
+<td>8.00</td>
+</tr>
+<tr class="odd">
+<td>87e24fc7052259b1f7f607d61c10d8be</td>
+<td>7</td>
+<td>191.80</td>
+<td>7.99</td>
+</tr>
+<tr class="even">
+<td>33576ec5412fb5905d876f12f33bfde6</td>
+<td>31</td>
+<td>191.75</td>
+<td>7.99</td>
+</tr>
+<tr class="odd">
+<td>c37b2059d4f90d4feead554e5246565e</td>
+<td>12</td>
+<td>191.61</td>
+<td>7.98</td>
+</tr>
+<tr class="even">
+<td>4917cee8d902e13428c3ec4b1ca6f315</td>
+<td>31</td>
+<td>191.43</td>
+<td>7.98</td>
+</tr>
+<tr class="odd">
+<td>88460e8ebdecbfecb5f9601833981930</td>
+<td>243</td>
+<td>191.06</td>
+<td>7.96</td>
+</tr>
+<tr class="even">
+<td>9baf5cb77970f539089d09a38bcec5c3</td>
+<td>31</td>
+<td>189.97</td>
+<td>7.92</td>
+</tr>
+<tr class="odd">
+<td>dc8798cbf453b7e0f98745e396cc5616</td>
+<td>37</td>
+<td>186.29</td>
+<td>7.76</td>
+</tr>
+<tr class="even">
+<td>89bc797e2e29667aa035d4368f9b7f92</td>
+<td>17</td>
+<td>185.90</td>
+<td>7.75</td>
+</tr>
+<tr class="odd">
+<td>b335c59ab742f751a85db9c411a86739</td>
+<td>30</td>
+<td>184.34</td>
+<td>7.68</td>
+</tr>
+<tr class="even">
+<td>7ecd59e5e20407131822c1a68ac59c1f</td>
+<td>24</td>
+<td>184.16</td>
+<td>7.67</td>
+</tr>
+<tr class="odd">
+<td>9539213aa8e023c01937bef95dc006da</td>
+<td>9</td>
+<td>184.06</td>
+<td>7.67</td>
+</tr>
+<tr class="even">
+<td>81336a0f57a33776419727a300249e90</td>
+<td>16</td>
+<td>183.55</td>
+<td>7.65</td>
+</tr>
+<tr class="odd">
+<td>834f8533b2ecb6598dd004ff3de7203a</td>
+<td>41</td>
+<td>182.89</td>
+<td>7.62</td>
+</tr>
+<tr class="even">
+<td>38e6dada03429a47197d5d584d793b41</td>
+<td>7</td>
+<td>182.66</td>
+<td>7.61</td>
+</tr>
+<tr class="odd">
+<td>8f78f0903005064036736c7173a5c2ed</td>
+<td>13</td>
+<td>181.55</td>
+<td>7.56</td>
+</tr>
+<tr class="even">
+<td>6bd69102ab48df500790a8cecfc285c2</td>
+<td>5</td>
+<td>180.75</td>
+<td>7.53</td>
+</tr>
+<tr class="odd">
+<td>41ab63a91b8b264e8c8780368bf1dd5b</td>
+<td>12</td>
+<td>180.66</td>
+<td>7.53</td>
+</tr>
+<tr class="even">
+<td>f419677537694f0462a91990df6ca44f</td>
+<td>6</td>
+<td>179.79</td>
+<td>7.49</td>
+</tr>
+<tr class="odd">
+<td>213b25e6f54661939f11710a6fddb871</td>
+<td>153</td>
+<td>178.06</td>
+<td>7.42</td>
+</tr>
+<tr class="even">
+<td>ab3e0c171fe84a7ba7de130f19cfb485</td>
+<td>6</td>
+<td>175.02</td>
+<td>7.29</td>
+</tr>
+<tr class="odd">
+<td>784ba75dd9d20200c4caed3d7a77141a</td>
+<td>19</td>
+<td>173.63</td>
+<td>7.23</td>
+</tr>
+<tr class="even">
+<td>741f8c587cb4248ebc5b779a0e8e0e51</td>
+<td>5</td>
+<td>173.47</td>
+<td>7.23</td>
+</tr>
+<tr class="odd">
+<td>cb41bfbcbda0aea354a834ab222f9a59</td>
+<td>11</td>
+<td>171.51</td>
+<td>7.15</td>
+</tr>
+<tr class="even">
+<td>6562efe88ce0826a4ca4f189f03b4b84</td>
+<td>9</td>
+<td>171.48</td>
+<td>7.15</td>
+</tr>
+<tr class="odd">
+<td>f7496d659ca9fdaf323c0aae84176632</td>
+<td>25</td>
+<td>170.90</td>
+<td>7.12</td>
+</tr>
+<tr class="even">
+<td>5151aea44289d6c6b090ee31c2132508</td>
+<td>7</td>
+<td>170.73</td>
+<td>7.11</td>
+</tr>
+<tr class="odd">
+<td>c60b801f2d52c7f7f91de00870882a75</td>
+<td>40</td>
+<td>169.90</td>
+<td>7.08</td>
+</tr>
+<tr class="even">
+<td>5882820ef11c4c068eea0677a7a879b4</td>
+<td>14</td>
+<td>168.89</td>
+<td>7.04</td>
+</tr>
+<tr class="odd">
+<td>ffff564a4f9085cd26170f4732393726</td>
+<td>8</td>
+<td>168.42</td>
+<td>7.02</td>
+</tr>
+<tr class="even">
+<td>a67780aba9dd436e7ac0aa1f889e73ec</td>
+<td>6</td>
+<td>167.90</td>
+<td>7.00</td>
+</tr>
+<tr class="odd">
+<td>db2956745b3a8e9f3785c99f34b5d25e</td>
+<td>46</td>
+<td>166.93</td>
+<td>6.96</td>
+</tr>
+<tr class="even">
+<td>1b7e5006cb25dd23ce8686691013b121</td>
+<td>11</td>
+<td>166.48</td>
+<td>6.94</td>
+</tr>
+<tr class="odd">
+<td>b6dc74ed30f124f95227bed4e43a3bed</td>
+<td>11</td>
+<td>166.43</td>
+<td>6.93</td>
+</tr>
+<tr class="even">
+<td>cb5df0dcb9e280b1780e9d589889f2c7</td>
+<td>11</td>
+<td>165.89</td>
+<td>6.91</td>
+</tr>
+<tr class="odd">
+<td>cce6ab8d1682639fe45ab70234f1665f</td>
+<td>62</td>
+<td>164.88</td>
+<td>6.87</td>
+</tr>
+<tr class="even">
+<td>a49928bcdf77c55c6d6e05e09a9b4ca5</td>
+<td>98</td>
+<td>164.35</td>
+<td>6.85</td>
+</tr>
+<tr class="odd">
+<td>0307f7565ff85b299b6e5ef162b1b1a9</td>
+<td>6</td>
+<td>163.34</td>
+<td>6.81</td>
+</tr>
+<tr class="even">
+<td>c1ed9e3daf6154542826a6996af0fb8c</td>
+<td>8</td>
+<td>163.29</td>
+<td>6.80</td>
+</tr>
+<tr class="odd">
+<td>c6381d2d013342748761e906d45aff76</td>
+<td>15</td>
+<td>162.97</td>
+<td>6.79</td>
+</tr>
+<tr class="even">
+<td>712e6ed8aa4aa1fa65dab41fed5737e4</td>
+<td>79</td>
+<td>162.96</td>
+<td>6.79</td>
+</tr>
+<tr class="odd">
+<td>e504a4e2efaa45cbff7e268a2c58c956</td>
+<td>10</td>
+<td>162.95</td>
+<td>6.79</td>
+</tr>
+<tr class="even">
+<td>beadbee30901a7f61d031b6b686095ad</td>
+<td>64</td>
+<td>162.53</td>
+<td>6.77</td>
+</tr>
+<tr class="odd">
+<td>1da366cade6d8276e7d8beea7af5d4bf</td>
+<td>43</td>
+<td>161.53</td>
+<td>6.73</td>
+</tr>
+<tr class="even">
+<td>7fdb0720c8d7c9075538b365dc8c3a22</td>
+<td>9</td>
+<td>159.16</td>
+<td>6.63</td>
+</tr>
+<tr class="odd">
+<td>85d9eb9ddc5d00ca9336a2219c97bb13</td>
+<td>506</td>
+<td>158.41</td>
+<td>6.60</td>
+</tr>
+<tr class="even">
+<td>4e17c65a516f69d023a2ae78b84f28d6</td>
+<td>60</td>
+<td>158.16</td>
+<td>6.59</td>
+</tr>
+<tr class="odd">
+<td>dd7ddc04e1b6c2c614352b383efe2d36</td>
+<td>121</td>
+<td>157.70</td>
+<td>6.57</td>
+</tr>
+<tr class="even">
+<td>a888faf2d1baececa6baf9c3d603ee1f</td>
+<td>53</td>
+<td>157.43</td>
+<td>6.56</td>
+</tr>
+<tr class="odd">
+<td>c64a2aec32cc408a8a4c6d7c46017f91</td>
+<td>9</td>
+<td>157.34</td>
+<td>6.56</td>
+</tr>
+<tr class="even">
+<td>1976a05ecf2996d6ffb7b5430e635fe7</td>
+<td>8</td>
+<td>156.38</td>
+<td>6.52</td>
+</tr>
+<tr class="odd">
+<td>6c177e38df6d3f34182b1f1d427231bf</td>
+<td>55</td>
+<td>154.76</td>
+<td>6.45</td>
+</tr>
+<tr class="even">
+<td>6a51fc556dab5f766ced6fbc860bc613</td>
+<td>25</td>
+<td>153.92</td>
+<td>6.41</td>
+</tr>
+<tr class="odd">
+<td>d5b9a084373da994a6e37f732169a853</td>
+<td>7</td>
+<td>153.90</td>
+<td>6.41</td>
+</tr>
+<tr class="even">
+<td>f97e2b0650c2068227e1d366140eb62f</td>
+<td>16</td>
+<td>153.14</td>
+<td>6.38</td>
+</tr>
+<tr class="odd">
+<td>e21a1e8be4715b0fcfd5385643bc49c4</td>
+<td>21</td>
+<td>152.46</td>
+<td>6.35</td>
+</tr>
+<tr class="even">
+<td>6039e27294dc75811c0d8a39069f52c0</td>
+<td>64</td>
+<td>152.18</td>
+<td>6.34</td>
+</tr>
+<tr class="odd">
+<td>1dcfa3835714681d4ba4a93bc1e0fd41</td>
+<td>12</td>
+<td>150.38</td>
+<td>6.27</td>
+</tr>
+<tr class="even">
+<td>8378eb36b6b70c5734e83ad7b8cdc3b7</td>
+<td>7</td>
+<td>149.29</td>
+<td>6.22</td>
+</tr>
+<tr class="odd">
+<td>de66a66f2dd06bb9ec37aa96987466a3</td>
+<td>7</td>
+<td>148.99</td>
+<td>6.21</td>
+</tr>
+<tr class="even">
+<td>ba6ce6de456f6c11d08c17701ba5c26f</td>
+<td>6</td>
+<td>148.86</td>
+<td>6.20</td>
+</tr>
+<tr class="odd">
+<td>df560393f3a51e74553ab94004ba5c87</td>
+<td>28</td>
+<td>148.54</td>
+<td>6.19</td>
+</tr>
+<tr class="even">
+<td>7bcd7c5f8631701474db233ccf1c094b</td>
+<td>9</td>
+<td>147.80</td>
+<td>6.16</td>
+</tr>
+<tr class="odd">
+<td>ffeee66ac5d5a62fe688b9d26f83f534</td>
+<td>14</td>
+<td>147.67</td>
+<td>6.15</td>
+</tr>
+<tr class="even">
+<td>33c51922b6e3c16b24a8f28e5833c99d</td>
+<td>18</td>
+<td>145.64</td>
+<td>6.07</td>
+</tr>
+<tr class="odd">
+<td>8a87611c08849ffeeccab52aa798b6c7</td>
+<td>6</td>
+<td>145.53</td>
+<td>6.06</td>
+</tr>
+<tr class="even">
+<td>dfc475d54e1b6dbeeb7d7d9bdaa63827</td>
+<td>18</td>
+<td>144.34</td>
+<td>6.01</td>
+</tr>
+<tr class="odd">
+<td>e81e1f9c3e762e620f3fb60a51499e16</td>
+<td>17</td>
+<td>143.37</td>
+<td>5.97</td>
+</tr>
+<tr class="even">
+<td>c24173065483e421f9e5e7f599de101d</td>
+<td>9</td>
+<td>143.09</td>
+<td>5.96</td>
+</tr>
+<tr class="odd">
+<td>99002261c568a84cce14d43fcffb43ea</td>
+<td>36</td>
+<td>142.65</td>
+<td>5.94</td>
+</tr>
+<tr class="even">
+<td>5b179e9e8cc7ab6fd113a46ca584da81</td>
+<td>34</td>
+<td>142.05</td>
+<td>5.92</td>
+</tr>
+<tr class="odd">
+<td>71271995e85f5b8530be99ed54a91b89</td>
+<td>6</td>
+<td>141.72</td>
+<td>5.90</td>
+</tr>
+<tr class="even">
+<td>8e6cc767478edae941d9bd9eb778d77a</td>
+<td>104</td>
+<td>140.90</td>
+<td>5.87</td>
+</tr>
+<tr class="odd">
+<td>c3acdfac4e3e97ff87529454fbc03642</td>
+<td>12</td>
+<td>140.80</td>
+<td>5.87</td>
+</tr>
+<tr class="even">
+<td>f08a5b9dd6767129688d001acafc21e5</td>
+<td>11</td>
+<td>140.71</td>
+<td>5.86</td>
+</tr>
+<tr class="odd">
+<td>5b0cc932433fa5184b5b94bfe6bcc256</td>
+<td>12</td>
+<td>140.10</td>
+<td>5.84</td>
+</tr>
+<tr class="even">
+<td>bbad7e518d7af88a0897397ffdca1979</td>
+<td>68</td>
+<td>139.96</td>
+<td>5.83</td>
+</tr>
+<tr class="odd">
+<td>855668e0971d4dfd7bef1b6a4133b41b</td>
+<td>306</td>
+<td>139.38</td>
+<td>5.81</td>
+</tr>
+<tr class="even">
+<td>e06f09ec0a4aca210779cf1cfc63cf19</td>
+<td>29</td>
+<td>139.33</td>
+<td>5.81</td>
+</tr>
+<tr class="odd">
+<td>8a40ae794fa3f9892cee24bd5af0488b</td>
+<td>5</td>
+<td>139.15</td>
+<td>5.80</td>
+</tr>
+<tr class="even">
+<td>04308b1ee57b6625f47df1d56f00eedf</td>
+<td>93</td>
+<td>139.12</td>
+<td>5.80</td>
+</tr>
+<tr class="odd">
+<td>37dd29b36c458d82f74a953c40c43645</td>
+<td>7</td>
+<td>138.78</td>
+<td>5.78</td>
+</tr>
+<tr class="even">
+<td>e067ad2c1c0b48758eb1b5228bcf7a68</td>
+<td>54</td>
+<td>138.37</td>
+<td>5.77</td>
+</tr>
+<tr class="odd">
+<td>eb4df17aed01d918c65f0f8d650900c0</td>
+<td>11</td>
+<td>137.84</td>
+<td>5.74</td>
+</tr>
+<tr class="even">
+<td>6973a06f484aacf400ece213dbf3d946</td>
+<td>92</td>
+<td>137.67</td>
+<td>5.74</td>
+</tr>
+<tr class="odd">
+<td>f9903dd0f812c7e771fcad47b6fff231</td>
+<td>10</td>
+<td>137.38</td>
+<td>5.72</td>
+</tr>
+<tr class="even">
+<td>f9244d45189d3a3605499abddeade7d5</td>
+<td>21</td>
+<td>136.88</td>
+<td>5.70</td>
+</tr>
+<tr class="odd">
+<td>9dda5bbacd45e18d6485fee649205d09</td>
+<td>19</td>
+<td>136.88</td>
+<td>5.70</td>
+</tr>
+<tr class="even">
+<td>e8b3a3a38279a82f0e5d006d5e5b7d2c</td>
+<td>80</td>
+<td>136.76</td>
+<td>5.70</td>
+</tr>
+<tr class="odd">
+<td>d93844a9c55ba7ce353388bcf849ea56</td>
+<td>12</td>
+<td>136.60</td>
+<td>5.69</td>
+</tr>
+<tr class="even">
+<td>271c58a1d139c45eaf3316107c6d3a3b</td>
+<td>28</td>
+<td>135.53</td>
+<td>5.65</td>
+</tr>
+<tr class="odd">
+<td>236585a4ddb5fea9fa40233e2249ed91</td>
+<td>11</td>
+<td>134.85</td>
+<td>5.62</td>
+</tr>
+<tr class="even">
+<td>4c8b8048e33af2bf94f2eb547746a916</td>
+<td>19</td>
+<td>134.26</td>
+<td>5.59</td>
+</tr>
+<tr class="odd">
+<td>25debeafbce801fdd479539350185eee</td>
+<td>5</td>
+<td>133.99</td>
+<td>5.58</td>
+</tr>
+<tr class="even">
+<td>cac4c8e7b1ca6252d8f20b2fc1a2e4af</td>
+<td>74</td>
+<td>132.26</td>
+<td>5.51</td>
+</tr>
+<tr class="odd">
+<td>656591be56071d4c9ef4e5fee78a578a</td>
+<td>7</td>
+<td>132.12</td>
+<td>5.50</td>
+</tr>
+<tr class="even">
+<td>c4d51195486dc781531876a7d00453d8</td>
+<td>17</td>
+<td>131.29</td>
+<td>5.47</td>
+</tr>
+<tr class="odd">
+<td>4d600e08ecbe08258c79e536c5a42fee</td>
+<td>7</td>
+<td>129.89</td>
+<td>5.41</td>
+</tr>
+<tr class="even">
+<td>184a67a8f9f63234d3a92340bbdb727f</td>
+<td>8</td>
+<td>129.79</td>
+<td>5.41</td>
+</tr>
+<tr class="odd">
+<td>dd2bdf855a9172734fbc3744021ae9b9</td>
+<td>106</td>
+<td>128.78</td>
+<td>5.37</td>
+</tr>
+<tr class="even">
+<td>63b464dbf392c7b80d12d932fa7cafed</td>
+<td>36</td>
+<td>128.64</td>
+<td>5.36</td>
+</tr>
+<tr class="odd">
+<td>cd843d4cf8ef32827de0396605163ba3</td>
+<td>5</td>
+<td>128.59</td>
+<td>5.36</td>
+</tr>
+<tr class="even">
+<td>4e8dacf3d38f281ae26c3e0321d92d88</td>
+<td>8</td>
+<td>128.42</td>
+<td>5.35</td>
+</tr>
+<tr class="odd">
+<td>343e716476e3748b069f980efbaa294e</td>
+<td>17</td>
+<td>127.90</td>
+<td>5.33</td>
+</tr>
+<tr class="even">
+<td>014c0679dd340a0e338872e7ec85666a</td>
+<td>14</td>
+<td>127.87</td>
+<td>5.33</td>
+</tr>
+<tr class="odd">
+<td>e819bcfade7b5d88a27325eb6cfd62c5</td>
+<td>5</td>
+<td>127.71</td>
+<td>5.32</td>
+</tr>
+<tr class="even">
+<td>6e0908ef4d4efadbc3cc2b74ea477cb0</td>
+<td>8</td>
+<td>127.41</td>
+<td>5.31</td>
+</tr>
+<tr class="odd">
+<td>575df70bde3f9f2b30bf8d2e9910d725</td>
+<td>27</td>
+<td>127.12</td>
+<td>5.30</td>
+</tr>
+<tr class="even">
+<td>0873d9f8f36123f8d910f4760e788cfb</td>
+<td>6</td>
+<td>126.96</td>
+<td>5.29</td>
+</tr>
+<tr class="odd">
+<td>373ee4a3a775a733770ca3f790b8b9ac</td>
+<td>13</td>
+<td>126.89</td>
+<td>5.29</td>
+</tr>
+<tr class="even">
+<td>062ce95fa2ad4dfaedfc79260130565f</td>
+<td>54</td>
+<td>126.73</td>
+<td>5.28</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="pareto-analysis-for-sellers" class="level1">
+<h1>Pareto Analysis for Sellers</h1>
+<blockquote class="blockquote">
+<ol start="17" type="1">
+<li>Do the top 10% of sellers generate more than 50% of the platform’s total revenue? Furthermore, which product categories are dominated by a single ‘Monopoly Seller’ vs.&nbsp;categories with a healthy, competitive mix of multiple vendors?</li>
+</ol>
+</blockquote>
+<p><strong>Solution:</strong></p>
+<ol type="1">
+<li><p><strong>Firstly, we calculate global seller revenue (<code>seller_global_revenue</code> and <code>global_pareto</code> CTEs)</strong>: We join the <code>order_items</code>, <code>payments</code>, and <code>orders</code> tables to sum up the total revenue for each seller across the entire platform. We then use the <code>ntile(10)</code> window function to rank sellers into deciles, which helps identify the platform-wide revenue concentration.</p></li>
+<li><p><strong>Secondly, we calculate seller market share per category (<code>category_seller_share</code> CTE)</strong>: We group the sales data by both <code>product_category_name</code> and <code>seller_id</code> to find how much revenue each seller generated in that specific category. We also use a window function <code>sum() over (partition by product_category_name)</code> to calculate the total overall revenue for the entire category without grouping away the seller-level details.</p></li>
+<li><p><strong>Thirdly, we identify the top seller’s dominance (<code>category_dominance</code> CTE)</strong>: Grouping strictly by category, we count the total number of unique vendors (<code>total_vendors</code>) and find the highest revenue generated by a single seller (<code>max(seller_category_revenue)</code>). By dividing this top seller’s revenue by the total category revenue, we calculate the exact market share percentage held by the leading vendor (<code>leader_market_share_pct</code>).</p></li>
+<li><p><strong>Finally, we classify the competitive health of each market (Final <code>SELECT</code>)</strong>: We use a <code>CASE</code> statement to evaluate the market conditions. Categories where a single seller holds over 50% market share alongside fewer than 5 total vendors are flagged as ‘Monopoly / Highly Concentrated’, while categories with a leading share under 15% and over 20 vendors are labeled as ‘Healthy / Fragmented Competition’.</p></li>
+</ol>
+<details>
+<summary>
+Show SQL Code
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> seller_global_revenue <span class="kw">as</span> (</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 1: calculate total revenue for every seller across the platform</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        oi.seller_id,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(p.payment_value) <span class="kw">as</span> total_seller_revenue</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        order_items oi</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        payments p <span class="kw">on</span> oi.order_id <span class="op">=</span> p.order_id</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        orders o <span class="kw">on</span> oi.order_id <span class="op">=</span> o.order_id</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        o.order_status <span class="kw">not</span> <span class="kw">in</span> (<span class="st">'canceled'</span>, <span class="st">'unavailable'</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        oi.seller_id</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>global_pareto <span class="kw">as</span> (</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 2: rank sellers into deciles to check platform-wide concentration</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        seller_id,</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        total_seller_revenue,</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        <span class="fu">ntile</span>(<span class="dv">10</span>) <span class="kw">over</span> (<span class="kw">order</span> <span class="kw">by</span> total_seller_revenue <span class="kw">desc</span>) <span class="kw">as</span> seller_decile,</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(total_seller_revenue) <span class="kw">over</span> () <span class="kw">as</span> platform_total_revenue</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>        seller_global_revenue</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>category_seller_share <span class="kw">as</span> (</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 3: calculate revenue share for each seller within their specific category</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>        prod.product_category_name,</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>        oi.seller_id,</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(p.payment_value) <span class="kw">as</span> seller_category_revenue,</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(<span class="fu">sum</span>(p.payment_value)) <span class="kw">over</span> (<span class="kw">partition</span> <span class="kw">by</span> prod.product_category_name) <span class="kw">as</span> total_category_revenue</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>        order_items oi</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>        products prod <span class="kw">on</span> oi.product_id <span class="op">=</span> prod.product_id</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>        payments p <span class="kw">on</span> oi.order_id <span class="op">=</span> p.order_id</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>        orders o <span class="kw">on</span> oi.order_id <span class="op">=</span> o.order_id</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>        o.order_status <span class="kw">not</span> <span class="kw">in</span> (<span class="st">'canceled'</span>, <span class="st">'unavailable'</span>)</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>        <span class="kw">and</span> prod.product_category_name <span class="kw">is</span> <span class="kw">not</span> <span class="kw">null</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>        prod.product_category_name, oi.seller_id</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>category_dominance <span class="kw">as</span> (</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 4: identify the share of the 'top seller' in each category</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>        product_category_name,</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>        <span class="fu">count</span>(<span class="kw">distinct</span> seller_id) <span class="kw">as</span> total_vendors,</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>        <span class="fu">max</span>(seller_category_revenue) <span class="kw">as</span> top_seller_revenue,</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>        total_category_revenue,</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>        <span class="co">-- market share of the leading seller</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cast</span>(<span class="fl">100.0</span> <span class="op">*</span> <span class="fu">max</span>(seller_category_revenue) <span class="op">/</span> total_category_revenue <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">5</span>,<span class="dv">2</span>)) <span class="kw">as</span> leader_market_share_pct</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>        category_seller_share</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>        product_category_name, total_category_revenue</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a><span class="co">-- final output: categorizing product categories by competitive health</span></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> </span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>    product_category_name,</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>    total_vendors,</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>    leader_market_share_pct,</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> </span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>        <span class="cf">when</span> leader_market_share_pct <span class="op">&gt;=</span> <span class="dv">50</span> <span class="kw">and</span> total_vendors <span class="op">&lt;</span> <span class="dv">5</span> <span class="cf">then</span> <span class="st">'Monopoly / Highly Concentrated'</span></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>        <span class="cf">when</span> leader_market_share_pct <span class="op">&gt;=</span> <span class="dv">30</span> <span class="cf">then</span> <span class="st">'Dominant Leader'</span></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>        <span class="cf">when</span> leader_market_share_pct <span class="op">&lt;</span> <span class="dv">15</span> <span class="kw">and</span> total_vendors <span class="op">&gt;</span> <span class="dv">20</span> <span class="cf">then</span> <span class="st">'Healthy / Fragmented Competition'</span></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span> <span class="st">'Moderate Competition'</span></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span> <span class="kw">as</span> market_health_status</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> </span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>    category_dominance</span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a><span class="kw">order</span> <span class="kw">by</span> </span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>    leader_market_share_pct <span class="kw">desc</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p><strong>Results:</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 16%">
+<col style="width: 29%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>product_category_name</th>
+<th>total_vendors</th>
+<th>leader_market_share_pct</th>
+<th>market_health_status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>cds_dvds_musicais</td>
+<td>1</td>
+<td>100.00</td>
+<td>Monopoly / Highly Concentrated</td>
+</tr>
+<tr class="even">
+<td>la_cuisine</td>
+<td>2</td>
+<td>94.95</td>
+<td>Monopoly / Highly Concentrated</td>
+</tr>
+<tr class="odd">
+<td>portateis_cozinha_e_preparadores_de_alimentos</td>
+<td>5</td>
+<td>74.34</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="even">
+<td>moveis_escritorio</td>
+<td>34</td>
+<td>72.74</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="odd">
+<td>casa_conforto_2</td>
+<td>4</td>
+<td>71.76</td>
+<td>Monopoly / Highly Concentrated</td>
+</tr>
+<tr class="even">
+<td>telefonia_fixa</td>
+<td>49</td>
+<td>70.72</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="odd">
+<td>tablets_impressao_imagem</td>
+<td>6</td>
+<td>68.33</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="even">
+<td>fraldas_higiene</td>
+<td>7</td>
+<td>67.53</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="odd">
+<td>pcs</td>
+<td>9</td>
+<td>67.33</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="even">
+<td>seguros_e_servicos</td>
+<td>2</td>
+<td>64.42</td>
+<td>Monopoly / Highly Concentrated</td>
+</tr>
+<tr class="odd">
+<td>pc_gamer</td>
+<td>2</td>
+<td>59.92</td>
+<td>Monopoly / Highly Concentrated</td>
+</tr>
+<tr class="even">
+<td>flores</td>
+<td>3</td>
+<td>51.52</td>
+<td>Monopoly / Highly Concentrated</td>
+</tr>
+<tr class="odd">
+<td>portateis_casa_forno_e_cafe</td>
+<td>15</td>
+<td>50.67</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="even">
+<td>moveis_colchao_e_estofado</td>
+<td>5</td>
+<td>46.49</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="odd">
+<td>eletrodomesticos</td>
+<td>48</td>
+<td>46.29</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="even">
+<td>casa_conforto</td>
+<td>20</td>
+<td>46.09</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="odd">
+<td>livros_importados</td>
+<td>7</td>
+<td>45.89</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="even">
+<td>artes</td>
+<td>35</td>
+<td>43.33</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="odd">
+<td>bebidas</td>
+<td>36</td>
+<td>43.13</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="even">
+<td>fashion_roupa_feminina</td>
+<td>11</td>
+<td>42.24</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="odd">
+<td>artigos_de_festas</td>
+<td>12</td>
+<td>41.25</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="even">
+<td>fashion_calcados</td>
+<td>13</td>
+<td>41.23</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="odd">
+<td>artigos_de_natal</td>
+<td>17</td>
+<td>40.30</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="even">
+<td>fashion_underwear_e_moda_praia</td>
+<td>9</td>
+<td>39.90</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="odd">
+<td>dvds_blu_ray</td>
+<td>10</td>
+<td>36.88</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="even">
+<td>fashion_roupa_infanto_juvenil</td>
+<td>4</td>
+<td>34.49</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="odd">
+<td>agro_industria_e_comercio</td>
+<td>34</td>
+<td>34.30</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="even">
+<td>audio</td>
+<td>36</td>
+<td>34.18</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="odd">
+<td>papelaria</td>
+<td>173</td>
+<td>34.14</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="even">
+<td>industria_comercio_e_negocios</td>
+<td>29</td>
+<td>33.68</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="odd">
+<td>eletrodomesticos_2</td>
+<td>46</td>
+<td>32.97</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="even">
+<td>ferramentas_jardim</td>
+<td>235</td>
+<td>32.57</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="odd">
+<td>artes_e_artesanato</td>
+<td>13</td>
+<td>32.06</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="even">
+<td>livros_interesse_geral</td>
+<td>53</td>
+<td>31.98</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="odd">
+<td>construcao_ferramentas_iluminacao</td>
+<td>36</td>
+<td>31.82</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="even">
+<td>construcao_ferramentas_ferramentas</td>
+<td>24</td>
+<td>30.68</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="odd">
+<td>fashion_esporte</td>
+<td>10</td>
+<td>30.27</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="even">
+<td>moveis_sala</td>
+<td>55</td>
+<td>30.00</td>
+<td>Dominant Leader</td>
+</tr>
+<tr class="odd">
+<td>construcao_ferramentas_jardim</td>
+<td>32</td>
+<td>29.79</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="even">
+<td>construcao_ferramentas_seguranca</td>
+<td>34</td>
+<td>29.18</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="odd">
+<td>fashion_roupa_masculina</td>
+<td>13</td>
+<td>28.79</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="even">
+<td>sinalizacao_e_seguranca</td>
+<td>46</td>
+<td>28.41</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="odd">
+<td>livros_tecnicos</td>
+<td>26</td>
+<td>27.78</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="even">
+<td>moveis_quarto</td>
+<td>23</td>
+<td>23.77</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="odd">
+<td>malas_acessorios</td>
+<td>73</td>
+<td>23.52</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="even">
+<td>alimentos_bebidas</td>
+<td>33</td>
+<td>22.65</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="odd">
+<td>consoles_games</td>
+<td>81</td>
+<td>22.19</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>256</td>
+<td>22.11</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="odd">
+<td>cool_stuff</td>
+<td>263</td>
+<td>21.04</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="even">
+<td>musica</td>
+<td>19</td>
+<td>20.20</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="odd">
+<td>instrumentos_musicais</td>
+<td>68</td>
+<td>20.18</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="even">
+<td>telefonia</td>
+<td>146</td>
+<td>19.99</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="odd">
+<td>market_place</td>
+<td>59</td>
+<td>19.92</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="even">
+<td>cine_foto</td>
+<td>14</td>
+<td>19.66</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="odd">
+<td>climatizacao</td>
+<td>52</td>
+<td>19.63</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="even">
+<td>moveis_decoracao</td>
+<td>366</td>
+<td>19.03</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="odd">
+<td>casa_construcao</td>
+<td>68</td>
+<td>18.41</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="even">
+<td>alimentos</td>
+<td>58</td>
+<td>18.17</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="odd">
+<td>eletroportateis</td>
+<td>101</td>
+<td>16.91</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="even">
+<td>perfumaria</td>
+<td>174</td>
+<td>16.69</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="odd">
+<td>relogios_presentes</td>
+<td>98</td>
+<td>16.31</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="even">
+<td>brinquedos</td>
+<td>249</td>
+<td>15.49</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="odd">
+<td>cama_mesa_banho</td>
+<td>195</td>
+<td>15.05</td>
+<td>Moderate Competition</td>
+</tr>
+<tr class="even">
+<td>bebes</td>
+<td>242</td>
+<td>14.60</td>
+<td>Healthy / Fragmented Competition</td>
+</tr>
+<tr class="odd">
+<td>construcao_ferramentas_construcao</td>
+<td>127</td>
+<td>14.08</td>
+<td>Healthy / Fragmented Competition</td>
+</tr>
+<tr class="even">
+<td>eletronicos</td>
+<td>146</td>
+<td>12.82</td>
+<td>Healthy / Fragmented Competition</td>
+</tr>
+<tr class="odd">
+<td>moveis_cozinha_area_de_servico_jantar_e_jardim</td>
+<td>51</td>
+<td>12.82</td>
+<td>Healthy / Fragmented Competition</td>
+</tr>
+<tr class="even">
+<td>fashion_bolsas_e_acessorios</td>
+<td>99</td>
+<td>11.58</td>
+<td>Healthy / Fragmented Competition</td>
+</tr>
+<tr class="odd">
+<td>automotivo</td>
+<td>374</td>
+<td>11.09</td>
+<td>Healthy / Fragmented Competition</td>
+</tr>
+<tr class="even">
+<td>informatica_acessorios</td>
+<td>285</td>
+<td>10.01</td>
+<td>Healthy / Fragmented Competition</td>
+</tr>
+<tr class="odd">
+<td>pet_shop</td>
+<td>135</td>
+<td>7.22</td>
+<td>Healthy / Fragmented Competition</td>
+</tr>
+<tr class="even">
+<td>utilidades_domesticas</td>
+<td>463</td>
+<td>7.10</td>
+<td>Healthy / Fragmented Competition</td>
+</tr>
+<tr class="odd">
+<td>esporte_lazer</td>
+<td>477</td>
+<td>5.27</td>
+<td>Healthy / Fragmented Competition</td>
+</tr>
+<tr class="even">
+<td>beleza_saude</td>
+<td>489</td>
+<td>5.22</td>
+<td>Healthy / Fragmented Competition</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="seller-churn-analysis" class="level1">
+<h1>Seller Churn Analysis</h1>
+<blockquote class="blockquote">
+<ol start="18" type="1">
+<li>What is the churn rate of sellers on the platform? Specifically, how many sellers who made a sale in 2017 became inactive (zero sales) in 2018? Is there a correlation between high ‘Order Cancellation Rates’ and subsequent seller churn?</li>
+</ol>
+</blockquote>
+<p><strong>Solution:</strong></p>
+<ol type="1">
+<li><p><strong>Firstly, we aggregate annual activity per seller (<code>seller_activity</code> CTE)</strong>: We join the <code>orders</code> and <code>order_items</code> tables to calculate each seller’s <code>total_orders</code> and <code>canceled_orders</code> grouped by the specific year they occurred (extracted from the timestamp using the <code>year()</code> function).</p></li>
+<li><p><strong>Secondly, we build the 2017 cohort and identify churn (<code>seller_cohort_2017</code> CTE)</strong>: We isolate sellers who were active in 2017 and perform a <code>LEFT JOIN</code> against their own 2018 activity data. If the 2018 record is missing (<code>s18.seller_id is null</code>), we classify them as ‘Churned (Inactive in 2018)’, otherwise they are ‘Retained’. We also compute their individual 2017 cancellation rate percentage here.</p></li>
+<li><p><strong>Finally, we aggregate metrics by churn status (Final <code>SELECT</code>)</strong>: We group the cohort by their <code>churn_status</code> to count the exact number of sellers that stayed versus left. By averaging the <code>cancellation_rate_2017</code> and the <code>orders_2017</code> volume for both groups, we can directly observe the correlation between poor fulfillment performance (high cancellations) and subsequent seller churn on the platform.</p></li>
+</ol>
+<details>
+<summary>
+Show SQL Code
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> seller_activity <span class="kw">as</span> (</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 1: identify activity years and cancellation counts for every seller</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        oi.seller_id,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">year</span>(o.order_purchase_timestamp) <span class="kw">as</span> activity_year,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">count</span>(<span class="kw">distinct</span> o.order_id) <span class="kw">as</span> total_orders,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(<span class="cf">case</span> <span class="cf">when</span> o.order_status <span class="op">=</span> <span class="st">'canceled'</span> <span class="cf">then</span> <span class="dv">1</span> <span class="cf">else</span> <span class="dv">0</span> <span class="cf">end</span>) <span class="kw">as</span> canceled_orders</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        orders o</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        order_items oi <span class="kw">on</span> o.order_id <span class="op">=</span> oi.order_id</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        oi.seller_id, <span class="dt">year</span>(o.order_purchase_timestamp)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>seller_cohort_2017 <span class="kw">as</span> (</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 2: isolate sellers who were active in 2017 and track their 2018 status</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        s17.seller_id,</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>        s17.total_orders <span class="kw">as</span> orders_2017,</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cast</span>(<span class="fl">100.0</span> <span class="op">*</span> s17.canceled_orders <span class="op">/</span> s17.total_orders <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">5</span>,<span class="dv">2</span>)) <span class="kw">as</span> cancellation_rate_2017,</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">case</span> </span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>            <span class="cf">when</span> s18.seller_id <span class="kw">is</span> <span class="kw">null</span> <span class="cf">then</span> <span class="st">'Churned (Inactive in 2018)'</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span> <span class="st">'Retained (Active in 2018)'</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span> <span class="kw">as</span> churn_status</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>        seller_activity s17</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">left</span> <span class="kw">join</span> </span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>        seller_activity s18 <span class="kw">on</span> s17.seller_id <span class="op">=</span> s18.seller_id <span class="kw">and</span> s18.activity_year <span class="op">=</span> <span class="dv">2018</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>        s17.activity_year <span class="op">=</span> <span class="dv">2017</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="co">-- final output: comparing cancellation rates across churned vs retained sellers</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> </span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    churn_status,</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">count</span>(seller_id) <span class="kw">as</span> seller_count,</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- average cancellation rate to identify the correlation</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(<span class="fu">avg</span>(cancellation_rate_2017) <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">5</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_cancellation_rate_pct,</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- average volume to see if smaller or larger sellers churn more</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(<span class="fu">avg</span>(orders_2017 <span class="op">*</span> <span class="fl">1.0</span>) <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_2017_order_volume</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> </span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>    seller_cohort_2017</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    churn_status;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p><strong>Results:</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 35%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>churn_status</th>
+<th>seller_count</th>
+<th>avg_cancellation_rate_pct</th>
+<th>avg_2017_order_volume</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Churned (Inactive in 2018)</td>
+<td>685</td>
+<td>6.06</td>
+<td>6.34</td>
+</tr>
+<tr class="even">
+<td>Retained (Active in 2018)</td>
+<td>1099</td>
+<td>0.48</td>
+<td>37.07</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="identifying-underperforming-sellers" class="level1">
+<h1>Identifying Underperforming Sellers</h1>
+<blockquote class="blockquote">
+<ol start="19" type="1">
+<li>Which sellers have a high sales volume (&gt;50 orders) but a consistently low average review score (&lt;3 stars)? Can we identify specific sellers who are responsible for a disproportionate number of the platform’s 1-star reviews?</li>
+</ol>
+</blockquote>
+<p><strong>Solution:</strong></p>
+<ol type="1">
+<li><p><strong>Firstly, we analyze the seller churn correlation (Part 1)</strong>: We aggregate annual activity and cancellation rates per seller (<code>seller_activity</code> CTE), then isolate the 2017 cohort to track whether they were retained or churned in 2018 (<code>seller_cohort_2017</code> CTE). The first output aggregates the average cancellation rates and order volumes for churned versus retained sellers.</p></li>
+<li><p><strong>Secondly, we aggregate review statistics per seller (Part 2 - <code>seller_review_stats</code> CTE)</strong>: To evaluate seller quality, we join the <code>order_items</code>, <code>orders</code>, and <code>order_reviews</code> tables. Grouping strictly by <code>seller_id</code>, we calculate their <code>total_orders</code>, their <code>avg_review_score</code>, and calculate their specific <code>one_star_count</code>.</p></li>
+<li><p><strong>Thirdly, we calculate the platform-wide baseline (Part 2 - <code>platform_total_one_stars</code> CTE)</strong>: We independently calculate the <code>grand_total_one_stars</code> across the entire database. This acts as the denominator for measuring an individual seller’s negative impact against the whole platform.</p></li>
+<li><p><strong>Finally, we identify the worst offenders and their platform impact (Part 2 Final <code>SELECT</code>)</strong>: We <code>CROSS JOIN</code> the seller stats with the platform baseline. We filter for high-volume sellers (<code>total_orders &gt; 50</code>) with poor ratings (<code>avg_review_score &lt; 3</code>). By computing <code>pct_of_platform_one_stars</code>, we can pinpoint exactly how much of the platform’s total negative feedback is disproportionately driven by these specific vendors.</p></li>
+</ol>
+<details>
+<summary>
+Show SQL Code
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> seller_activity <span class="kw">as</span> (</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 1: identify activity years and cancellation counts for every seller</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        oi.seller_id,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="dt">year</span>(o.order_purchase_timestamp) <span class="kw">as</span> activity_year,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">count</span>(<span class="kw">distinct</span> o.order_id) <span class="kw">as</span> total_orders,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(<span class="cf">case</span> <span class="cf">when</span> o.order_status <span class="op">=</span> <span class="st">'canceled'</span> <span class="cf">then</span> <span class="dv">1</span> <span class="cf">else</span> <span class="dv">0</span> <span class="cf">end</span>) <span class="kw">as</span> canceled_orders</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        orders o</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        order_items oi <span class="kw">on</span> o.order_id <span class="op">=</span> oi.order_id</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        oi.seller_id, <span class="dt">year</span>(o.order_purchase_timestamp)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>seller_cohort_2017 <span class="kw">as</span> (</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 2: isolate sellers who were active in 2017 and track their 2018 status</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        s17.seller_id,</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        s17.total_orders <span class="kw">as</span> orders_2017,</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        <span class="fu">cast</span>(<span class="fl">100.0</span> <span class="op">*</span> s17.canceled_orders <span class="op">/</span> s17.total_orders <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">5</span>,<span class="dv">2</span>)) <span class="kw">as</span> cancellation_rate_2017,</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">case</span> </span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>            <span class="cf">when</span> s18.seller_id <span class="kw">is</span> <span class="kw">null</span> <span class="cf">then</span> <span class="st">'Churned (Inactive in 2018)'</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span> <span class="st">'Retained (Active in 2018)'</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span> <span class="kw">as</span> churn_status</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        seller_activity s17</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">left</span> <span class="kw">join</span> </span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>        seller_activity s18 <span class="kw">on</span> s17.seller_id <span class="op">=</span> s18.seller_id <span class="kw">and</span> s18.activity_year <span class="op">=</span> <span class="dv">2018</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">where</span> </span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>        s17.activity_year <span class="op">=</span> <span class="dv">2017</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="co">-- output 1: comparing cancellation rates across churned vs retained sellers</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> </span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    churn_status,</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">count</span>(seller_id) <span class="kw">as</span> seller_count,</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(<span class="fu">avg</span>(cancellation_rate_2017) <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">5</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_cancellation_rate_pct,</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(<span class="fu">avg</span>(orders_2017 <span class="op">*</span> <span class="fl">1.0</span>) <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">10</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_2017_order_volume</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> </span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    seller_cohort_2017</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>    churn_status;</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a><span class="co">/* PART 2: Seller Review Performance &amp; 1-Star Concentration</span></span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a><span class="co">    Objective: </span></span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a><span class="co">        1. Identify high-volume sellers (&gt;50 orders) with poor ratings (&lt;3 stars).</span></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a><span class="co">        2. Calculate their contribution to the platform's total 1-star reviews.</span></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a><span class="co">*/</span></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span> seller_review_stats <span class="kw">as</span> (</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 1: aggregate review scores and total 1-stars per seller</span></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> </span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>        oi.seller_id,</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>        <span class="fu">count</span>(<span class="kw">distinct</span> o.order_id) <span class="kw">as</span> total_orders,</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>        <span class="fu">avg</span>(orv.review_score <span class="op">*</span> <span class="fl">1.0</span>) <span class="kw">as</span> avg_review_score,</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sum</span>(<span class="cf">case</span> <span class="cf">when</span> orv.review_score <span class="op">=</span> <span class="dv">1</span> <span class="cf">then</span> <span class="dv">1</span> <span class="cf">else</span> <span class="dv">0</span> <span class="cf">end</span>) <span class="kw">as</span> one_star_count</span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> </span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>        order_items oi</span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>        orders o <span class="kw">on</span> oi.order_id <span class="op">=</span> o.order_id</span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>    <span class="kw">inner</span> <span class="kw">join</span> </span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>        order_reviews orv <span class="kw">on</span> o.order_id <span class="op">=</span> orv.order_id</span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>    <span class="kw">group</span> <span class="kw">by</span> </span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>        oi.seller_id</span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>platform_total_one_stars <span class="kw">as</span> (</span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- step 2: get the total number of 1-star reviews across the whole platform</span></span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>    <span class="kw">select</span> <span class="fu">sum</span>(<span class="cf">case</span> <span class="cf">when</span> review_score <span class="op">=</span> <span class="dv">1</span> <span class="cf">then</span> <span class="dv">1</span> <span class="cf">else</span> <span class="dv">0</span> <span class="cf">end</span>) <span class="kw">as</span> grand_total_one_stars</span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>    <span class="kw">from</span> order_reviews</span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a><span class="co">-- output 2: flagging high-risk sellers based on volume and negative sentiment</span></span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> </span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>    s.seller_id,</span>
+<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a>    s.total_orders,</span>
+<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(s.avg_review_score <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">3</span>,<span class="dv">2</span>)) <span class="kw">as</span> avg_review_score,</span>
+<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a>    s.one_star_count,</span>
+<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>    <span class="co">-- concentration: what % of the entire platform's 1-star reviews come from this one seller?</span></span>
+<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast</span>(<span class="fl">100.0</span> <span class="op">*</span> s.one_star_count <span class="op">/</span> p.grand_total_one_stars <span class="kw">as</span> <span class="dt">decimal</span>(<span class="dv">5</span>,<span class="dv">2</span>)) <span class="kw">as</span> pct_of_platform_one_stars</span>
+<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> </span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>    seller_review_stats s</span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a><span class="kw">cross</span> <span class="kw">join</span> </span>
+<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>    platform_total_one_stars p</span>
+<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span> </span>
+<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a>    s.total_orders <span class="op">&gt;</span> <span class="dv">50</span> </span>
+<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a>    <span class="kw">and</span> s.avg_review_score <span class="op">&lt;</span> <span class="dv">3</span></span>
+<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a><span class="kw">order</span> <span class="kw">by</span> </span>
+<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a>    s.one_star_count <span class="kw">desc</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p><strong>Results 1:</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 35%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>churn_status</th>
+<th>seller_count</th>
+<th>avg_cancellation_rate_pct</th>
+<th>avg_2017_order_volume</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Churned (Inactive in 2018)</td>
+<td>685</td>
+<td>6.06</td>
+<td>6.34</td>
+</tr>
+<tr class="even">
+<td>Retained (Active in 2018)</td>
+<td>1099</td>
+<td>0.48</td>
+<td>37.07</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Results 2:</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 15%">
+<col style="width: 21%">
+<col style="width: 18%">
+<col style="width: 32%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>seller_id</th>
+<th>total_orders</th>
+<th>avg_review_score</th>
+<th>one_star_count</th>
+<th>pct_of_platform_one_stars</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2eb70248d66e0e3ef83659f71b244378</td>
+<td>198</td>
+<td>2.71</td>
+<td>81</td>
+<td>0.71</td>
+</tr>
+<tr class="even">
+<td>1ca7077d890b907f89be8c954a02686a</td>
+<td>114</td>
+<td>2.20</td>
+<td>80</td>
+<td>0.70</td>
+</tr>
+<tr class="odd">
+<td>a49928bcdf77c55c6d6e05e09a9b4ca5</td>
+<td>98</td>
+<td>2.95</td>
+<td>37</td>
+<td>0.32</td>
+</tr>
+<tr class="even">
+<td>54965bbe3e4f07ae045b90b0b8541f52</td>
+<td>74</td>
+<td>2.94</td>
+<td>34</td>
+<td>0.30</td>
+</tr>
+<tr class="odd">
+<td>972d0f9cf61b499a4812cf0bfa3ad3c4</td>
+<td>79</td>
+<td>2.96</td>
+<td>29</td>
+<td>0.25</td>
+</tr>
+</tbody>
+</table>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

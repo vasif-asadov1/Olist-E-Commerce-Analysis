@@ -1,0 +1,84 @@
+---
+title: "Olist E-Commerce Sales Analysis"
+---
+
+# Problem Description
+
+We are working as a data analyst for Olist, a Brazilian e-commerce company that connects small and medium-sized businesses to a large marketplace. Olist has decided to conduct data analysis to increase sales and ensure customer satisfactio. Therefore, they hired us to analyze their past sales data to find answers to these questions and gain insights that will support the company's strategic decisions. Our tasks can be summarized cleanly as follows:
+
+1. **Data Ingestion and Cleaning** - Import the data into our analysis environment and perform data cleaning to ensure that the data is accurate and ready for analysis. This will involve importing the data from the provided CSV files, correcting data types, checking the data for consistency and handling any missing values or duplicates. 
+2. **Star Schema Design** - Design the star schema for the data by creating primary and foreign key pairs to establish relationships between the tables. This will involve identifying the fact and dimension tables, and defining the relationships between them to create a well-structured star schema that can support efficient querying and analysis. The clean png or pdf file of the star schema design must be provided as part of the project deliverables.
+3. **SQL Analysis** - Conducting the data analysis in different domains such as sales, customers, products, and regions to identify trends and patterns in the sales data. This will involve analyzing sales by product category, region, and customer demographics to uncover insights that can drive business growth. The data will be analyzed within the following domains: 
+    - **Sales Analysis**: Analyze sales data to identify trends and patterns in sales performance, including total sales, average order value, and sales by product category and region.
+    - **Customer Satisfaction Analysis**: Analyze customer data to understand customer behavior, including customer demographics, purchase frequency, and customer lifetime value.
+    - **Product Analysis**: Analyze product data to identify popular products, product performance, and inventory management insights.
+    - **Regional Analysis**: Analyze regional data together with shipping - delivery information to understand sales performance across different regions and identify opportunities for growth.
+    - **Time Analysis**: Analyze sales data over time to identify seasonal trends, sales performance by month or quarter, and other time-based patterns that can inform business decisions.
+4. **Tableau Dashboards** - Build executive Tableau dashboards to visualize our findings and make it easier for stakeholders to understand the insights we have uncovered. This will involve creating data marts using SQL to feed into our visualizations, and designing dashboards that effectively communicate our findings.
+
+
+ 
+# Project Structure
+
+This project will be structured in the following way:
+
+1. The data will be imported firstly into the SQL Server database `Olist-E-Commerce`. 
+2. Imported data will be cleaned and the data types will be adjusted to ensure that the data is accurate and ready for analysis.
+3. New date table will be created to support time-based analysis.
+4. The star schema will be designed by creating primary and foreign key pairs to establish relationships between the tables. The fact and dimension tables will be identified, and the relationships between them will be defined to create a well-structured star schema that can support efficient querying and analysis. The clean png or pdf file of the star schema design will be created.
+5. Real-world Analytical Business questions will be created using AI and our domain knowledge. These questions will be categorized into different domains such as sales, customers, products, and regions to ensure a comprehensive analysis of the data. 
+6. SQL queries will be written to address the analytical business questions and uncover insights that can inform strategic decisions. 
+7. Aggregation tables / views will be created to support the Tableau dashboards. 
+8. Executive Tableau dashboard will be designed and built to visualize our findings and make it easier for stakeholders to understand the insights we have uncovered. 
+9. The Machine Learning model will be built to predict the customer satisfaction score based on the available data. Since the satisfaction score is a categorical variable, we will use classification algorithms to build the model. The model will be trained on the historical data and evaluated using appropriate metrics to ensure its accuracy and reliability. The insights gained from the model will be used to inform business decisions and improve customer satisfaction.
+10. Automated ML pipeline model will be created and deployed via Streamlit with a user-friendly interface to allow stakeholders to input new data and receive predictions on customer satisfaction scores. This will enable the company to make data-driven decisions in real-time and improve customer satisfaction based on the insights gained from the model.
+11. All steps of the analysis process, including data ingestion, cleaning, star schema design, SQL analysis, Tableau dashboard creation, and machine learning model development will be documented in a clear and organized manner using Quarto. The documentation will include explanations of the methods used, the insights gained, and the recommendations for the company based on our analysis. The final deliverable will be a comprehensive report that provides actionable insights to help Olist increase sales and improve customer satisfaction.
+
+
+# Skills Used 
+
+- *SQL*: For data ingestion, cleaning, star schema design, and analysis.
+- *Python*: For machine learning model development and pipeline creation.
+- *Tableau*: For creating executive dashboards to visualize our findings.
+- *Data Analysis*: For exploring the sales data, identifying trends, and making informed recommendations to the company.
+- *Data Cleaning*: For ensuring that the data is accurate and ready for analysis.
+- *Data Visualization*: For effectively communicating our findings through Tableau dashboards.
+- *Business Intelligence*: For understanding the company's needs and providing actionable insights that can drive business growth. 
+- *Quarto & Pandoc*: For documenting our analysis process and findings in a clear and organized manner.
+- *Machine Learning*: For building a classification model to predict customer satisfaction scores based on the available data.
+- *Streamlit*: For creating an automated ML pipeline model with a user-friendly interface to allow stakeholders to input new data and receive predictions on customer satisfaction scores in real-time.
+- *Communication*: For presenting our findings and recommendations to the company's leadership team in a clear and compelling way using the dashboard and self-hosted Quarto website through Github Pages.  
+
+
+
+# References
+
+- **Olist E-Commerce Dataset**: The primary source of data for this analysis will be the Olist E-Commerce dataset, which is available on Kaggle. This dataset contains information about orders, customers, products, reviews, sellers and payments, which will be used to conduct our analysis and build our machine learning model.
+- Olist E-Commerce Dataset: [Olist Dataset in Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
+- **Visual Studio Code**: We will use Visual Studio Code as our code editor for writing SQL queries, Python code for machine learning model development, and documenting our analysis process in Quarto. 
+- **Tableau**: We will use Tableau for creating executive dashboards to visualize our findings and make it easier for stakeholders to understand the insights we have uncovered.
+- **Quarto and Pandoc**: We will use Quarto for documenting our analysis process and findings, and Pandoc for converting our Quarto documents into various formats for presentation.
+- **GitHub Pages**: We will use GitHub Pages to host our self-hosted Quarto website, where we will present our analysis process and findings in a clear and organized manner.
+- **Streamlit**: We will use Streamlit for creating an automated ML pipeline model with a user-friendly interface to allow stakeholders to input new data and receive predictions on customer satisfaction scores in real-time. This will enable the company to make data-driven decisions in real-time and improve customer satisfaction based on the insights gained from the model.  
+- **AI Tools**: We will use AI tools to help us generate real-world analytical business questions based on our domain knowledge and the available data. This will ensure that our analysis is focused on addressing relevant business problems and providing actionable insights to the company.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

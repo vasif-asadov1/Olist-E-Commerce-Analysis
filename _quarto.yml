@@ -1,0 +1,41 @@
+project:
+  type: website
+  output-dir: docs
+
+execute:
+  execute-notebooks: false
+  enabled: false
+
+website:
+  title: "Vasif | Olist E-Commerce Analysis"
+  navbar:
+    background: primary
+    left:
+      - href: index.qmd
+        text: Home
+  
+  sidebar:
+    location: left
+    style: "docked"
+    contents:
+      - section: "Olist Data Analysis"
+        contents:
+          - index.qmd
+          - 01_data_normalization.qmd
+          - 02_business_questions.qmd
+          - 03_customer_retention.qmd
+          - 04_orders_sales_performance.qmd
+          - 05_delivery_logistics.qmd
+          - 06_seller_performance.qmd
+          - 07_payments_and_risk.qmd
+          - 08_customer_reviews.qmd
+          - 09_time_series.qmd
+
+format:
+  html:
+    theme: [cosmo, custom.scss]
+    highlight-style: github
+    code-fold: true     
+    code-summary: "Show Code" 
+    toc: true
+    toc-location: right

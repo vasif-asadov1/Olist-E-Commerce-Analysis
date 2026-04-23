@@ -1,0 +1,504 @@
+---
+title: "Delivery and Logistics Analysis"
+---
+
+
+# Introduction
+
+
+
+
+
+
+# Delivery Performance Analysis
+
+> 11. What is the overall 'On-Time Delivery Rate' (percentage of orders delivered before the `order_estimated_delivery_date`)? Furthermore, what is the average variance between the estimated and actual delivery dates across different states?" 
+
+**Solution:**
+
+1. **Firstly, we prepare order-level delivery variances (`delivery_data` CTE)**: We join the `orders` and `customers` tables, filtering strictly for successfully 'delivered' orders with valid dates. We use a `CASE` statement to flag if an order was delivered on or before the estimate (`is_on_time`), and use `datediff` to calculate the exact `delivery_variance_days`.
+
+2. **Secondly, we aggregate performance by state (`state_performance` CTE)**: Grouping by `customer_state`, we sum the on-time flags to calculate the `on_time_rate` percentage. We calculate the state's average delivery variance (`state_avg_accuracy`). Crucially, we also use a window function `avg() over ()` without a partition to calculate the `national_avg_accuracy` baseline across all states.
+
+3. **Finally, we classify states against the national benchmark (Final `SELECT`)**: We format the output metrics and use a `CASE` statement to evaluate the state's performance. By comparing the `state_avg_accuracy` against the `national_avg_accuracy` (+/- a 2-day buffer), we categorize the logistics estimation strategy for that region as 'Extremely Conservative', 'Relatively Aggressive', or 'Standard'.
+
+
+
+<details> 
+<summary> Show SQL Code </summary>
+
+```sql
+with delivery_data as (
+    -- step 1: prepare variance data per order
+    select 
+        c.customer_state,
+        o.order_id,
+        o.order_estimated_delivery_date,
+        o.order_delivered_customer_date,
+        case 
+            when o.order_delivered_customer_date <= o.order_estimated_delivery_date then 1 
+            else 0 
+        end as is_on_time,
+        datediff(day, o.order_delivered_customer_date, o.order_estimated_delivery_date) as delivery_variance_days
+    from 
+        orders o
+    inner join 
+        customers c on o.customer_id = c.customer_id
+    where 
+        o.order_status = 'delivered'
+        and o.order_delivered_customer_date is not null
+        and o.order_estimated_delivery_date is not null
+),
+
+state_performance as (
+    -- step 2: aggregate by state and calculate national benchmark
+    select 
+        customer_state,
+        count(order_id) as total_delivered_orders,
+        cast(100.0 * sum(is_on_time) / count(order_id) as decimal(5,2)) as on_time_rate,
+        avg(delivery_variance_days * 1.0) as state_avg_accuracy,
+        -- getting the national average across all states to use as a baseline
+        avg(avg(delivery_variance_days * 1.0)) over () as national_avg_accuracy
+    from 
+        delivery_data
+    group by 
+        customer_state
+)
+
+-- final output: categorizing states relative to the national logistics standard
+select 
+    customer_state,
+    total_delivered_orders,
+    on_time_rate,
+    cast(state_avg_accuracy as decimal(10,2)) as avg_accuracy_days,
+    cast(national_avg_accuracy as decimal(10,2)) as national_benchmark,
+    case 
+        when state_avg_accuracy > national_avg_accuracy + 2 then 'Extremely Conservative (High Buffer)'
+        when state_avg_accuracy < national_avg_accuracy - 2 then 'Relatively Aggressive (Lower Buffer)'
+        else 'Standard (Aligned with National Avg)'
+    end as relative_performance
+from 
+    state_performance
+order by 
+    avg_accuracy_days desc;
+```
+
+</details>
+
+
+
+# Freight Cost by Regions
+
+> 12. How does the average freight cost (`freight_value`) correlate with average delivery time across different states? Can we identify regions that suffer from the 'Logistics Gap' - paying disproportionately high shipping fees for the slowest service?
+
+
+**Solution:**
+
+
+1. **Firstly, we prepare order-level freight and delivery data (`order_metrics` CTE)**: We join the `orders`, `customers`, and `order_items` tables, filtering strictly for successfully 'delivered' orders. We calculate the `total_order_freight` by summing up the freight values of all items within an order (handling multi-item orders properly), and we use `datediff` to calculate the total `delivery_time_days` from purchase to customer delivery.
+
+2. **Secondly, we calculate state averages and national benchmarks (`state_benchmarks` CTE)**: Grouping by `customer_state`, we average both the freight costs (`avg_state_freight`) and delivery times (`avg_state_delivery_time`) to establish the typical performance for each region. Crucially, we use the `avg() over ()` window function to establish the overall `national_avg_freight` and `national_avg_delivery_time` as baselines.
+
+3. **Finally, we classify regional logistics efficiency (Final `SELECT`)**: We format the output metrics and use a `CASE` statement to compare each state's averages against the national benchmarks. By cross-evaluating whether a state is above or below average in both cost and speed, we neatly categorize them into actionable profiles like 'Logistics Gap (High Cost / Slow)', 'Premium Service', 'Budget / Inefficient', or 'Optimized Logistics'.
+
+
+
+
+<details>
+<summary> Show SQL Code </summary>
+
+```sql
+with order_metrics as (
+    -- step 1: prepare freight and delivery time per order
+    -- we sum freight_value per order first to handle cases with multiple items
+    select 
+        o.order_id,
+        c.customer_state,
+        sum(oi.freight_value) as total_order_freight,
+        datediff(day, o.order_purchase_timestamp, o.order_delivered_customer_date) as delivery_time_days
+    from 
+        orders o
+    inner join 
+        customers c on o.customer_id = c.customer_id
+    inner join 
+        order_items oi on o.order_id = oi.order_id
+    where 
+        o.order_status = 'delivered'
+        and o.order_delivered_customer_date is not null
+    group by 
+        o.order_id, c.customer_state, o.order_purchase_timestamp, o.order_delivered_customer_date
+),
+
+state_benchmarks as (
+    -- step 2: calculate state averages and compare to national benchmarks
+    select 
+        customer_state,
+        avg(total_order_freight) as avg_state_freight,
+        avg(delivery_time_days * 1.0) as avg_state_delivery_time,
+        -- national benchmarks using window functions
+        avg(avg(total_order_freight)) over () as national_avg_freight,
+        avg(avg(delivery_time_days * 1.0)) over () as national_avg_delivery_time
+    from 
+        order_metrics
+    group by 
+        customer_state
+)
+
+-- final output: classifying the logistics efficiency of each state
+select 
+    customer_state,
+    cast(avg_state_freight as decimal(10,2)) as avg_freight,
+    cast(avg_state_delivery_time as decimal(10,2)) as avg_delivery_days,
+    case 
+        when avg_state_freight > national_avg_freight and avg_state_delivery_time > national_avg_delivery_time then 'Logistics Gap (High Cost / Slow)'
+        when avg_state_freight > national_avg_freight and avg_state_delivery_time <= national_avg_delivery_time then 'Premium Service (High Cost / Fast)'
+        when avg_state_freight <= national_avg_freight and avg_state_delivery_time > national_avg_delivery_time then 'Budget / Inefficient (Low Cost / Slow)'
+        else 'Optimized Logistics (Low Cost / Fast)'
+    end as logistics_classification
+from 
+    state_benchmarks
+order by 
+    avg_state_freight desc, avg_state_delivery_time desc;
+```
+</details>
+
+
+
+
+# Delivery Timeline Decomposition
+
+
+> 13. Can we decompose the total delivery timeline into three distinct stages: 'Approval Time' (Purchase to Approval), 'Dispatch Time' (Approval to Carrier Handover), and 'Last-Mile Delivery' (Carrier to Customer)? Which of these stages contributes the most to overall delays? 
+
+**Solution:**
+
+1. **Firstly, we extract time intervals for each fulfillment stage (`order_lifecycle` CTE)**: We use the `datediff` function to calculate the time spent in each distinct phase: 'Approval Time' (purchase to approval), 'Dispatch Time' (approval to carrier handover), and 'Last-Mile Delivery' (carrier to customer). We calculate these differences in seconds and divide by 3600.0 to get precise hour measurements, filtering strictly for 'delivered' orders that have all necessary timestamp data.
+
+2. **Secondly, we calculate the mean duration of each stage (`stage_averages` CTE)**: We aggregate the data by taking the average of the hours spent in each respective stage (`avg_approval_hrs`, `avg_dispatch_hrs`, `avg_last_mile_hrs`, and `avg_total_hrs`). Crucially, we include a `WHERE` clause here to filter out negative durations (`>= 0`), eliminating potential data entry errors or anomalies from skewing our averages.
+
+3. **Finally, we calculate the percentage contributions (Final `SELECT`)**: We convert our aggregated average hour metrics into average days (by dividing by 24.0) for easier human readability. To answer the core of the question—identifying the primary source of delays—we calculate the exact percentage each stage contributes to the total lead time (e.g., `100.0 * avg_last_mile_hrs / avg_total_hrs`).
+
+
+
+
+<details>
+<summary> Show SQL Code </summary>
+
+```sql
+with order_lifecycle as (
+    -- step 1: extract time intervals for each stage of the fulfillment process
+    -- using hours (3600.0 seconds) to maintain precision for fast stages like approval
+    select 
+        order_id,
+        -- stage 1: approval time (internal processing)
+        approval_hours = datediff(second, order_purchase_timestamp, order_approved_at) / 3600.0,
+        
+        -- stage 2: dispatch time (warehouse / seller preparation)
+        dispatch_hours = datediff(second, order_approved_at, order_delivered_carrier_date) / 3600.0,
+        
+        -- stage 3: last-mile delivery (carrier performance)
+        last_mile_hours = datediff(second, order_delivered_carrier_date, order_delivered_customer_date) / 3600.0,
+        
+        -- total lead time
+        total_lead_time_hours = datediff(second, order_purchase_timestamp, order_delivered_customer_date) / 3600.0
+    from 
+        orders
+    where 
+        order_status = 'delivered'
+        and order_approved_at is not null
+        and order_delivered_carrier_date is not null
+        and order_delivered_customer_date is not null
+),
+
+stage_averages as (
+    -- step 2: calculate mean durations across all orders
+    select 
+        avg_approval_hrs = avg(approval_hours),
+        avg_dispatch_hrs = avg(dispatch_hours),
+        avg_last_mile_hrs = avg(last_mile_hours),
+        avg_total_hrs = avg(total_lead_time_hours)
+    from 
+        order_lifecycle
+    where 
+        -- filtering out negative values (data entry errors) to ensure clean averages
+        approval_hours >= 0 and dispatch_hours >= 0 and last_mile_hours >= 0
+)
+
+-- final output: showing the "weight" of each stage in the delivery process
+select 
+    cast(avg_approval_hrs / 24.0 as decimal(10,2)) as avg_approval_days,
+    cast(avg_dispatch_hrs / 24.0 as decimal(10,2)) as avg_dispatch_days,
+    cast(avg_last_mile_hrs / 24.0 as decimal(10,2)) as avg_last_mile_days,
+    cast(avg_total_hrs / 24.0 as decimal(10,2)) as avg_total_lead_days,
+    
+    -- contribution percentages
+    cast(100.0 * avg_approval_hrs / avg_total_hrs as decimal(5,2)) as approval_pct_contribution,
+    cast(100.0 * avg_dispatch_hrs / avg_total_hrs as decimal(5,2)) as dispatch_pct_contribution,
+    cast(100.0 * avg_last_mile_hrs / avg_total_hrs as decimal(5,2)) as last_mile_pct_contribution
+from 
+    stage_averages;
+```
+
+</details>
+
+
+
+# Local vs Long-Haul Logistics Performance
+
+
+> 14. How does logistics performance compare between 'Local Orders' (where `customer_state` matches `seller_state`) and 'Long-Haul Orders' (Cross-border)? Specifically, what is the 'Speed Premium' - the reduction in delivery days achieved by fulfilling orders locally?"
+
+**Solution:**
+
+1. **Firstly, we classify the fulfillment path (`shipment_classification` CTE)**: We join the `orders`, `customers`, `order_items`, and `sellers` tables to access both the customer's and seller's locations. We use a `CASE` statement to flag an order as 'Local' if the `customer_state` matches the `seller_state`, and 'Long-Haul' otherwise. We crucially use `DISTINCT` here to ensure that if a customer buys multiple items from the same seller in one order, we only evaluate the order's delivery timeline once.
+
+2. **Secondly, we calculate individual delivery metrics (`performance_metrics` CTE)**: For each classified order, we calculate the exact `delivery_days` (using seconds divided by 86400.0 for precision) and create a binary flag (`is_on_time`) by comparing the actual delivery date against the estimated delivery date.
+
+3. **Thirdly, we aggregate the performance statistics (`summary_stats` CTE)**: Grouping strictly by our new `shipment_type`, we calculate the total `shipment_count`, the `avg_delivery_days`, and the overall `on_time_rate_pct`. 
+
+4. **Finally, we calculate the 'Speed Premium' (Final `SELECT`)**: We format the output fields and use the `lag()` window function to compare the two rows. By subtracting the current row's average delivery days from the previous row's (ordered descendingly so Long-Haul comes first), we isolate the exact `speed_premium_days`—the amount of time saved by fulfilling an order locally.
+
+
+
+
+
+<details>
+<summary> Show SQL Code </summary>
+
+
+```sql
+with shipment_classification as (
+    -- step 1: link customers and sellers to classify the fulfillment path
+    -- we use distinct to handle multiple items from the same seller in one order
+    select distinct
+        o.order_id,
+        c.customer_state,
+        s.seller_state,
+        o.order_purchase_timestamp,
+        o.order_delivered_customer_date,
+        o.order_estimated_delivery_date,
+        -- classification logic
+        case 
+            when c.customer_state = s.seller_state then 'Local' 
+            else 'Long-Haul' 
+        end as shipment_type
+    from 
+        orders o
+    inner join 
+        customers c on o.customer_id = c.customer_id
+    inner join 
+        order_items oi on o.order_id = oi.order_id
+    inner join 
+        sellers s on oi.seller_id = s.seller_id
+    where 
+        o.order_status = 'delivered'
+        and o.order_delivered_customer_date is not null
+),
+
+performance_metrics as (
+    -- step 2: calculate duration and on-time status for each shipment
+    select 
+        shipment_type,
+        datediff(second, order_purchase_timestamp, order_delivered_customer_date) / 86400.0 as delivery_days,
+        case when order_delivered_customer_date <= order_estimated_delivery_date then 1 else 0 end as is_on_time
+    from 
+        shipment_classification
+),
+
+summary_stats as (
+    -- step 3: aggregate results by shipment type
+    select 
+        shipment_type,
+        count(*) as shipment_count,
+        avg(delivery_days) as avg_delivery_days,
+        cast(100.0 * sum(is_on_time) / count(*) as decimal(5,2)) as on_time_rate_pct
+    from 
+        performance_metrics
+    group by 
+        shipment_type
+)
+
+-- final output: comparing the two groups and calculating the speed premium
+select 
+    shipment_type,
+    shipment_count,
+    cast(avg_delivery_days as decimal(10,2)) as avg_delivery_days,
+    on_time_rate_pct,
+    -- speed premium: calculating how much faster local is compared to long-haul
+    -- we use a window function to find the difference between the two rows
+    cast(
+        lag(avg_delivery_days) over (order by avg_delivery_days desc) - avg_delivery_days 
+    as decimal(10,2)) as speed_premium_days
+from 
+    summary_stats;
+```
+
+</details>
+
+
+
+# Freight Ratio Analysis by Product Category
+
+> 15. What is the average 'Freight Ratio' (Freight Value / Product Price) across different product categories? Can we identify categories where shipping costs are disproportionately high (`>20%` of item value), leading to potential 'Cart Abandonment'?
+
+**Solution:**
+
+
+1. **Firstly, we aggregate price and freight metrics per category (`category_freight_stats` CTE)**: We join the `order_items` and `products` tables to calculate the total revenue (`sum(price)`) and total freight costs (`sum(freight_value)`) for each `product_category_name`. We also calculate the average price and average freight cost per item, making sure to filter out any records with a null category.
+
+2. **Finally, we calculate the 'Freight Ratio' and classify abandonment risk (Final `SELECT`)**: We compute the `freight_ratio_pct` by dividing the total category freight by the total category revenue (using `nullif` to prevent division by zero). We then use a `CASE` statement to flag categories where shipping costs exceed 20% of the product value as 'High Abandonment Risk (>20%)' and those between 10% and 20% as 'Moderate Overhead'. This allows us to easily spot product lines where shipping fees might be disproportionately high and deterring customers.
+
+
+<details>
+<summary> Show SQL Code </summary>
+
+```sql
+with category_freight_stats as (
+    -- step 1: aggregate total price and freight per category
+    -- we use order_items directly as it contains both price and freight_value
+    select 
+        p.product_category_name,
+        count(oi.order_item_id) as total_items_sold,
+        avg(oi.price) as avg_product_price,
+        avg(oi.freight_value) as avg_freight_cost,
+        sum(oi.price) as total_category_revenue,
+        sum(oi.freight_value) as total_category_freight
+    from 
+        order_items oi
+    inner join 
+        products p on oi.product_id = p.product_id
+    where 
+        p.product_category_name is not null
+    group by 
+        p.product_category_name
+)
+
+-- final output: calculating the ratio and risk levels
+select 
+    product_category_name,
+    cast(avg_product_price as decimal(10,2)) as avg_price,
+    cast(avg_freight_cost as decimal(10,2)) as avg_freight,
+    -- freight ratio: what percentage of the product price is the shipping cost?
+    cast(100.0 * total_category_freight / nullif(total_category_revenue, 0) as decimal(5,2)) as freight_ratio_pct,
+    -- risk classification
+    case 
+        when (total_category_freight / nullif(total_category_revenue, 0)) > 0.20 then 'High Abandonment Risk (>20%)'
+        when (total_category_freight / nullif(total_category_revenue, 0)) between 0.10 and 0.20 then 'Moderate Overhead'
+        else 'Optimized / Low Shipping Impact'
+    end as shipping_cost_impact
+from 
+    category_freight_stats
+order by 
+    freight_ratio_pct desc;
+```
+
+</details>
+
+
+
+**Results:**
+
+|product_category_name|avg_price|avg_freight|freight_ratio_pct|shipping_cost_impact|
+|---------------------|---------|-----------|-----------------|--------------------|
+|casa_conforto_2|25.34|13.68|53.97|High Abandonment Risk (>20%)|
+|flores|33.64|14.81|44.04|High Abandonment Risk (>20%)|
+|moveis_colchao_e_estofado|114.95|42.91|37.33|High Abandonment Risk (>20%)|
+|artigos_de_natal|57.52|21.11|36.69|High Abandonment Risk (>20%)|
+|fraldas_higiene|40.19|14.71|36.60|High Abandonment Risk (>20%)|
+|cds_dvds_musicais|52.14|16.07|30.82|High Abandonment Risk (>20%)|
+|sinalizacao_e_seguranca|108.09|32.70|30.26|High Abandonment Risk (>20%)|
+|alimentos_bebidas|54.60|16.22|29.70|High Abandonment Risk (>20%)|
+|eletronicos|57.91|16.83|29.07|High Abandonment Risk (>20%)|
+|fashion_esporte|70.65|19.27|27.28|High Abandonment Risk (>20%)|
+|moveis_sala|137.01|35.72|26.07|High Abandonment Risk (>20%)|
+|moveis_cozinha_area_de_servico_jantar_e_jardim|164.87|42.70|25.90|High Abandonment Risk (>20%)|
+|bebidas|59.18|15.15|25.60|High Abandonment Risk (>20%)|
+|moveis_escritorio|162.01|40.55|25.03|High Abandonment Risk (>20%)|
+|alimentos|57.63|14.26|24.74|High Abandonment Risk (>20%)|
+|moveis_decoracao|87.56|20.73|23.67|High Abandonment Risk (>20%)|
+|moveis_quarto|183.75|42.50|23.13|High Abandonment Risk (>20%)|
+|utilidades_domesticas|90.79|20.99|23.12|High Abandonment Risk (>20%)|
+|livros_tecnicos|71.52|16.04|22.43|High Abandonment Risk (>20%)|
+|fashion_roupa_feminina|58.41|12.95|22.18|High Abandonment Risk (>20%)|
+|telefonia|71.21|15.67|22.00|High Abandonment Risk (>20%)|
+|malas_acessorios|128.60|27.88|21.68|High Abandonment Risk (>20%)|
+|dvds_blu_ray|93.74|20.14|21.48|High Abandonment Risk (>20%)|
+|fashion_calcados|89.93|18.77|20.88|High Abandonment Risk (>20%)|
+|construcao_ferramentas_jardim|108.05|22.32|20.65|High Abandonment Risk (>20%)|
+|fashion_bolsas_e_acessorios|75.25|15.48|20.58|High Abandonment Risk (>20%)|
+|artes_e_artesanato|75.58|15.42|20.40|High Abandonment Risk (>20%)|
+|ferramentas_jardim|111.63|22.77|20.39|High Abandonment Risk (>20%)|
+|papelaria|91.75|18.59|20.26|High Abandonment Risk (>20%)|
+|fashion_underwear_e_moda_praia|72.84|14.63|20.08|High Abandonment Risk (>20%)|
+|fashion_roupa_masculina|81.80|16.31|19.93|Moderate Overhead|
+|industria_comercio_e_negocios|148.02|29.42|19.88|Moderate Overhead|
+|cama_mesa_banho|93.30|18.42|19.74|Moderate Overhead|
+|livros_interesse_geral|84.73|16.63|19.62|Moderate Overhead|
+|market_place|91.25|17.54|19.23|Moderate Overhead|
+|eletrodomesticos|103.98|19.22|18.48|Moderate Overhead|
+|artigos_de_festas|104.31|19.26|18.46|Moderate Overhead|
+|construcao_ferramentas_iluminacao|135.13|24.95|18.46|Moderate Overhead|
+|pet_shop|110.07|20.32|18.46|Moderate Overhead|
+|cine_foto|96.30|17.45|18.12|Moderate Overhead|
+|esporte_lazer|114.34|19.51|17.06|Moderate Overhead|
+|fashion_roupa_infanto_juvenil|71.23|11.94|16.76|Moderate Overhead|
+|artes|115.80|19.35|16.71|Moderate Overhead|
+|casa_construcao|137.56|22.90|16.65|Moderate Overhead|
+|bebes|134.34|22.30|16.60|Moderate Overhead|
+|livros_importados|77.33|12.83|16.59|Moderate Overhead|
+|tablets_impressao_imagem|90.70|14.77|16.29|Moderate Overhead|
+|la_cuisine|146.78|23.82|16.23|Moderate Overhead|
+|informatica_acessorios|116.51|18.82|16.15|Moderate Overhead|
+|brinquedos|117.55|18.81|16.00|Moderate Overhead|
+||112.00|17.57|15.69|Moderate Overhead|
+|automotivo|139.96|21.88|15.63|Moderate Overhead|
+|seguros_e_servicos|141.64|20.61|14.55|Moderate Overhead|
+|casa_conforto|134.96|19.59|14.51|Moderate Overhead|
+|beleza_saude|130.16|18.88|14.50|Moderate Overhead|
+|construcao_ferramentas_construcao|155.73|22.23|14.27|Moderate Overhead|
+|perfumaria|116.74|15.86|13.58|Moderate Overhead|
+|cool_stuff|167.36|22.14|13.23|Moderate Overhead|
+|construcao_ferramentas_ferramentas|154.41|19.71|12.77|Moderate Overhead|
+|consoles_games|138.49|17.44|12.59|Moderate Overhead|
+|climatizacao|185.27|22.72|12.27|Moderate Overhead|
+|musica|158.80|18.17|11.44|Moderate Overhead|
+|audio|139.25|15.69|11.27|Moderate Overhead|
+|instrumentos_musicais|281.62|27.41|9.73|Optimized / Low Shipping Impact|
+|construcao_ferramentas_seguranca|208.99|20.20|9.67|Optimized / Low Shipping Impact|
+|eletrodomesticos_2|476.12|44.54|9.35|Optimized / Low Shipping Impact|
+|pc_gamer|171.77|14.84|8.64|Optimized / Low Shipping Impact|
+|eletroportateis|280.78|23.59|8.40|Optimized / Low Shipping Impact|
+|relogios_presentes|201.14|16.78|8.34|Optimized / Low Shipping Impact|
+|agro_industria_e_comercio|342.12|27.56|8.06|Optimized / Low Shipping Impact|
+|portateis_cozinha_e_preparadores_de_alimentos|264.57|20.65|7.81|Optimized / Low Shipping Impact|
+|telefonia_fixa|225.69|17.57|7.78|Optimized / Low Shipping Impact|
+|portateis_casa_forno_e_cafe|624.29|36.16|5.79|Optimized / Low Shipping Impact|
+|pcs|1098.34|48.45|4.41|Optimized / Low Shipping Impact|
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
