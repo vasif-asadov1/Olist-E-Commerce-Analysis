@@ -1,270 +1,99 @@
+# Olist E-Commerce Sales and Operations Analysis
 
-# Olist E-Commerce Marketplace Intelligence System
-
-End-to-End SQL Analytics | Revenue Growth | Customer Retention | Operational Diagnostics
-
-Dataset: Brazilian E-Commerce Public Dataset (Olist): https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce
-
-Database: Microsoft SQL Server
-
-Tableau Dashboard Link: https://public.tableau.com/app/profile/vasif.asadov2730/viz/Olist_E_Commerce_Dashboard_17718506423160/Dashboard1?publish=yes
-
-Documentation Link: [Documents](https://vasif-asadov1.github.io/Olist-E-Commerce-Analysis/)
+**Project Links & Resources**
+* Full Technical Documentation: [01_data_normalization.html](./docs/01_data_normalization.html)
+* Interactive Tableau Dashboard: [Olist E-Commerce Dashboard](https://public.tableau.com/app/profile/vasif.asadov2730/viz/Olist_E_Commerce_Dashboard_17718506423160/Dashboard1?publish=yes)
+* Raw Dataset Source: [Kaggle - Brazilian E-Commerce Public Dataset](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
 
 ---
 
-## Project Overview
+## Executive Summary
 
-This repository builds a production-style analytical database and marketplace intelligence system using advanced SQL.
+This repository contains an end-to-end data analysis of the Olist e-commerce dataset, encompassing over 100,000 orders made across Brazil. The primary objective of this project is to extract actionable business intelligence regarding customer purchasing behavior, logistics efficiency, seller performance, and revenue growth trajectories. 
 
-The goal is not simple reporting.
+By engineering a robust Star Schema in SQL Server and deploying advanced T-SQL analytical queries (window functions, cohort aggregations, and statistical variance modeling), this project identifies critical operational bottlenecks—such as the delivery "satisfaction cliff"—and highlights key revenue drivers, ultimately providing strategic recommendations for marketplace optimization.
 
-The goal is to evaluate the structural health of a digital marketplace across:
+## Technical Stack
 
-* Revenue growth
-* Product portfolio balance
-* Customer retention & churn
-* Seller ecosystem performance
-* Delivery & logistics efficiency
-* Payment risk structure
-* Customer experience impact
+* **Database Management:** Microsoft SQL Server 2022
+* **Database Client:** DBeaver
+* **Query Language:** T-SQL (Transact-SQL)
+* **Data Visualization:** Tableau
+* **Data Preprocessing & Documentation:** Markdown, Quarto (.qmd)
 
-All analysis is modularized into structured SQL files for clarity, maintainability, and scalability.
+## Data Architecture and Modeling
 
----
+The raw data consisted of multiple disjointed CSV files. To optimize query performance and analytical accuracy, the data was ingested and normalized into a highly structured Star Schema:
 
-# Repository Structure & File Responsibilities
-
-## 01_data_type_normalization.sql
-
-Purpose: Data Engineering Foundation
-
-What it does:
-
-* Imports raw data
-* Converts generic VARCHAR staging types into correct numeric/date types
-* Defines PRIMARY KEY constraints
-* Defines FOREIGN KEY constraints
-* Creates indexes for performance optimization
-
-Why it matters:
-
-* Ensures referential integrity
-* Prevents data inconsistency
-* Improves join and aggregation speed
-* Establishes production-grade relational structure
-
-This file builds the backbone of the system.
+* **Fact Tables:** Orders, Order Items, Order Payments, Order Reviews.
+* **Dimension Tables:** Customers, Geolocation, Products, Sellers.
+* **Custom Time Dimension:** An explicitly generated `Calendar` table covering January 2016 through April 2020 to facilitate exact Month-over-Month (MoM), Year-over-Year (YoY), and rolling average calculations.
+* **Integrity & Optimization:** Explicit Primary Key/Foreign Key constraints were defined, and targeted non-clustered indexes were assigned to heavy-join columns to drastically reduce query execution times.
 
 ---
 
-## 02_time_table_creation.sql
+## Analytical Domains & Key Findings
 
-Purpose: Time Dimension Modeling
+### Customer Behavior and Retention
 
-What it does:
+Customer transaction history was analyzed using RFM (Recency, Frequency, Monetary) segmentation, Cohort Analysis, and statistical churn detection. 
 
-* Creates a dedicated Calendar table
-* Generates full date coverage
-* Adds year, month, quarter, week attributes
-* Links Calendar to Orders table via:
+* **Pareto Principle:** The customer base exhibits a heavy concentration of value, with the top 20% of users generating 53.58% of total platform revenue. 
+* **Cohort Retention:** Long-term retention is a systemic weakness. Retention drops significantly after the first month, rarely breaking 0.40% by Month 6.
+* **Churn Risk:** By measuring the standard deviation of historical purchase cycles, 42,051 users were flagged as statistically anomalous and at high risk of permanent churn.
 
-  * purchase date
-  * approval date
-  * delivery date
-  * estimated delivery date
+| RFM Segment | Customer Count | Avg. Days Since Last Order | Avg. Lifetime Spend | Business Action |
+|---|---|---|---|---|
+| Champions | 18,417 | 129 | $272.96 | Prioritize for VIP loyalty programs and upselling. |
+| Loyal Customers | 25,509 | 193 | $141.31 | Deploy campaigns to increase purchase frequency. |
+| Hibernating | 25,937 | 453 | $84.59 | Execute aggressive re-engagement campaigns. |
+| At Risk | 936 | 424 | $315.29 | High historic value, urgent intervention required. |
 
-Why it matters:
+### Logistics and Delivery Performance
 
-* Enables clean time-series analysis
-* Supports cohort analysis
-* Enables rolling averages
-* Removes repetitive date logic from queries
+Logistics data was decomposed into approval, dispatch, and last-mile stages to identify operational bottlenecks and correlate delivery speed with customer sentiment.
 
-This file enables advanced time intelligence.
+* **The Satisfaction Cliff:** Correlation analysis between delivery delays and review scores identified a strict "Satisfaction Cliff." While a 1-day delay is tolerable (3.73 average score), delays stretching to 3 days cause average ratings to plummet to 2.68, resulting in permanent brand damage.
+* **Speed Premium:** Fulfilling orders locally (customer and seller in the same state) provides a distinct "Speed Premium," drastically reducing average lead times compared to cross-border long-haul shipments.
+* **Cart Abandonment Risk:** Products in the Furniture and Bed/Bath categories face extreme overhead, with freight costs exceeding 25-37% of the item's baseline price.
 
----
+| Quality vs. Logistics Matrix | Definition | Identified Categories |
+|---|---|---|
+| Product/Catalog Issue | Fast Delivery / Low Rating | Computers, Party Supplies |
+| Logistics Bottleneck | Slow Delivery / High Rating | Fashion Shoes, Musical Instruments |
+| Systemic Failure | Slow Delivery / Low Rating | Office Furniture, Home Comfort |
+| Gold Standard | Fast Delivery / High Rating | Books, General Food |
 
-## 03_customer_behavior_and_retention.sql
+### Seller Performance and Marketplace Health
 
-Purpose: Customer Intelligence
+Seller fulfillment efficiency and market dominance were evaluated to ensure a healthy, competitive ecosystem.
 
-What it includes:
+* **Fulfillment Bottlenecks:** The bottom 10% of sellers exhibit severe logistical inefficiencies, taking between 10 to 25 days simply to hand over packaged orders to carrier partners.
+* **Churn Correlation:** Sellers who churned (went inactive in 2018) had an average order cancellation rate of 6.06% in the prior year, compared to just 0.48% for retained sellers. 
+* **Market Concentration:** Certain categories (e.g., PC Gamer, Security Services) are monopolized by single sellers holding over 50% of the revenue share, exposing the platform to supply chain risk if those sellers churn.
 
-* RFM segmentation (Recency, Frequency, Monetary)
-* Cohort retention analysis (1, 3, 6 month return rates)
-* Pareto 80/20 validation
-* Purchase latency calculation
-* Statistical churn risk detection (mean + 2σ deviation logic)
+### Payments and Financial Risk
 
-Business value:
+Payment behavior was analyzed to understand capital inflow and geographic banking penetration.
 
-* Identifies high-value customers
-* Detects churn risk
-* Measures retention decay
-* Supports CRM targeting strategy
+* **Financing High-Ticket Items:** Credit cards drive 78.3% of total revenue. Installments are critical for high-value conversions; 75.60% of all orders exceeding R$500 are financed using 5 or more installments.
+* **Boleto Penetration:** Boleto (cash-based payment) utilization serves as a proxy for regional banking penetration. States like Amapá (AP) and Roraima (RR) operate at ~28% Boleto usage—well above the 20.35% national average—indicating a reliance on non-credit payment infrastructures in northern regions.
 
----
+### Time Series and Growth Trajectory
 
-## 04_orders_and_sales_performance.sql
+Time-series aggregations mapped out the transition from linear to exponential scale.
 
-Purpose: Core Revenue & Growth Diagnostics
-
-What it includes:
-
-* Monthly revenue aggregation
-* Month-over-Month (MoM) growth
-* Year-over-Year (YoY) growth
-* Seasonal tagging (Black Friday, Holidays, New Year)
-* 3-month rolling revenue smoothing
-* Variance from long-term trend
-
-Business value:
-
-* Identifies structural growth vs seasonal spikes
-* Detects abnormal revenue behavior
-* Provides executive-level growth insights
+* **Hyper-Growth & Seasonality:** The platform demonstrated extreme volatility smoothed by a 3-month rolling average. Year-over-year indexing confirmed November (Black Friday) as the ultimate seasonal peak, generating nearly 2x the standard monthly average revenue.
+* **Intraday Purchasing Behavior:** Extracting day-of-week and hour-of-day distributions revealed highly predictable customer engagement patterns, specifically "Lunchtime Spikes" (12:00 PM - 2:00 PM) and "Evening Spikes" (8:00 PM - 10:00 PM).
 
 ---
 
-## 05_delivery_and_logistics_performance.sql
+## Strategic Recommendations
 
-Purpose: Operational Efficiency Analysis
-
-What it includes:
-
-* Delivery delay calculations
-* Estimated vs actual delivery gap analysis
-* On-time performance evaluation
-* Logistics performance trends
-
-Business value:
-
-* Identifies operational bottlenecks
-* Connects logistics performance to customer experience
-* Detects fulfillment inefficiencies
+1. **Enforce Seller Dispatch SLAs:** Institute strict Service Level Agreements (SLAs) for the bottom 10% of sellers. A failure to hand over packages to carriers within 48 hours is directly correlated to the "Satisfaction Cliff" and elevated 1-star review volumes.
+2. **Restructure Freight Subsidies for Heavy Goods:** Categories like Furniture suffer from a >30% freight ratio. Olist should negotiate volume-based logistics rates for heavy-tier items or localize inventory to prevent cart abandonment.
+3. **Targeted Retention Triggers:** Automate marketing interventions at Month 2. Given the severe drop-off in Month 3 cohort retention, early lifecycle engagement is mathematically the most effective point to secure a second purchase.
+4. **Leverage Intraday Bidding:** Shift ad-spend and push-notification schedules to perfectly align with the 12:00 PM and 8:00 PM engagement spikes, optimizing Customer Acquisition Cost (CAC).
 
 ---
-
-## 06_seller_performance_and_marketplace_health.sql
-
-Purpose: Seller Ecosystem Evaluation
-
-What it includes:
-
-* Seller-level revenue contribution
-* Order volume performance
-* Delivery reliability by seller
-* Marketplace dependency concentration
-
-Business value:
-
-* Identifies top-performing sellers
-* Detects risky or underperforming sellers
-* Evaluates revenue concentration risk
-
----
-
-## 07_payments_and_financial_risk.sql
-
-Purpose: Financial Structure & Risk Analysis
-
-What it includes:
-
-* Payment type distribution
-* Installment usage patterns
-* Multi-payment order behavior
-* Revenue exposure analysis
-
-Business value:
-
-* Assesses financial risk exposure
-* Evaluates cash flow sensitivity
-* Detects installment-heavy revenue dependency
-
----
-
-## 08_customer_experience_and_reviews.sql
-
-Purpose: Customer Satisfaction Analysis
-
-What it includes:
-
-* Review score distribution
-* Delivery impact on review ratings
-* Correlation between delays and negative reviews
-* Experience-driven churn indicators
-
-Business value:
-
-* Quantifies operational impact on satisfaction
-* Identifies drivers of negative feedback
-* Links service quality to marketplace health
-
----
-
-## 09_time_seasonality_and_growth.sql
-
-Purpose: Advanced Time-Based Revenue Diagnostics
-
-What it includes:
-
-* Seasonal demand classification
-* Revenue volatility smoothing
-* Rolling average modeling
-* Growth variance analysis
-
-Business value:
-
-* Identifies cyclical demand patterns
-* Supports forecasting baseline creation
-* Distinguishes noise from structural change
-
----
-
-## 10_data_aggregation.sql
-
-Purpose: Analytical Mart Construction
-
-What it includes:
-
-* Pre-aggregated analytical views
-* Order-level financial correctness validation
-* Duplicate prevention logic
-* Basket size and AOV preparation
-
-Business value:
-
-* Ensures metric correctness
-* Prevents revenue inflation
-* Supports BI tool integration
-
----
-
-# Analytical Themes Covered
-
-Revenue Intelligence
-Customer Lifecycle & Retention
-Seller Ecosystem Stability
-Operational Efficiency
-Financial Risk Exposure
-Product Portfolio Strategy
-Regional Market Dynamics
-Basket Economics
-
----
-
-# Technical Competencies Demonstrated
-
-Advanced SQL techniques:
-
-* CTE-based modular architecture
-* Window functions (LAG, RANK, PERCENT_RANK, rolling windows)
-* Statistical threshold detection
-* Cohort modeling
-* Time-series smoothing
-* Pre-aggregation strategies
-* Referential integrity enforcement
-* Performance indexing
-* Duplicate-safe financial aggregation
-
+*Authored by Vasif Asadov - Data Analyst*
