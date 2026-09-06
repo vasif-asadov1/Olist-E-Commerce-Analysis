@@ -1,10 +1,10 @@
 # Olist E-Commerce Sales and Operations Analysis
 
 **Project Links & Resources**
-* Full Technical Documentation: [docs](./docs/01_data_normalization)
+* Full Technical Documentation: [docs](https://vasif-asadov1.github.io/olist-e-commerce-analysis/)
 * Interactive Tableau Dashboard: [Olist E-Commerce Dashboard](https://public.tableau.com/app/profile/vasif.asadov2730/viz/Olist_E_Commerce_Dashboard_17718506423160/Dashboard1?publish=yes)
 * Raw Dataset Source: [Kaggle - Brazilian E-Commerce Public Dataset](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
-* Database ERP Diagram: [](./diagram.pdf)
+* Database ERP Diagram: [Database Diagram](./diagram.pdf)
 
 ---
 
